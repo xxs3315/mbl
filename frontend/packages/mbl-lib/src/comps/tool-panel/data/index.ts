@@ -488,7 +488,7 @@ export const toolPanelComps: ToolPanelCompPayload[] = [
       },
       {
         name: "Page number",
-        type: ItemTypes.PAGE_FOOTER_ELEMENT,
+        type: ItemTypes.ELEMENT,
         cat: "page-number",
         attrs: {
           value: "Page ${PAGE_INDEX} / ${PAGE_NUMBER}",

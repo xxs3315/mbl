@@ -1087,6 +1087,43 @@ const MixBoxLayoutContent = React.memo<{
               />
             </div>
           );
+        case "placeholder":
+          return (
+            <div
+              style={{
+                marginTop: `${pt2px(props.pTop ?? 0, dpi)}px`,
+                marginRight: `${pt2px(props.pRight ?? 0, dpi)}px`,
+                marginBottom: `${pt2px(props.pBottom ?? 0, dpi)}px`,
+                marginLeft: `${pt2px(props.pLeft ?? 0, dpi)}px`,
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  width: `${pt2px(props.width ?? 0, dpi)}px`,
+                  height: `${pt2px(props.height ?? 0, dpi)}px`,
+                  background: `${props.background}`,
+                  margin: `${
+                    props.horizontal === "left"
+                      ? "0 auto 0 0"
+                      : props.horizontal === "right"
+                        ? "0 0 0 auto"
+                        : "0 auto"
+                  }`,
+                }}
+              />
+            </div>
+          );
+        case "page-number":
+          return (
+            <TextareaWithComposition
+              key={`${position}-item-${props.id}-target`}
+              props={props}
+              updateTextItemValue={(itemId: string, newValue: string) =>
+                updateTextItemValue(itemId, newValue, position)
+              }
+            />
+          );
         default:
           return <span key={`${position}-item-${props.id}-target`} />;
       }
@@ -1520,8 +1557,6 @@ const MixBoxLayoutContent = React.memo<{
       console.log("drop to element: ", id);
     }
 
-    console.log("new content", position, newMap);
-
     // store 变化
     if (currentPage && setCurrentPageAndContent) {
       setCurrentPageAndContent(
@@ -1539,7 +1574,6 @@ const MixBoxLayoutContent = React.memo<{
       index: number,
       position: "header" | "body" | "footer" = "body",
     ) => {
-      console.log(item.id, item.children);
       if (item.children != undefined) {
         let contentMap;
         switch (position) {
@@ -1554,8 +1588,6 @@ const MixBoxLayoutContent = React.memo<{
             contentMap = currentPageBodyContent;
             break;
         }
-
-        console.log(item.id, contentMap);
 
         const childItems = item.children.map(
           (itemId: string) => contentMap.get(itemId)!,
@@ -1967,7 +1999,10 @@ const MixBoxLayoutContent = React.memo<{
       currentPageFooterContent.get(currentSelectedId);
 
     if (currentSelectedItem) {
-      if (currentSelectedItem.cat === "text") {
+      if (
+        currentSelectedItem.cat === "text" ||
+        currentSelectedItem.cat === "page-number"
+      ) {
         return <AttrText />;
       } else if (currentSelectedItem.cat === "image") {
         return (
