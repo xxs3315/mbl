@@ -63,7 +63,7 @@ import {
   PAGE_ROOT_ID,
 } from "./constants";
 import ToolPanel from "./comps/tool-panel/tool-panel";
-import { AttributePanelRenderer } from "./components/attribute-panel-renderer";
+import { AttributePanelRenderer } from "./comps/attribute-panel/components/attribute-panel-renderer";
 
 // 内部组件，在 MantineProvider 内部使用 useThemeColors
 const MixBoxLayoutContent = React.memo<{
@@ -691,10 +691,10 @@ const MixBoxLayoutContent = React.memo<{
     return (item: any) => {
       const flexValue = item.wildStar
         ? "1"
-        : `${item.canGrow ? "1" : "0"} ${item.canShrink ? "1" : "0"} ${item.flexUnit === "%" ? item.flexValue : (item.flexValue ?? 0)}${item.flexUnit}`;
+        : `${item.canGrow ? "1" : "0"} ${item.canShrink ? "1" : "0"} ${item.flexUnit === "%" ? item.flexValue : pt2px(item.flexValue ?? 0, dpi)}${item.flexUnit}`;
       return { flex: flexValue };
     };
-  }, []);
+  }, [dpi]);
 
   const renderHorizontalDropLineElement = React.useCallback(
     (injectedProps: DropLineRendererInjectedProps) => {
@@ -1078,6 +1078,27 @@ const MixBoxLayoutContent = React.memo<{
                     }`,
                   },
                 }}
+              />
+            </div>
+          );
+        case "page-break":
+          return (
+            <div
+              key={`item-${props.id}-target`}
+              className={css({
+                display: "flex",
+                height: "16px",
+                width: "full",
+                alignItems: "center",
+                justifyContent: "center",
+              })}
+            >
+              <div
+                className={css({
+                  height: "8px",
+                  width: "full",
+                  backgroundColor: "red.300",
+                })}
               />
             </div>
           );
@@ -1603,7 +1624,7 @@ const MixBoxLayoutContent = React.memo<{
                 event?.stopPropagation();
                 setCurrentSelectedId(item.id);
               }}
-              currentSelectedId={undefined}
+              currentSelectedId={currentSelectedId}
               moreStyle={getFlexStyle(item)}
             >
               <div
@@ -1688,7 +1709,7 @@ const MixBoxLayoutContent = React.memo<{
                 event?.stopPropagation();
                 setCurrentSelectedId(item.id);
               }}
-              currentSelectedId={undefined}
+              currentSelectedId={currentSelectedId}
               moreStyle={getFlexStyle(item)}
             >
               <div
@@ -1765,12 +1786,8 @@ const MixBoxLayoutContent = React.memo<{
             event?.stopPropagation();
             setCurrentSelectedId(item.id);
           }}
-          currentSelectedId={undefined}
-          moreStyle={{
-            flex: item.wildStar
-              ? "1"
-              : `${item.canGrow ? "1" : "0"} ${item.canShrink ? "1" : "0"} ${item.flexUnit === "%" ? item.flexValue : (item.flexValue ?? 0)}${item.flexUnit}`,
-          }}
+          currentSelectedId={currentSelectedId}
+          moreStyle={getFlexStyle(item)}
         >
           <div
             className={css({

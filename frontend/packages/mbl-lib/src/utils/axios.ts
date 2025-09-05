@@ -106,7 +106,7 @@ export function getAxios({ url, params = {} }: any) {
         resolve(res.data);
       })
       .catch((err) => {
-        console.log(err, "1");
+        console.error("Axios get error:", err);
         reject(err);
       });
   });

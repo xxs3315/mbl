@@ -1,17 +1,19 @@
 import React from "react";
-import { PageRoot } from "../comps/attribute-panel/page-root";
-import { PageBodyRoot } from "../comps/attribute-panel/page-body-root";
-import { PageHeaderRoot } from "../comps/attribute-panel/page-header-root";
-import { PageFooterRoot } from "../comps/attribute-panel/page-footer-root";
-import { AttrText } from "../comps/attribute-panel/attr-text";
-import { AttrImage } from "../comps/attribute-panel/attr-image";
-import { AttrBlank } from "../comps/attribute-panel/attr-blank";
+import { PageRoot } from "../page-root";
+import { PageBodyRoot } from "../page-body-root";
+import { PageHeaderRoot } from "../page-header-root";
+import { PageFooterRoot } from "../page-footer-root";
+import { AttrText } from "../attr-text";
+import { AttrImage } from "../attr-image";
+import { AttrPlaceholder } from "../attr-placeholder";
+import { AttrHbox } from "../attr-hbox";
+import { AttrBlank } from "../attr-blank";
 import {
   PAGE_BODY_ROOT_ID,
   PAGE_FOOTER_ROOT_ID,
   PAGE_HEADER_ROOT_ID,
   PAGE_ROOT_ID,
-} from "../constants";
+} from "../../../constants";
 
 interface AttributePanelRendererProps {
   currentSelectedId: string;
@@ -58,6 +60,13 @@ export const AttributePanelRenderer: React.FC<AttributePanelRendererProps> =
           return (
             <AttrImage baseUrl={baseUrl} imageUploadPath={imageUploadPath} />
           );
+        case "placeholder":
+          return <AttrPlaceholder />;
+        case "container":
+          if (selectedItemInfo.item.direction === "horizontal") {
+            return <AttrHbox />;
+          }
+          break;
         default:
           return <AttrBlank />;
       }

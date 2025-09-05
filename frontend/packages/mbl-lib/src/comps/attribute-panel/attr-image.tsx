@@ -148,7 +148,6 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
           imageData.height * (currentSelectedItem.width / imageData.width),
         );
       }
-      console.log("imageData", imageData);
       if ("base64" in imageData) {
         // 浏览器base64模式 - 同时更新所有属性
         updateSelectedItemProps(
@@ -199,7 +198,6 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
     }
 
     try {
-      console.log(imageUploadPath, baseUrl);
       if (imageUploadPath && baseUrl) {
         // 服务器上传模式
         const imageData = await uploadImageToServer(file);
