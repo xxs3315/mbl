@@ -1,0 +1,49 @@
+{
+  "name": "@xxs3315/mbl-lib",
+  "version": "1.0.0",
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm run clean && pnpm run css && pnpm run compile",
+    "clean": "rimraf ./dist",
+    "compile": "tsc -p tsconfig.build.json",
+    "css": "postcss -o ./dist/index.css ./src/index.css && panda cssgen --outfile dist/index.css",
+    "prepare": "panda codegen",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "@mantine/core": "^8.2.5",
+    "@mantine/hooks": "^8.2.5",
+    "@mantine/notifications": "^8.2.5",
+    "@xxs3315/mbl-core": "workspace:*",
+    "@xxs3315/mbl-lib-example-data": "workspace:*",
+    "@xxs3315/mbl-state": "workspace:*",
+    "@xxs3315/mbl-typings": "workspace:*",
+    "array-move": "^2.2.1",
+    "axios": "^1.10.0",
+    "lodash-es": "^4.17.21",
+    "lucide-react": "^0.541.0",
+    "mac-scrollbar": "^0.13.8",
+    "nanoid": "^5.1.5",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-use": "^17.6.0",
+    "zustand": "5.0.5"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "~1.1.0",
+    "@types/lodash-es": "^4.17.12",
+    "@types/react": "~19.1.0",
+    "postcss": "~8.5.6",
+    "postcss-cli": "~8.3.1",
+    "react": "~19.1.0",
+    "react-dom": "~19.1.0",
+    "rimraf": "~6.0.0"
+  },
+  "peerDependencies": {
+    "react": "~19.1.0"
+  }
+}

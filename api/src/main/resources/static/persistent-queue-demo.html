@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>队列系统演示</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1400px; margin: 0 auto; padding: 10px; }
+        .container { background: white; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
+        .form-group { margin-bottom: 8px; }
+        label { display: inline-block; margin-right: 10px; font-weight: bold; min-width: 80px; }
+        input, select, button { padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; margin-right: 8px; font-size: 12px; }
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
+        .stat-card { background: #f8f9fa; padding: 10px; text-align: center; }
+        .stat-number { font-size: 20px; font-weight: bold; color: #007bff; }
+        .task-list { 
+            max-height: 450px; 
+            min-height: 450px; 
+            overflow-y: auto; 
+            border: 1px solid #ddd; 
+            padding: 8px; 
+            scroll-behavior: smooth;
+        }
+        .task-item { 
+            background: #f8f9fa; 
+            padding: 8px; 
+            margin-bottom: 6px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            border-left: 4px solid #dee2e6;
+            transition: all 0.2s ease;
+        }
+        .task-item:hover {
+            background: #e9ecef;
+            transform: translateX(2px);
+        }
+        .task-item.pending { border-left-color: #ffc107; }
+        .task-item.processing { border-left-color: #007bff; }
+        .task-item.completed { border-left-color: #28a745; }
+        .task-item.failed { border-left-color: #dc3545; }
+        .task-item.cancelled { border-left-color: #6c757d; }
+        
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .task-id {
+            font-weight: bold;
+            color: #495057;
+        }
+        .task-status {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .task-details {
+            font-size: 11px;
+            color: #6c757d;
+        }
+        .task-details strong {
+            color: #495057;
+        }
+        .task-time {
+            font-size: 10px;
+            color: #adb5bd;
+        }
+        .task-result {
+            background: #d4edda;
+            padding: 4px 6px;
+            border-radius: 3px;
+            margin-top: 4px;
+            font-size: 11px;
+        }
+        .task-error {
+            background: #f8d7da;
+            padding: 4px 6px;
+            border-radius: 3px;
+            margin-top: 4px;
+            font-size: 11px;
+            color: #721c24;
+        }
+        .info-box { background: #e7f3ff; border: 1px solid #b3d9ff; padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+        .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .left-panel, .right-panel { display: flex; flex-direction: column; }
+        .task-item div { margin-bottom: 2px; }
+        h1 { margin: 0 0 10px 0; font-size: 24px; }
+        h2 { margin: 0 0 8px 0; font-size: 18px; }
+        h3 { margin: 0 0 5px 0; font-size: 16px; }
+        .info-box p { margin: 5px 0; font-size: 12px; }
+        .message-area { 
+            background: #f8f9fa; 
+            border: 1px solid #dee2e6; 
+            border-radius: 4px; 
+            padding: 10px; 
+            margin-bottom: 10px; 
+            min-height: 120px;
+            max-height: 120px; 
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .message-item { 
+            padding: 5px 0; 
+            border-bottom: 1px solid #e9ecef; 
+            margin-bottom: 5px;
+        }
+        .message-item:last-child { 
+            border-bottom: none; 
+            margin-bottom: 0;
+        }
+        .message-success { color: #28a745; }
+        .message-error { color: #dc3545; }
+        .message-info { color: #007bff; }
+        .message-time { 
+            color: #6c757d; 
+            font-size: 10px; 
+            margin-left: 10px;
+        }
+        .clear-messages { 
+            float: right; 
+            background: #6c757d; 
+            color: white; 
+            border: none; 
+            padding: 2px 6px; 
+            border-radius: 3px; 
+            font-size: 10px; 
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 队列系统演示</h1>
+    
+    <div class="container info-box">
+        <h3>🗄️ 特性</h3>
+        <p><strong>数据库路径:</strong> <span id="dataDirectory">加载中...</span></p>
+        <p><strong>特点:</strong> 基于数据库，支持SQL和JPA，稳定可靠</p>
+        <p><strong>重启恢复:</strong> <span id="restartInfo">加载中...</span></p>
+    </div>
+    
+    <div class="container">
+        <h2>消息区域 <button class="clear-messages" onclick="clearMessages()">清空</button></h2>
+        <div class="message-area" id="messageArea">
+            <div class="message-item message-info">
+                队列系统已启动，等待操作...
+                <span class="message-time" id="currentTime"></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="left-panel">
+            <div class="container">
+                <h2>添加任务</h2>
+                <div class="form-group">
+                    <label for="taskType">任务类型:</label>
+                    <select id="taskType">
+                        <option value="PDF_GENERATE">PDF生成</option>
+                        <option value="PDF_CONVERT">PDF转换</option>
+                        <option value="EMAIL_SEND">邮件发送</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskData">任务数据:</label>
+                    <input type="text" id="taskData" value="测试任务">
+                </div>
+                <button onclick="addTask()">添加任务</button>
+                <button onclick="addBatchTasks()">批量添加5个任务</button>
+            </div>
+
+            <div class="container">
+                <h2>队列统计</h2>
+                <div class="stats" id="stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="pendingCount">0</div>
+                        <div>待处理</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="processingCount">0</div>
+                        <div>处理中</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="completedCount">0</div>
+                        <div>已完成</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCount">0</div>
+                        <div>总计</div>
+                    </div>
+                </div>
+                <button onclick="refreshStats()">刷新统计</button>
+                <button onclick="processNextTask()">手动处理任务</button>
+            </div>
+
+            <div class="container">
+                <h2>自动处理器控制</h2>
+                <div class="stats" id="processorStats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="processorStatus">停止</div>
+                        <div>处理器状态</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="currentProcessing">0</div>
+                        <div>当前处理中</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="processedTasks">0</div>
+                        <div>已处理任务</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="maxConcurrent">3</div>
+                        <div>最大并发数</div>
+                    </div>
+                </div>
+                <button onclick="startProcessor()" id="startBtn">启动处理器</button>
+                <button onclick="stopProcessor()" id="stopBtn">停止处理器</button>
+                <button onclick="refreshProcessorStats()">刷新处理器状态</button>
+                <div class="form-group" style="margin-top: 8px;">
+                    <label for="maxConcurrentInput">最大并发数:</label>
+                    <input type="number" id="maxConcurrentInput" value="3" min="1" max="10" style="width: 60px;">
+                    <button onclick="configureProcessor()">设置</button>
+                </div>
+            </div>
+        </div>
+
+                 <div class="right-panel">
+             <div class="container">
+                 <h2>任务列表 (所有任务) 
+                     <button onclick="scrollToTop()" style="font-size: 10px; padding: 2px 6px;">顶部</button>
+                     <button onclick="scrollToBottom()" style="font-size: 10px; padding: 2px 6px;">底部</button>
+                     <button onclick="toggleAutoScroll()" id="autoScrollBtn" style="font-size: 10px; padding: 2px 6px;">自动滚动</button>
+                 </h2>
+                 <div class="task-list" id="taskList"></div>
+                 <div style="margin-top: 8px; font-size: 11px; color: #6c757d;">
+                     <span id="taskCount">0</span> 个任务 | 
+                     <span id="scrollPosition">位置: 0%</span>
+                 </div>
+             </div>
+         </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api/queue';
+
+        // 消息管理函数
+        function addMessage(message, type = 'info') {
+            const messageArea = document.getElementById('messageArea');
+            const messageItem = document.createElement('div');
+            messageItem.className = `message-item message-${type}`;
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            
+            messageItem.innerHTML = `
+                ${message}
+                <span class="message-time">${timeStr}</span>
+            `;
+            
+            messageArea.appendChild(messageItem);
+            messageArea.scrollTop = messageArea.scrollHeight;
+            
+            // 限制消息数量，最多保留20条
+            const messages = messageArea.querySelectorAll('.message-item');
+            if (messages.length > 20) {
+                messages[0].remove();
+            }
+        }
+
+        function clearMessages() {
+            const messageArea = document.getElementById('messageArea');
+            messageArea.innerHTML = `
+                <div class="message-item message-info">
+                    消息已清空
+                    <span class="message-time">${new Date().toLocaleTimeString()}</span>
+                </div>
+            `;
+        }
+
+        function updateCurrentTime() {
+            const currentTimeElement = document.getElementById('currentTime');
+            if (currentTimeElement) {
+                currentTimeElement.textContent = new Date().toLocaleTimeString();
+            }
+        }
+
+        async function addTask() {
+            const taskType = document.getElementById('taskType').value;
+            const taskData = document.getElementById('taskData').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/add?taskType=${encodeURIComponent(taskType)}&data=${encodeURIComponent(taskData)}`, {
+                    method: 'POST'
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                                         addMessage(`✅ 任务已添加到队列，ID: ${result.taskId}`, 'success');
+                    refreshAll();
+                } else {
+                    addMessage(`❌ 添加任务失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                addMessage(`❌ 请求失败: ${error.message}`, 'error');
+            }
+        }
+
+        async function addBatchTasks() {
+            const taskType = document.getElementById('taskType').value;
+            const baseData = document.getElementById('taskData').value;
+            
+            addMessage(`🔄 开始批量添加5个任务...`, 'info');
+            
+            for (let i = 1; i <= 5; i++) {
+                const taskData = `${baseData} - 批次${i}`;
+                try {
+                    const response = await fetch(`${API_BASE}/add?taskType=${encodeURIComponent(taskType)}&data=${encodeURIComponent(taskData)}`, {
+                        method: 'POST'
+                    });
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        addMessage(`✅ 批量任务 ${i}/5 已添加，ID: ${result.taskId}`, 'success');
+                    } else {
+                        addMessage(`❌ 批量任务 ${i}/5 添加失败: ${result.message}`, 'error');
+                    }
+                } catch (error) {
+                    addMessage(`❌ 批量任务 ${i}/5 请求失败: ${error.message}`, 'error');
+                }
+                
+                // 短暂延迟，避免请求过于频繁
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            
+            addMessage(`🎉 批量添加任务完成！`, 'success');
+            refreshAll();
+        }
+
+        async function processNextTask() {
+            try {
+                const response = await fetch(`${API_BASE}/next`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const task = result.task;
+                    addMessage(`🔄 获取到任务: ${task.taskType} - ${task.data}`, 'info');
+                    
+                    setTimeout(async () => {
+                        await completeTask(task.id, `处理完成: ${task.data}`);
+                    }, 1000);
+                } else {
+                    addMessage(`ℹ️ 没有待处理的任务`, 'info');
+                }
+            } catch (error) {
+                addMessage(`❌ 请求失败: ${error.message}`, 'error');
+            }
+        }
+
+        async function completeTask(taskId, result) {
+            try {
+                const response = await fetch(`${API_BASE}/complete?taskId=${taskId}&result=${encodeURIComponent(result)}`, {
+                    method: 'POST'
+                });
+                const result2 = await response.json();
+                
+                if (result2.success) {
+                    addMessage(`✅ 任务 ${taskId} 处理完成，结果: ${result}`, 'success');
+                    refreshAll();
+                } else {
+                    addMessage(`❌ 完成任务失败: ${result2.message}`, 'error');
+                }
+            } catch (error) {
+                addMessage(`❌ 请求失败: ${error.message}`, 'error');
+            }
+        }
+
+        async function refreshStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const stats = result.stats;
+                    document.getElementById('pendingCount').textContent = stats.pending;
+                    document.getElementById('processingCount').textContent = stats.processing;
+                    document.getElementById('completedCount').textContent = stats.completed;
+                    document.getElementById('totalCount').textContent = stats.total;
+                }
+            } catch (error) {
+                console.error('获取统计信息失败:', error);
+            }
+        }
+
+        async function refreshTaskList() {
+            try {
+                const container = document.getElementById('taskList');
+                const taskList = document.getElementById('taskList');
+                
+                // 保存当前滚动位置
+                const currentScrollTop = taskList.scrollTop;
+                const isAtBottom = taskList.scrollTop + taskList.clientHeight >= taskList.scrollHeight - 10;
+                
+                // 获取待处理任务
+                const pendingResponse = await fetch(`${API_BASE}/pending`);
+                const pendingResult = await pendingResponse.json();
+                
+                // 获取处理中任务
+                const processingResponse = await fetch(`${API_BASE}/processing`);
+                const processingResult = await processingResponse.json();
+                
+                // 获取已完成任务
+                const completedResponse = await fetch(`${API_BASE}/completed`);
+                const completedResult = await completedResponse.json();
+                
+                let allTasks = [];
+                
+                if (pendingResult.success) {
+                    allTasks = allTasks.concat(pendingResult.tasks.map(task => ({...task, section: 'pending'})));
+                }
+                if (processingResult.success) {
+                    allTasks = allTasks.concat(processingResult.tasks.map(task => ({...task, section: 'processing'})));
+                }
+                if (completedResult.success) {
+                    allTasks = allTasks.concat(completedResult.tasks.map(task => ({...task, section: 'completed'})));
+                }
+                
+                // 更新任务数量
+                document.getElementById('taskCount').textContent = allTasks.length;
+                
+                if (allTasks.length > 0) {
+                    // 按创建时间排序，最新的在前面
+                    allTasks.sort((a, b) => new Date(b.createTime) - new Date(a.createTime));
+                    
+                    // 清空容器
+                    container.innerHTML = '';
+                    
+                    allTasks.forEach(task => {
+                        const taskElement = document.createElement('div');
+                        taskElement.className = `task-item ${task.status.toLowerCase()}`;
+                        
+                        let statusIcon = '';
+                        let statusClass = '';
+                        switch(task.status) {
+                            case 'PENDING':
+                                statusIcon = '⏳';
+                                statusClass = 'background-color: #fff3cd; color: #856404;';
+                                break;
+                            case 'PROCESSING':
+                                statusIcon = '🔄';
+                                statusClass = 'background-color: #cce7ff; color: #004085;';
+                                break;
+                            case 'COMPLETED':
+                                statusIcon = '✅';
+                                statusClass = 'background-color: #d4edda; color: #155724;';
+                                break;
+                            case 'FAILED':
+                                statusIcon = '❌';
+                                statusClass = 'background-color: #f8d7da; color: #721c24;';
+                                break;
+                            case 'CANCELLED':
+                                statusIcon = '🚫';
+                                statusClass = 'background-color: #e2e3e5; color: #383d41;';
+                                break;
+                        }
+                        
+                        const createTime = new Date(task.createTime).toLocaleString('zh-CN', {
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        });
+                        
+                        const startTime = task.startTime ? new Date(task.startTime).toLocaleString('zh-CN', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        }) : '';
+                        
+                        const endTime = task.endTime ? new Date(task.endTime).toLocaleString('zh-CN', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        }) : '';
+                        
+                        taskElement.innerHTML = `
+                            <div class="task-header">
+                                <span class="task-id">#${task.id}</span>
+                                <span class="task-status" style="${statusClass}">${statusIcon} ${task.status}</span>
+                            </div>
+                            <div class="task-details">
+                                <div><strong>类型:</strong> ${task.taskType}</div>
+                                <div><strong>数据:</strong> ${task.data}</div>
+                                <div class="task-time"><strong>创建:</strong> ${createTime}</div>
+                                ${startTime ? `<div class="task-time"><strong>开始:</strong> ${startTime}</div>` : ''}
+                                ${endTime ? `<div class="task-time"><strong>结束:</strong> ${endTime}</div>` : ''}
+                            </div>
+                            ${task.result ? `<div class="task-result"><strong>结果:</strong> ${task.result}</div>` : ''}
+                            ${task.errorMessage ? `<div class="task-error"><strong>错误:</strong> ${task.errorMessage}</div>` : ''}
+                        `;
+                        container.appendChild(taskElement);
+                    });
+                    
+                    // 恢复滚动位置或自动滚动到底部
+                    if (autoScroll || isAtBottom) {
+                        taskList.scrollTop = taskList.scrollHeight;
+                    } else {
+                        taskList.scrollTop = currentScrollTop;
+                    }
+                } else {
+                    container.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 20px;">暂无任务</p>';
+                }
+                
+                updateScrollPosition();
+            } catch (error) {
+                console.error('获取任务列表失败:', error);
+            }
+        }
+
+        async function getDataDirectory() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('dataDirectory').textContent = result.stats.databasePath || '未知';
+                }
+            } catch (error) {
+                console.error('获取数据库路径失败:', error);
+            }
+        }
+
+        async function getRestartInfo() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const stats = result.stats;
+                    let infoText = `待处理: ${stats.pending}, 处理中: ${stats.processing}, 已完成: ${stats.completed}`;
+                    
+                    if (stats.processing > 0) {
+                        infoText += ` ⚠️ 应用重启后发现有PROCESSING状态的任务，已自动重新加入队列`;
+                        addMessage(`⚠️ 应用重启后发现有PROCESSING状态的任务，已自动重新加入队列`, 'info');
+                    }
+                    
+                    document.getElementById('restartInfo').textContent = infoText;
+                }
+            } catch (error) {
+                console.error('获取重启信息失败:', error);
+            }
+        }
+
+        // 保存上一次的任务状态，用于检测变化
+        let lastTaskStates = new Map();
+        let autoScroll = false;
+        let lastScrollPosition = 0;
+        
+        function refreshAll() {
+            refreshStats();
+            refreshTaskListWithNotification();
+            refreshProcessorStats();
+        }
+        
+        async function refreshTaskListWithNotification() {
+            try {
+                // 获取所有任务
+                const pendingResponse = await fetch(`${API_BASE}/pending`);
+                const pendingResult = await pendingResponse.json();
+                
+                const processingResponse = await fetch(`${API_BASE}/processing`);
+                const processingResult = await processingResponse.json();
+                
+                const completedResponse = await fetch(`${API_BASE}/completed`);
+                const completedResult = await completedResponse.json();
+                
+                let allTasks = [];
+                
+                if (pendingResult.success) {
+                    allTasks = allTasks.concat(pendingResult.tasks);
+                }
+                if (processingResult.success) {
+                    allTasks = allTasks.concat(processingResult.tasks);
+                }
+                if (completedResult.success) {
+                    allTasks = allTasks.concat(completedResult.tasks);
+                }
+                
+                // 检测任务状态变化
+                allTasks.forEach(task => {
+                    const lastState = lastTaskStates.get(task.id);
+                    if (lastState && lastState.status !== task.status) {
+                        // 任务状态发生变化
+                        if (task.status === 'COMPLETED') {
+                            addMessage(`🎉 任务 ${task.id} 已完成！结果: ${task.result || '无'}`, 'success');
+                        } else if (task.status === 'FAILED') {
+                            addMessage(`💥 任务 ${task.id} 执行失败！错误: ${task.errorMessage || '未知错误'}`, 'error');
+                        } else if (task.status === 'PROCESSING') {
+                            addMessage(`🔄 任务 ${task.id} 开始处理`, 'info');
+                        }
+                    }
+                    lastTaskStates.set(task.id, {...task});
+                });
+                
+                // 更新任务列表显示
+                refreshTaskList();
+                
+            } catch (error) {
+                console.error('刷新任务列表失败:', error);
+            }
+        }
+
+        // 处理器控制函数
+        async function startProcessor() {
+            try {
+                const response = await fetch(`${API_BASE}/processor/start`, {
+                    method: 'POST'
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                                         addMessage(`🚀 队列处理器已启动`, 'success');
+                    refreshProcessorStats();
+                } else {
+                    addMessage(`❌ 启动处理器失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                addMessage(`❌ 请求失败: ${error.message}`, 'error');
+            }
+        }
+
+        async function stopProcessor() {
+            try {
+                const response = await fetch(`${API_BASE}/processor/stop`, {
+                    method: 'POST'
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                                         addMessage(`⏹️ 队列处理器已停止`, 'info');
+                    refreshProcessorStats();
+                } else {
+                    addMessage(`❌ 停止处理器失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                addMessage(`❌ 请求失败: ${error.message}`, 'error');
+            }
+        }
+
+        async function refreshProcessorStats() {
+            try {
+                const response = await fetch(`${API_BASE}/processor/status`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const stats = result.processorStats;
+                    document.getElementById('processorStatus').textContent = stats.isRunning ? '运行中' : '停止';
+                    document.getElementById('currentProcessing').textContent = stats.currentProcessingTasks;
+                    document.getElementById('processedTasks').textContent = stats.processedTasks;
+                    document.getElementById('maxConcurrent').textContent = stats.maxConcurrentTasks;
+                    
+                    // 更新按钮状态
+                    document.getElementById('startBtn').disabled = stats.isRunning;
+                    document.getElementById('stopBtn').disabled = !stats.isRunning;
+                    
+                    // 添加并发状态提示
+                    if (stats.isRunning && stats.currentProcessingTasks >= stats.maxConcurrentTasks) {
+                        addMessage(`⚠️ 当前并发数已达上限: ${stats.currentProcessingTasks}/${stats.maxConcurrentTasks}`, 'info');
+                    }
+                }
+            } catch (error) {
+                console.error('获取处理器状态失败:', error);
+            }
+        }
+
+        async function configureProcessor() {
+            const maxConcurrent = document.getElementById('maxConcurrentInput').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/processor/config?maxConcurrent=${maxConcurrent}`, {
+                    method: 'POST'
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    addMessage(`⚙️ 处理器配置已更新，最大并发数: ${maxConcurrent}`, 'success');
+                    refreshProcessorStats();
+                } else {
+                    addMessage(`❌ 配置处理器失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                addMessage(`❌ 请求失败: ${error.message}`, 'error');
+            }
+        }
+        
+        // 滚动控制函数
+        function scrollToTop() {
+            const taskList = document.getElementById('taskList');
+            taskList.scrollTop = 0;
+            updateScrollPosition();
+        }
+        
+        function scrollToBottom() {
+            const taskList = document.getElementById('taskList');
+            taskList.scrollTop = taskList.scrollHeight;
+            updateScrollPosition();
+        }
+        
+        function toggleAutoScroll() {
+            autoScroll = !autoScroll;
+            const btn = document.getElementById('autoScrollBtn');
+            btn.textContent = autoScroll ? '停止滚动' : '自动滚动';
+            btn.style.backgroundColor = autoScroll ? '#dc3545' : '#007bff';
+        }
+        
+        function updateScrollPosition() {
+            const taskList = document.getElementById('taskList');
+            const scrollPercent = Math.round((taskList.scrollTop / (taskList.scrollHeight - taskList.clientHeight)) * 100);
+            document.getElementById('scrollPosition').textContent = `位置: ${scrollPercent}%`;
+        }
+        
+        // 监听滚动事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const taskList = document.getElementById('taskList');
+            taskList.addEventListener('scroll', updateScrollPosition);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            getDataDirectory();
+            getRestartInfo();
+            refreshAll();
+            setInterval(refreshAll, 5000);
+            setInterval(updateCurrentTime, 1000);
+        });
+    </script>
+</body>
+</html>

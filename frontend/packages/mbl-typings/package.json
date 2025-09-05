@@ -1,0 +1,21 @@
+{
+  "name": "@xxs3315/mbl-typings",
+  "version": "1.0.0",
+  "main": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm run clean && pnpm run compile && pnpm run copy-typings",
+    "clean": "rimraf ./dist",
+    "compile": "tsc -p tsconfig.build.json",
+    "copy-typings": "copyfiles -u 1 src/**/*.d.ts dist/",
+    "prepublishOnly": "pnpm run build"
+  },
+  "devDependencies": {
+    "copyfiles": "~2.4.1",
+    "rimraf": "~6.0.0",
+    "typescript": "~5.9.0"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "@xxs3315/mbl-state",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "clean": "rimraf ./dist"
+  },
+  "dependencies": {
+    "immer": "10.1.1",
+    "zustand": "5.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "~22.16.0",
+    "rimraf": "~6.0.0",
+    "typescript": "~5.9.0",
+    "unbuild": "^3.0.1"
+  },
+  "peerDependencies": {
+    "immer": "10.1.1",
+    "zustand": "5.0.5"
+  }
+}
