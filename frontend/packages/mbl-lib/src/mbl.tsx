@@ -62,14 +62,8 @@ import {
   PAGE_HEADER_ROOT_ID,
   PAGE_ROOT_ID,
 } from "./constants";
-import { PageRoot } from "./comps/attribute-panel/page-root";
-import { PageBodyRoot } from "./comps/attribute-panel/page-body-root";
-import { PageHeaderRoot } from "./comps/attribute-panel/page-header-root";
-import { PageFooterRoot } from "./comps/attribute-panel/page-footer-root";
-import { AttrText } from "./comps/attribute-panel/attr-text";
-import { AttrImage } from "./comps/attribute-panel/attr-image";
 import ToolPanel from "./comps/tool-panel/tool-panel";
-import { AttrBlank } from "./comps/attribute-panel/attr-blank";
+import { AttributePanelRenderer } from "./components/attribute-panel-renderer";
 
 // 内部组件，在 MantineProvider 内部使用 useThemeColors
 const MixBoxLayoutContent = React.memo<{
@@ -1605,15 +1599,9 @@ const MixBoxLayoutContent = React.memo<{
               index={index}
               isGroup
               isUsedCustomDragHandlers={true}
-              onTap={() => {
+              onTap={(event) => {
+                event?.stopPropagation();
                 setCurrentSelectedId(item.id);
-                // setCurrentSubSelectedId("");
-                // setCurrentSubSelectedBindingId("");
-                // setCurrentSubSelectedVerticalParentGroupId("");
-                // console.log(
-                //     "horizontal container",
-                //     document.querySelector(`#dnd-target-${item.id}`),
-                // );
               }}
               currentSelectedId={undefined}
               moreStyle={getFlexStyle(item)}
@@ -1696,11 +1684,9 @@ const MixBoxLayoutContent = React.memo<{
               index={index}
               isGroup
               isUsedCustomDragHandlers={true}
-              onTap={() => {
+              onTap={(event) => {
+                event?.stopPropagation();
                 setCurrentSelectedId(item.id);
-                // setCurrentSubSelectedId("");
-                // setCurrentSubSelectedBindingId("");
-                // setCurrentSubSelectedVerticalParentGroupId("");
               }}
               currentSelectedId={undefined}
               moreStyle={getFlexStyle(item)}
@@ -1775,11 +1761,9 @@ const MixBoxLayoutContent = React.memo<{
           identifier={item.id}
           index={index}
           isUsedCustomDragHandlers={true}
-          onTap={() => {
+          onTap={(event) => {
+            event?.stopPropagation();
             setCurrentSelectedId(item.id);
-            // setCurrentSubSelectedId("");
-            // setCurrentSubSelectedBindingId("");
-            // setCurrentSubSelectedVerticalParentGroupId("");
           }}
           currentSelectedId={undefined}
           moreStyle={{
@@ -1982,37 +1966,52 @@ const MixBoxLayoutContent = React.memo<{
     return unsubscribe;
   }, [onContentChange, store]);
 
+  // 缓存选中项信息，避免重复查找
+  const selectedItemInfo = React.useMemo(() => {
+    if (!currentSelectedId) {
+      return { item: null, position: null, exists: false };
+    }
+
+    // 按优先级查找：header -> body -> footer
+    let item = currentPageHeaderContent.get(currentSelectedId);
+    let position: "header" | "body" | "footer" | null = "header";
+
+    if (!item) {
+      item = currentPageBodyContent.get(currentSelectedId);
+      position = "body";
+    }
+
+    if (!item) {
+      item = currentPageFooterContent.get(currentSelectedId);
+      position = "footer";
+    }
+
+    if (!item) {
+      position = null;
+    }
+
+    return {
+      item,
+      position,
+      exists: !!item,
+    };
+  }, [
+    currentSelectedId,
+    currentPageHeaderContent,
+    currentPageBodyContent,
+    currentPageFooterContent,
+  ]);
+
   const compAttrPanel = React.useMemo(() => {
-    if (currentSelectedId === PAGE_ROOT_ID) {
-      return <PageRoot />;
-    } else if (currentSelectedId === PAGE_BODY_ROOT_ID) {
-      return <PageBodyRoot />;
-    } else if (currentSelectedId === PAGE_HEADER_ROOT_ID) {
-      return <PageHeaderRoot />;
-    } else if (currentSelectedId === PAGE_FOOTER_ROOT_ID) {
-      return <PageFooterRoot />;
-    }
-
-    const currentSelectedItem =
-      currentPageHeaderContent.get(currentSelectedId) ||
-      currentPageBodyContent.get(currentSelectedId) ||
-      currentPageFooterContent.get(currentSelectedId);
-
-    if (currentSelectedItem) {
-      if (
-        currentSelectedItem.cat === "text" ||
-        currentSelectedItem.cat === "page-number"
-      ) {
-        return <AttrText />;
-      } else if (currentSelectedItem.cat === "image") {
-        return (
-          <AttrImage baseUrl={baseUrl} imageUploadPath={imageUploadPath} />
-        );
-      }
-    }
-
-    return <AttrBlank />;
-  }, [currentSelectedId]);
+    return (
+      <AttributePanelRenderer
+        currentSelectedId={currentSelectedId}
+        selectedItemInfo={selectedItemInfo}
+        baseUrl={baseUrl}
+        imageUploadPath={imageUploadPath}
+      />
+    );
+  }, [currentSelectedId, selectedItemInfo, baseUrl, imageUploadPath]);
 
   return (
     <div
@@ -2516,14 +2515,14 @@ const MixBoxLayoutContent = React.memo<{
                     : "0 0 12px rgba(0, 0, 0, 0.2)",
               }}
               onClick={(event) => {
-                setCurrentSelectedId(PAGE_ROOT_ID);
                 event.stopPropagation();
+                setCurrentSelectedId(PAGE_ROOT_ID);
               }}
             >
               <div
                 onClick={(event) => {
-                  setCurrentSelectedId(PAGE_HEADER_ROOT_ID);
                   event.stopPropagation();
+                  setCurrentSelectedId(PAGE_HEADER_ROOT_ID);
                 }}
                 style={{
                   display: "flex",
@@ -2609,8 +2608,8 @@ const MixBoxLayoutContent = React.memo<{
                   padding: `${pt2px(currentPagePTop, dpi)}px ${pt2px(currentPagePRight, dpi)}px ${pt2px(currentPagePBottom, dpi)}px ${pt2px(currentPagePLeft, dpi)}px`,
                 }}
                 onClick={(event) => {
-                  setCurrentSelectedId(PAGE_BODY_ROOT_ID);
                   event.stopPropagation();
+                  setCurrentSelectedId(PAGE_BODY_ROOT_ID);
                 }}
               >
                 <List
@@ -2672,8 +2671,8 @@ const MixBoxLayoutContent = React.memo<{
               </div>
               <div
                 onClick={(event) => {
-                  setCurrentSelectedId(PAGE_FOOTER_ROOT_ID);
                   event.stopPropagation();
+                  setCurrentSelectedId(PAGE_FOOTER_ROOT_ID);
                 }}
                 style={{
                   display: "flex",

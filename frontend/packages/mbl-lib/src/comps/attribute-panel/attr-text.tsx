@@ -1,6 +1,7 @@
 import { FC, memo } from "react";
 import { useContentsStoreContext } from "../../store/store";
 import { useCurrentSelectedId } from "../../providers/current-selected-id-provider";
+import { useSelectedItem } from "../../hooks/use-selected-item";
 import {
   Checkbox,
   ColorInput,
@@ -19,12 +20,11 @@ import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
 
 export const AttrText: FC = memo(function AttrText() {
   const { currentSelectedId, setCurrentSelectedId } = useCurrentSelectedId();
+  const { item: currentSelectedItem, position: currentSelectedItemPosition } =
+    useSelectedItem();
 
   const state = useContentsStoreContext((s) => s);
   const currentPageIndex = state.currentPageIndex;
-  const currentPageHeaderContent = state.currentPageHeaderContent;
-  const currentPageBodyContent = state.currentPageBodyContent;
-  const currentPageFooterContent = state.currentPageFooterContent;
   const defaultPageRootFontSize =
     state.pages[currentPageIndex].defaultPageRootFontSize;
   const defaultPageRootFontColor =
@@ -32,21 +32,6 @@ export const AttrText: FC = memo(function AttrText() {
   const defaultPageRootBackgroundColor =
     state.pages[currentPageIndex].defaultPageRootBackgroundColor;
   const setCurrentPageAndContent = state.setCurrentPageAndContent;
-
-  // 检查当前选中的元素是否在当前页面中存在
-  const currentSelectedItem = currentSelectedId
-    ? currentPageHeaderContent.get(currentSelectedId) ||
-      currentPageBodyContent.get(currentSelectedId) ||
-      currentPageFooterContent.get(currentSelectedId)
-    : undefined;
-
-  const currentSelectedItemPosition = currentSelectedId
-    ? currentPageHeaderContent.has(currentSelectedId)
-      ? "header"
-      : currentPageFooterContent.has(currentSelectedId)
-        ? "footer"
-        : "body"
-    : undefined;
 
   // 如果当前选中的元素在当前页面中不存在，清除选中状态
   React.useEffect(() => {

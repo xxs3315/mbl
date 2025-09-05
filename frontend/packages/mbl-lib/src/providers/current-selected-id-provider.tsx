@@ -28,13 +28,18 @@ export function CurrentSelectedIdProvider({
     defaultCurrentSelectedId,
   );
 
-  const value = {
-    currentSelectedId,
-    setCurrentSelectedId: (currentSelectedId: string) => {
-      console.log("setCurrentSelectedId", currentSelectedId);
-      setCurrentSelectedId(currentSelectedId);
-    },
-  };
+  const value = React.useMemo(
+    () => ({
+      currentSelectedId,
+      setCurrentSelectedId: (newCurrentSelectedId: string) => {
+        // 只有当值真正改变时才更新状态
+        if (newCurrentSelectedId !== currentSelectedId) {
+          setCurrentSelectedId(newCurrentSelectedId);
+        }
+      },
+    }),
+    [currentSelectedId],
+  );
 
   return (
     <CurrentSelectedIdProviderContext.Provider {...props} value={value}>
