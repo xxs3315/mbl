@@ -2388,10 +2388,13 @@ const MixBoxLayoutContent = React.memo<{
                     padding: "12px",
                     backgroundColor: "white",
                     cursor: "pointer",
-                    transition: "all 0.2s",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                     margin: "12px auto",
+                    transform: "translateZ(0)", // 启用硬件加速
+                    willChange: "transform, box-shadow, border-color", // 优化动画性能
                     _hover: {
                       borderColor: "rgba(184, 184, 184, 1)",
+                      transform: "translateY(-2px)", // 悬停时轻微上移
                     },
                   })}
                   style={{
@@ -2807,6 +2810,11 @@ const MixBoxLayoutContent = React.memo<{
             })}
           >
             <div
+              className={css({
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                transform: "translateZ(0)", // 启用硬件加速
+                willChange: "transform, box-shadow", // 优化动画性能
+              })}
               style={{
                 width: `${canvasWidth}px`,
                 minHeight: `${canvasHeight}px`,
@@ -2826,6 +2834,11 @@ const MixBoxLayoutContent = React.memo<{
               }}
             >
               <div
+                className={css({
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  transform: "translateZ(0)", // 启用硬件加速
+                  willChange: "box-shadow, padding, margin", // 优化动画性能
+                })}
                 onClick={(event) => {
                   event.stopPropagation();
                   setCurrentSelectedId(PAGE_HEADER_ROOT_ID);
@@ -2902,6 +2915,11 @@ const MixBoxLayoutContent = React.memo<{
                 />
               </div>
               <div
+                className={css({
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  transform: "translateZ(0)", // 启用硬件加速
+                  willChange: "box-shadow, padding, margin", // 优化动画性能
+                })}
                 style={{
                   display: "flex",
                   minHeight: `${canvasHeight - (pt2px(currentPageMTop, dpi) + pt2px(currentPageMBottom, dpi))}px`,
@@ -2976,6 +2994,11 @@ const MixBoxLayoutContent = React.memo<{
                 />
               </div>
               <div
+                className={css({
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  transform: "translateZ(0)", // 启用硬件加速
+                  willChange: "box-shadow, margin", // 优化动画性能
+                })}
                 onClick={(event) => {
                   event.stopPropagation();
                   setCurrentSelectedId(PAGE_FOOTER_ROOT_ID);
