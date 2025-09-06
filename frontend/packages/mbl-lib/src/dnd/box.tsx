@@ -1,5 +1,5 @@
-import { Text, Tooltip, ActionIcon } from "@mantine/core";
-import type { CSSProperties, FC, ReactNode } from "react";
+import { Tooltip, ActionIcon } from "@mantine/core";
+import type { FC, ReactNode } from "react";
 import { memo } from "react";
 import { useDrag } from "react-dnd";
 import { useThemeColors } from "../utils/theme-utils";
@@ -104,7 +104,14 @@ export const Box: FC<BoxProps> = memo(function Box({
         ref={drag as any}
         style={{ opacity }}
         data-testid="box"
-        className="hover:-translate-y-0.5 hover:border-primary hover:shadow-lg"
+        className={css({
+          _hover: {
+            transform: "translateY(-2px)",
+            borderColor: "blue.500",
+            boxShadow:
+              "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+          },
+        })}
       >
         {children}
       </div>
