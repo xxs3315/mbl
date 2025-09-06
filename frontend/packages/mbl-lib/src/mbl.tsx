@@ -2894,7 +2894,10 @@ export const MixBoxLayout = React.memo<{
     imageUploadPath,
     imageDownloadPath,
   }) => {
-    const store = createContentsStore(id, contents ?? defaultContents);
+    // 使用 useMemo 确保 store 只在 id 或 contents 变化时重新创建
+    const store = React.useMemo(() => {
+      return createContentsStore(id, contents ?? defaultContents);
+    }, [id, contents]);
 
     // 根据传入的主题变体创建动态主题
     const dynamicTheme = React.useMemo(() => {
