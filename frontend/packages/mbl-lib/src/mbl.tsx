@@ -2301,72 +2301,118 @@ const MixBoxLayoutContent = React.memo<{
               display: "flex",
               alignItems: "center",
               gap: "4px",
+              flex: "1",
+              minWidth: "0",
+              justifyContent: "center",
+              overflow: "hidden",
             })}
           >
-            {toolPanelComps.map((panel, panelIndex) => (
-              <React.Fragment key={panel.id}>
-                {panel.items?.map((item: any, itemIndex: number) => (
-                  <Box
-                    key={`toolbar-${panel.id}-${itemIndex}`}
-                    name={item.name}
-                    type={item.type}
-                    cat={item.cat}
-                    attrs={item.attrs}
-                    isDropped={false}
-                    direction={item.direction}
-                  />
+            {/* 工具按钮 - 横向滚动 */}
+            <MacScrollbar
+              className={css({
+                flexShrink: "1",
+                minWidth: "0",
+                maxWidth: "300px", // 限制最大宽度
+                height: "40px", // 固定高度
+              })}
+            >
+              <div
+                className={css({
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  height: "100%",
+                  paddingY: "4px",
+                })}
+              >
+                {toolPanelComps.map((panel, panelIndex) => (
+                  <React.Fragment key={panel.id}>
+                    {panel.items?.map((item: any, itemIndex: number) => (
+                      <div
+                        key={`toolbar-${panel.id}-${itemIndex}`}
+                        className={css({
+                          flexShrink: "0", // 防止按钮被压缩
+                        })}
+                      >
+                        <Box
+                          name={item.name}
+                          type={item.type}
+                          cat={item.cat}
+                          attrs={item.attrs}
+                          isDropped={false}
+                          direction={item.direction}
+                        />
+                      </div>
+                    ))}
+                  </React.Fragment>
                 ))}
-              </React.Fragment>
-            ))}
-            {/*分割短竖线*/}
+              </div>
+            </MacScrollbar>
+            {/*分割短竖线 - 响应式显示 */}
             <div
               className={css({
                 width: "1px",
                 height: "12px",
                 backgroundColor: "gray.200",
                 marginX: "4px",
+                flexShrink: "0",
+                display: {
+                  base: "none", // 小屏幕隐藏分隔线
+                  sm: "block", // 大屏幕显示
+                },
               })}
             />
-            <ActionIcon
-              variant="subtle"
-              size="lg"
-              aria-label="undo"
-              onClick={() => temporal.getState().undo()}
-              disabled={undoCount === 0}
+
+            {/* Undo/Redo 按钮 - 始终显示 */}
+            <div
               className={css({
-                backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
-                color: "white",
-                _hover: {
-                  backgroundColor: showLeftSidebar ? "blue.600" : "gray.500",
-                },
-                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                "&:disabled, &[data-disabled]": {
-                  backgroundColor: "transparent !important",
-                },
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+                flexShrink: "0",
               })}
             >
-              <Undo size={16} />
-            </ActionIcon>
-            <ActionIcon
-              variant="subtle"
-              size="lg"
-              aria-label="redo"
-              onClick={() => temporal.getState().redo()}
-              disabled={redoCount === 0}
-              className={css({
-                backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
-                color: "white",
-                _hover: {
-                  backgroundColor: showLeftSidebar ? "blue.600" : "gray.500",
-                },
-                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                "&:disabled, &[data-disabled]": {
-                  backgroundColor: "transparent !important",
-                },
-              })}
-            >
-              <Redo size={16} />
-            </ActionIcon>
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                aria-label="undo"
+                onClick={() => temporal.getState().undo()}
+                disabled={undoCount === 0}
+                className={css({
+                  backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
+                  color: "white",
+                  _hover: {
+                    backgroundColor: showLeftSidebar ? "blue.600" : "gray.500",
+                  },
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  "&:disabled, &[data-disabled]": {
+                    backgroundColor: "transparent !important",
+                  },
+                })}
+              >
+                <Undo size={16} />
+              </ActionIcon>
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                aria-label="redo"
+                onClick={() => temporal.getState().redo()}
+                disabled={redoCount === 0}
+                className={css({
+                  backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
+                  color: "white",
+                  _hover: {
+                    backgroundColor: showLeftSidebar ? "blue.600" : "gray.500",
+                  },
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  "&:disabled, &[data-disabled]": {
+                    backgroundColor: "transparent !important",
+                  },
+                })}
+              >
+                <Redo size={16} />
+              </ActionIcon>
+            </div>
           </div>
 
           {/* 右侧 - 侧边栏控制按钮 */}
