@@ -2,8 +2,19 @@ import React, { FC, memo } from "react";
 import { useContentsStoreContext } from "../../store/store";
 import { useCurrentSelectedId } from "../../providers/current-selected-id-provider";
 import { useSelectedItem } from "../../hooks/use-selected-item";
-import { Divider, Title, NumberInput, Grid, ColorInput } from "@mantine/core";
+import {
+  Divider,
+  Title,
+  NumberInput,
+  Grid,
+  ColorInput,
+  Text,
+  Stack,
+  SegmentedControl,
+  VisuallyHidden,
+} from "@mantine/core";
 import { updateSelectedItemProp } from "../../utils/content-updaters";
+import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
 
 export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
   const { currentSelectedId } = useCurrentSelectedId();
@@ -211,6 +222,75 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
           );
         }}
       />
+
+      <div>
+        <Text size="xs" fw={500} mb={2} mt="xs">
+          水平对齐
+        </Text>
+        <Stack align="center">
+          <SegmentedControl
+            value={currentSelectedItem?.horizontal || "center"}
+            onChange={(value) => {
+              if (!currentSelectedId || !currentSelectedItemPosition) return;
+              updateSelectedItemProp(
+                {
+                  currentSelectedId,
+                  currentPageIndex,
+                  position: currentSelectedItemPosition,
+                  state,
+                  setCurrentPageAndContent,
+                },
+                "horizontal",
+                value,
+              );
+            }}
+            data={[
+              {
+                value: "left",
+                label: (
+                  <>
+                    <AlignLeft
+                      style={{
+                        width: "16px",
+                        height: "16px",
+                      }}
+                    />
+                    <VisuallyHidden>左对齐</VisuallyHidden>
+                  </>
+                ),
+              },
+              {
+                value: "center",
+                label: (
+                  <>
+                    <AlignCenter
+                      style={{
+                        width: "16px",
+                        height: "16px",
+                      }}
+                    />
+                    <VisuallyHidden>居中</VisuallyHidden>
+                  </>
+                ),
+              },
+              {
+                value: "right",
+                label: (
+                  <>
+                    <AlignRight
+                      style={{
+                        width: "16px",
+                        height: "16px",
+                      }}
+                    />
+                    <VisuallyHidden>右对齐</VisuallyHidden>
+                  </>
+                ),
+              },
+            ]}
+          />
+        </Stack>
+      </div>
     </>
   );
 });
