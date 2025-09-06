@@ -1,10 +1,10 @@
 package com.xxs3315.mbl.controller;
 
 import com.xxs3315.mbl.dto.ImageUploadResponse;
+import com.xxs3315.mbl.service.ImageService;
 import com.xxs3315.mbl.util.FileSizeUtil;
 import jakarta.annotation.PostConstruct;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,8 +17,8 @@ import java.util.Map;
 import java.util.UUID;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,6 +31,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/images")
 @CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class ImageController {
+
+    @Autowired
+    private ImageService imageService;
 
     @Value("${mbl.image.dir:./data/images}")
     private String imageDir;
@@ -146,36 +149,23 @@ public class ImageController {
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> imageDownload(@PathVariable String filename) {
         try {
-            // 验证文件名安全性
-            if (filename == null || filename.trim().isEmpty()) {
-                return ResponseEntity.badRequest().build();
-            }
-
-            // 防止路径遍历攻击
-            if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
-                return ResponseEntity.badRequest().build();
-            }
-
-            // 构建文件路径
-            Path filePath = Paths.get(imageDir, filename);
-            File file = filePath.toFile();
-
-            // 检查文件是否存在
-            if (!file.exists() || !file.isFile()) {
+            // 使用 ImageService 获取图片资源
+            Resource resource = imageService.getImageResource(filename);
+            if (resource == null) {
                 return ResponseEntity.notFound().build();
             }
 
-            // 检查文件扩展名
-            String extension = FilenameUtils.getExtension(filename).toLowerCase();
-            if (!allowedExtensions.contains(extension)) {
+            // 获取媒体类型
+            MediaType mediaType = imageService.getImageMediaType(filename);
+            if (mediaType == null) {
                 return ResponseEntity.badRequest().build();
             }
 
-            // 创建资源
-            Resource resource = new FileSystemResource(file);
-
-            // 确定媒体类型
-            MediaType mediaType = getMediaType(extension);
+            // 获取文件信息
+            ImageService.ImageFileInfo fileInfo = imageService.getImageFileInfo(filename);
+            if (fileInfo == null) {
+                return ResponseEntity.notFound().build();
+            }
 
             // 设置响应头
             HttpHeaders headers = new HttpHeaders();
@@ -184,7 +174,7 @@ public class ImageController {
 
             return ResponseEntity.ok()
                     .headers(headers)
-                    .contentLength(file.length())
+                    .contentLength(fileInfo.getSize())
                     .contentType(mediaType)
                     .body(resource);
 
@@ -193,24 +183,4 @@ public class ImageController {
         }
     }
 
-    /**
-     * 根据文件扩展名获取媒体类型
-     */
-    private MediaType getMediaType(String extension) {
-        switch (extension.toLowerCase()) {
-            case "jpg":
-            case "jpeg":
-                return MediaType.IMAGE_JPEG;
-            case "png":
-                return MediaType.IMAGE_PNG;
-            case "gif":
-                return MediaType.IMAGE_GIF;
-            case "bmp":
-                return MediaType.valueOf("image/bmp");
-            case "webp":
-                return MediaType.valueOf("image/webp");
-            default:
-                return MediaType.APPLICATION_OCTET_STREAM;
-        }
-    }
 }
