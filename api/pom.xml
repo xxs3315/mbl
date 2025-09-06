@@ -65,6 +65,22 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		
+		<!-- 图片处理依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		
+		<!-- Apache Commons IO for file operations -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.20.0</version>
+		</dependency>
+		
+		<!-- ImageIO for image processing (使用内置的Java ImageIO) -->
+		<!-- Java内置的ImageIO已经足够处理基本的图片操作 -->
 	</dependencies>
 
 	<build>

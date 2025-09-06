@@ -1,7 +1,6 @@
 package com.xxs3315.mbl.repository;
 
 import com.xxs3315.mbl.entity.QueueItem;
-
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

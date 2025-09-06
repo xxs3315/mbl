@@ -44,8 +44,9 @@ const App = () => {
             console.log(updatedContents);
           }}
           theme={currentTheme}
-          // baseUrl={"https://vmagrid.cn/pdf-back"}
-          // imageUploadPath={"/api/pdf/upload-image"}
+          baseUrl={"http://localhost:8080"}
+          imageUploadPath={"/api/images/upload"}
+          imageDownloadPath={"api/images"}
         />
       </AppShell.Main>
     </AppShell>

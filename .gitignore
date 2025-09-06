@@ -33,3 +33,4 @@ build/
 .vscode/
 /data/h2db.mv.db
 /data/h2db.trace.db
+/data/images/**.*

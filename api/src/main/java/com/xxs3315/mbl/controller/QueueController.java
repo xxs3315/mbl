@@ -4,13 +4,13 @@ import com.xxs3315.mbl.entity.QueueItem;
 import com.xxs3315.mbl.service.QueueProcessor;
 import com.xxs3315.mbl.service.QueueService;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/queue")
+@CrossOrigin(originPatterns = "*", allowCredentials = "true")
 public class QueueController {
 
   @Autowired private QueueService queueService;
