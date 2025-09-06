@@ -64,6 +64,8 @@ import {
 } from "./constants";
 import ToolPanel from "./comps/tool-panel/tool-panel";
 import { AttributePanelRenderer } from "./comps/attribute-panel/components/attribute-panel-renderer";
+import { Box } from "./dnd/box";
+import { toolPanelComps } from "./comps/tool-panel/data";
 
 // 内部组件，在 MantineProvider 内部使用 useThemeColors
 const MixBoxLayoutContent = React.memo<{
@@ -2174,27 +2176,30 @@ const MixBoxLayoutContent = React.memo<{
                   key={page.id}
                   className={css({
                     border: "1px solid",
-                    borderColor:
-                      currentPageIndex === index ? "blue.500" : "gray.300",
-                    borderRadius: "8px",
+                    borderColor: "rgba(184, 184, 184, 0.5)",
+                    borderRadius: "0px",
                     padding: "12px",
-                    backgroundColor:
-                      currentPageIndex === index ? "blue.50" : "white",
+                    backgroundColor: "white",
                     cursor: "pointer",
                     transition: "all 0.2s",
+                    margin: "12px auto",
                     _hover: {
-                      borderColor: "blue.400",
-                      backgroundColor: "blue.25",
+                      borderColor: "rgba(184, 184, 184, 1)",
                     },
                   })}
+                  style={{
+                    boxShadow:
+                      currentPageIndex === index
+                        ? `0 0 6px ${colors.primary}`
+                        : "0 0 12px rgba(0, 0, 0, 0.2)",
+                  }}
                   onClick={() => setCurrentPageIndex(index)}
                 >
                   <div
                     className={css({
                       fontSize: "14px",
                       fontWeight: "600",
-                      color:
-                        currentPageIndex === index ? "blue.700" : "gray.700",
+                      color: "gray.700",
                       marginBottom: "4px",
                     })}
                   >
@@ -2246,7 +2251,7 @@ const MixBoxLayoutContent = React.memo<{
             className={css({
               display: "flex",
               alignItems: "center",
-              gap: "8px",
+              gap: "4px",
             })}
           >
             <ActionIcon
@@ -2267,7 +2272,7 @@ const MixBoxLayoutContent = React.memo<{
                 transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
               })}
             >
-              <LayoutDashboard size={20} />
+              <LayoutDashboard size={16} />
             </ActionIcon>
             <ActionIcon
               variant="subtle"
@@ -2284,20 +2289,44 @@ const MixBoxLayoutContent = React.memo<{
               })}
             >
               {showLeftSidebar ? (
-                <PanelLeftClose size={20} />
+                <PanelLeftClose size={16} />
               ) : (
-                <PanelLeftOpen size={20} />
+                <PanelLeftOpen size={16} />
               )}
             </ActionIcon>
           </div>
-          {/* 中间 - Undo/Redo 按钮 */}
+          {/* 中间 - 工具按钮和 Undo/Redo 按钮 */}
           <div
             className={css({
               display: "flex",
               alignItems: "center",
-              gap: "8px",
+              gap: "4px",
             })}
           >
+            {toolPanelComps.map((panel, panelIndex) => (
+              <React.Fragment key={panel.id}>
+                {panel.items?.map((item: any, itemIndex: number) => (
+                  <Box
+                    key={`toolbar-${panel.id}-${itemIndex}`}
+                    name={item.name}
+                    type={item.type}
+                    cat={item.cat}
+                    attrs={item.attrs}
+                    isDropped={false}
+                    direction={item.direction}
+                  />
+                ))}
+              </React.Fragment>
+            ))}
+            {/*分割短竖线*/}
+            <div
+              className={css({
+                width: "1px",
+                height: "12px",
+                backgroundColor: "gray.200",
+                marginX: "4px",
+              })}
+            />
             <ActionIcon
               variant="subtle"
               size="lg"
@@ -2316,7 +2345,7 @@ const MixBoxLayoutContent = React.memo<{
                 },
               })}
             >
-              <Undo size={20} />
+              <Undo size={16} />
             </ActionIcon>
             <ActionIcon
               variant="subtle"
@@ -2336,7 +2365,7 @@ const MixBoxLayoutContent = React.memo<{
                 },
               })}
             >
-              <Redo size={20} />
+              <Redo size={16} />
             </ActionIcon>
           </div>
 
@@ -2345,7 +2374,7 @@ const MixBoxLayoutContent = React.memo<{
             className={css({
               display: "flex",
               alignItems: "center",
-              gap: "8px",
+              gap: "4px",
             })}
           >
             <ActionIcon
@@ -2363,9 +2392,9 @@ const MixBoxLayoutContent = React.memo<{
               })}
             >
               {showRightSidebar ? (
-                <PanelRightClose size={20} />
+                <PanelRightClose size={16} />
               ) : (
-                <PanelRightOpen size={20} />
+                <PanelRightOpen size={16} />
               )}
             </ActionIcon>
           </div>

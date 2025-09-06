@@ -1,25 +1,47 @@
-import { Text, Tooltip } from "@mantine/core";
+import { Text, Tooltip, ActionIcon } from "@mantine/core";
 import type { CSSProperties, FC, ReactNode } from "react";
 import { memo } from "react";
 import { useDrag } from "react-dnd";
 import { useThemeColors } from "../utils/theme-utils";
 import React from "react";
+import {
+  Square,
+  Type,
+  Image,
+  Table,
+  FileText,
+  Columns3,
+  Rows3,
+  SeparatorHorizontal,
+  FileDigit,
+} from "lucide-react";
+import { css } from "../../styled-system/css";
 
-const getBoxStyle = (colors: any): CSSProperties => ({
-  border: `1px dashed ${colors.primaryLight}`,
-  backgroundColor: colors.background,
-  padding: "2px",
-  marginRight: "4px",
-  marginBottom: "4px",
-  cursor: "grab",
-  borderRadius: "6px",
-  transition: "all 0.2s ease",
-  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-  minHeight: "48px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-});
+// 根据 cat 属性获取对应的图标
+const getIconByCat = (cat?: string, direction?: string) => {
+  switch (cat) {
+    case "container":
+      return direction === "horizontal" ? (
+        <Columns3 size={16} />
+      ) : (
+        <Rows3 size={16} />
+      );
+    case "placeholder":
+      return <Square size={16} />;
+    case "text":
+      return <Type size={16} />;
+    case "image":
+      return <Image size={16} />;
+    case "table":
+      return <Table size={16} />;
+    case "page-break":
+      return <SeparatorHorizontal size={16} />;
+    case "page-number":
+      return <FileDigit size={16} />;
+    default:
+      return <FileText size={16} />;
+  }
+};
 
 export interface BoxProps {
   id?: string;
@@ -33,6 +55,7 @@ export interface BoxProps {
   value?: any;
   shape?: "list" | "scatter";
   bind?: string;
+  direction?: string;
 }
 
 export const Box: FC<BoxProps> = memo(function Box({
@@ -47,59 +70,70 @@ export const Box: FC<BoxProps> = memo(function Box({
   value,
   shape,
   bind,
+  direction,
 }) {
   const colors = useThemeColors();
   const [{ opacity }, drag] = useDrag(
     () => ({
       type,
-      item: { id, name, type, cat, attrs, request, value, shape, bind },
+      item: {
+        id,
+        name,
+        type,
+        cat,
+        attrs,
+        request,
+        value,
+        shape,
+        bind,
+        direction,
+      },
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.4 : 1,
       }),
     }),
-    [id, name, type, cat, attrs, request, value, shape, bind],
+    [id, name, type, cat, attrs, request, value, shape, bind, direction],
   );
 
-  const boxStyle = getBoxStyle(colors);
+  const icon = getIconByCat(cat, direction || attrs?.direction);
 
+  if (children) {
+    // 如果有 children，保持原有的 div 形式（用于 ToolPanel 中的标签显示）
+    return (
+      <div
+        ref={drag as any}
+        style={{ opacity }}
+        data-testid="box"
+        className="hover:-translate-y-0.5 hover:border-primary hover:shadow-lg"
+      >
+        {children}
+      </div>
+    );
+  }
+
+  // 按钮形式
   return (
-    <div
-      ref={drag as any}
-      style={{ ...boxStyle, opacity }}
-      data-testid="box"
-      className={`${!children ? "aspect-square" : ""} hover:-translate-y-0.5 hover:border-primary hover:shadow-lg`}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = colors.primary;
-        e.currentTarget.style.boxShadow = `0 2px 6px ${colors.primaryLight}40`;
-        e.currentTarget.style.transform = "translateY(-1px)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = colors.primaryLight;
-        e.currentTarget.style.boxShadow = "0 1px 3px rgba(0, 0, 0, 0.1)";
-        e.currentTarget.style.transform = "translateY(0)";
-      }}
-    >
-      {!children &&
-        (bind ? (
-          <Tooltip label={bind}>
-            <Text
-              size="xs"
-              color={isDropped ? "dimmed" : colors.text}
-              style={isDropped ? { textDecoration: "line-through" } : undefined}
-            >
-              {name}
-            </Text>
-          </Tooltip>
-        ) : (
-          <Text
-            size="xs"
-            color={isDropped ? "dimmed" : colors.text}
-            style={isDropped ? { textDecoration: "line-through" } : undefined}
-          >
-            {name}
-          </Text>
-        ))}
-      {children}
-    </div>
+    <Tooltip label={name} position="bottom">
+      <ActionIcon
+        ref={drag as any}
+        variant="subtle"
+        size="lg"
+        aria-label={name}
+        style={{ opacity, cursor: "move" }}
+        className={css({
+          backgroundColor: "blue.500",
+          color: "white",
+          _hover: {
+            backgroundColor: "blue.600",
+          },
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          "&:disabled, &[data-disabled]": {
+            backgroundColor: "transparent !important",
+          },
+        })}
+      >
+        {icon}
+      </ActionIcon>
+    </Tooltip>
   );
 });

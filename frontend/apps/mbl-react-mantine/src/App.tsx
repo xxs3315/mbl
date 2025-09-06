@@ -26,7 +26,7 @@ const App = () => {
               hiddenFrom="sm"
               size="sm"
             />
-            Header has a burger icon below sm breakpoint
+            Header
           </Group>
           <ThemeSwitcher currentTheme={currentTheme} onThemeChange={setTheme} />
         </Group>

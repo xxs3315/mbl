@@ -509,23 +509,6 @@ export const toolPanelComps: ToolPanelCompPayload[] = [
           pLeft: 0,
         },
       },
-      // {
-      // 	name: "Page config",
-      // 	type: ItemTypes.PAGE_ELEMENT,
-      // 	cat: "page-config",
-      // 	attrs: {
-      // 		rectangle: "A3",
-      // 		orientation: "landscape",
-      // 		marginTop: 40,
-      // 		marginRight: 40,
-      // 		marginBottom: 40,
-      // 		marginLeft: 40,
-      // 		paddingTop: 15,
-      // 		paddingRight: 15,
-      // 		paddingBottom: 15,
-      // 		paddingLeft: 15,
-      // 	},
-      // },
     ],
   },
 ];
