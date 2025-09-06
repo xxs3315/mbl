@@ -1,4 +1,4 @@
-package com.xxs3315.mbl.pdf.entity;
+package com.xxs3315.mbl.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

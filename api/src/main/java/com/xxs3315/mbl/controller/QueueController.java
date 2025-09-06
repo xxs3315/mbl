@@ -1,9 +1,10 @@
-package com.xxs3315.mbl.pdf.controller;
+package com.xxs3315.mbl.controller;
 
-import com.xxs3315.mbl.pdf.entity.QueueItem;
-import com.xxs3315.mbl.pdf.service.QueueProcessor;
-import com.xxs3315.mbl.pdf.service.QueueService;
+import com.xxs3315.mbl.entity.QueueItem;
+import com.xxs3315.mbl.service.QueueProcessor;
+import com.xxs3315.mbl.service.QueueService;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

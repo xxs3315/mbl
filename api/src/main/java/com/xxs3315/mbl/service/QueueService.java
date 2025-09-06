@@ -1,6 +1,6 @@
-package com.xxs3315.mbl.pdf.service;
+package com.xxs3315.mbl.service;
 
-import com.xxs3315.mbl.pdf.entity.QueueItem;
+import com.xxs3315.mbl.entity.QueueItem;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

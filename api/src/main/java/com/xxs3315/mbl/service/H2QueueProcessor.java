@@ -1,6 +1,6 @@
-package com.xxs3315.mbl.pdf.service;
+package com.xxs3315.mbl.service;
 
-import com.xxs3315.mbl.pdf.entity.QueueItem;
+import com.xxs3315.mbl.entity.QueueItem;
 import jakarta.annotation.PostConstruct;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -13,10 +13,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("postgresql")
-public class PostgreSQLQueueProcessor implements QueueProcessor {
+@Profile("h2")
+public class H2QueueProcessor implements QueueProcessor {
 
-  private static final Logger logger = LoggerFactory.getLogger(PostgreSQLQueueProcessor.class);
+  private static final Logger logger = LoggerFactory.getLogger(H2QueueProcessor.class);
   private final AtomicBoolean isRunning = new AtomicBoolean(false);
   private final AtomicInteger currentProcessingTasks = new AtomicInteger(0);
   private final AtomicInteger maxConcurrentTasks = new AtomicInteger(3);
@@ -38,7 +38,7 @@ public class PostgreSQLQueueProcessor implements QueueProcessor {
 
                 // 应用启动时自动开启处理器
                 start();
-                logger.info("PostgreSQL队列处理器初始化完成，已自动启动");
+                logger.info("H2队列处理器初始化完成，已自动启动");
               } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 logger.error("处理器初始化被中断", e);
@@ -103,7 +103,7 @@ public class PostgreSQLQueueProcessor implements QueueProcessor {
       if (taskOpt.isPresent()) {
         QueueItem task = taskOpt.get();
         currentProcessingTasks.incrementAndGet();
-        logger.info("开始处理PostgreSQL队列任务: {} - {}", task.getTaskId(), task.getTaskType());
+        logger.info("开始处理H2队列任务: {} - {}", task.getTaskId(), task.getTaskType());
 
         asyncTaskProcessor.processTaskAsync(task, currentProcessingTasks, maxConcurrentTasks);
         break; // 成功获取任务，退出重试循环
@@ -122,19 +122,19 @@ public class PostgreSQLQueueProcessor implements QueueProcessor {
 
   public void start() {
     if (isRunning.compareAndSet(false, true)) {
-      logger.info("PostgreSQL队列处理器已启动");
+      logger.info("H2队列处理器已启动");
     }
   }
 
   public void stop() {
     if (isRunning.compareAndSet(true, false)) {
-      logger.info("PostgreSQL队列处理器已停止");
+      logger.info("H2队列处理器已停止");
     }
   }
 
   public void setMaxConcurrentTasks(int maxTasks) {
     maxConcurrentTasks.set(maxTasks);
-    logger.info("PostgreSQL队列处理器最大并发任务数设置为: {}", maxTasks);
+    logger.info("H2队列处理器最大并发任务数设置为: {}", maxTasks);
   }
 
   public Map<String, Object> getProcessorStats() {

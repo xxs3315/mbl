@@ -1,6 +1,6 @@
-package com.xxs3315.mbl.pdf.service;
+package com.xxs3315.mbl.service;
 
-import com.xxs3315.mbl.pdf.entity.QueueItem;
+import com.xxs3315.mbl.entity.QueueItem;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

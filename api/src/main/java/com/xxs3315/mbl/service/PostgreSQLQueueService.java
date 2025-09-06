@@ -1,7 +1,7 @@
-package com.xxs3315.mbl.pdf.service;
+package com.xxs3315.mbl.service;
 
-import com.xxs3315.mbl.pdf.entity.QueueItem;
-import com.xxs3315.mbl.pdf.repository.QueueItemRepository;
+import com.xxs3315.mbl.entity.QueueItem;
+import com.xxs3315.mbl.repository.QueueItemRepository;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -17,10 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Profile("h2")
-public class H2QueueService implements QueueService {
+@Profile("postgresql")
+public class PostgreSQLQueueService implements QueueService {
 
-  private static final Logger logger = LoggerFactory.getLogger(H2QueueService.class);
+  private static final Logger logger = LoggerFactory.getLogger(PostgreSQLQueueService.class);
 
   @Autowired private QueueItemRepository queueItemRepository;
 
@@ -28,7 +28,7 @@ public class H2QueueService implements QueueService {
   public QueueItem addToQueue(String taskType, String data) {
     QueueItem item = new QueueItem(taskType, data);
     QueueItem savedItem = queueItemRepository.save(item);
-    logger.info("任务已添加到H2队列: {} - {}", savedItem.getTaskId(), taskType);
+    logger.info("任务已添加到PostgreSQL队列: {} - {}", savedItem.getTaskId(), taskType);
     return savedItem;
   }
 
@@ -44,7 +44,7 @@ public class H2QueueService implements QueueService {
           task.setStatus(QueueItem.TaskStatus.PROCESSING);
           task.setStartTime(LocalDateTime.now());
           queueItemRepository.save(task);
-          logger.info("获取到H2队列任务: {} - {}", task.getTaskId(), task.getTaskType());
+          logger.info("获取到PostgreSQL队列任务: {} - {}", task.getTaskId(), task.getTaskType());
           return Optional.of(task);
         } else {
           logger.warn("任务状态已改变，跳过处理: {} - {}", task.getTaskId(), task.getStatus());
@@ -73,7 +73,7 @@ public class H2QueueService implements QueueService {
           task.setEndTime(LocalDateTime.now());
           task.setResult(result);
           queueItemRepository.save(task);
-          logger.info("H2队列任务已完成: {} - {}", taskId, result);
+          logger.info("PostgreSQL队列任务已完成: {} - {}", taskId, result);
           return true;
         }
       }
@@ -95,7 +95,7 @@ public class H2QueueService implements QueueService {
           task.setEndTime(LocalDateTime.now());
           task.setErrorMessage(errorMessage);
           queueItemRepository.save(task);
-          logger.info("H2队列任务执行失败: {} - {}", taskId, errorMessage);
+          logger.info("PostgreSQL队列任务执行失败: {} - {}", taskId, errorMessage);
           return true;
         }
       }
@@ -139,7 +139,7 @@ public class H2QueueService implements QueueService {
   @Transactional
   public void clearQueue() {
     queueItemRepository.deleteAll();
-    logger.info("H2队列已清空");
+    logger.info("PostgreSQL队列已清空");
   }
 
   @Transactional
@@ -152,7 +152,7 @@ public class H2QueueService implements QueueService {
           task.setStatus(QueueItem.TaskStatus.CANCELLED);
           task.setEndTime(LocalDateTime.now());
           queueItemRepository.save(task);
-          logger.info("H2队列任务已取消: {}", taskId);
+          logger.info("PostgreSQL队列任务已取消: {}", taskId);
           return true;
         }
       }
@@ -164,7 +164,7 @@ public class H2QueueService implements QueueService {
   }
 
   public String getDatabasePath() {
-    return "H2文件数据库 (./data/h2db.mv.db)";
+    return "PostgreSQL数据库 (localhost:5432/mbl_pdf_queue)";
   }
 
   @Transactional
@@ -180,7 +180,7 @@ public class H2QueueService implements QueueService {
           task.setResult(null); // 清除结果
           task.setErrorMessage(null); // 清除错误信息
           queueItemRepository.save(task);
-          logger.info("H2队列任务已重置为PENDING状态: {}", taskId);
+          logger.info("PostgreSQL队列任务已重置为PENDING状态: {}", taskId);
           return true;
         }
       }

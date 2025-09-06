@@ -1,4 +1,4 @@
-package com.xxs3315.mbl.pdf.config;
+package com.xxs3315.mbl.config;
 
 import java.util.concurrent.Executor;
 import org.springframework.context.annotation.Bean;
