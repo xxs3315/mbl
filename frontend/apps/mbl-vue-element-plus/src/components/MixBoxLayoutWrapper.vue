@@ -87,7 +87,9 @@ const exportContent = () => {
 
 const handleContentUpdate = (newContent: any) => {
   console.log('MixBoxLayoutWrapper 接收到内容变化:', newContent);
-  currentContent.value = newContent;
+  // 由于vue双向绑定的原因，这里不能修改currentContent.value，如果改变了，MixBoxLayout内部会new出新的store，导致state出问题。
+  // 这里可以视作，拿到了最新修改后的contents
+  // currentContent.value = newContent;
   emit('content-update', newContent);
 };
 
