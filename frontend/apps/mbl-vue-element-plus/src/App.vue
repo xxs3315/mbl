@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { ElContainer, ElAside, ElMain } from 'element-plus'
 import HelloWorld from './components/HelloWorld.vue'
 import MixBoxLayoutWrapper from './components/MixBoxLayoutWrapper.vue'
@@ -15,9 +15,27 @@ const currentTheme = ref<'light' | 'dark'>('light');
 const mixBoxRef = ref<InstanceType<typeof MixBoxLayoutWrapper>>();
 const sidebarCollapsed = ref(false);
 
+// 动态高度计算
+const windowHeight = ref(window.innerHeight);
+const headerHeight = 60; // 固定头部高度
+const mainContentHeight = computed(() => {
+  return `${windowHeight.value - headerHeight}px`;
+});
+
+// 窗口大小变化处理
+const handleResize = () => {
+  windowHeight.value = window.innerHeight;
+};
+
 // 组件挂载后的处理
 onMounted(() => {
   console.log('Vue应用已挂载，MixBoxLayout组件已准备就绪');
+  window.addEventListener('resize', handleResize);
+});
+
+// 组件卸载时清理
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
 });
 
 // 处理主题变化
@@ -77,8 +95,8 @@ const toggleSidebar = () => {
         </ElAside>
         
         <!-- 主要内容区域 -->
-        <ElMain class="app-main">
-          <div class="main-content">
+        <ElMain class="app-main" :style="{ height: mainContentHeight }">
+          <div class="main-content" :style="{ height: mainContentHeight }">
 
             
             <!-- MixBoxLayout组件容器 -->
@@ -114,12 +132,15 @@ const toggleSidebar = () => {
   background-color: var(--el-bg-color-page);
   padding: 0;
   overflow: hidden;
+  width: 100%;
+  min-width: 0;
 }
 
 .main-content {
-  height: 100%;
+  width: 100%;
+  min-width: 0;
   padding: 16px;
-  overflow-y: auto;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }

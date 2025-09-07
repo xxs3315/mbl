@@ -118,6 +118,8 @@ defineExpose({
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   height: 100%;
+  width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }
@@ -181,6 +183,9 @@ defineExpose({
   position: relative;
   flex: 1;
   min-height: 0;
+  min-width: 0;
+  height: 100%;
+  width: 100%;
 }
 
 /* 响应式设计 */
