@@ -13,6 +13,8 @@ import "@xxs3315/mbl-lib/index.css";
 // 响应式数据
 const mixBoxRef = ref<InstanceType<typeof MixBoxLayoutWrapper>>();
 const sidebarCollapsed = ref(false);
+const isMobile = ref(false);
+const mobileSidebarVisible = ref(false);
 
 // 主题状态 - 直接使用颜色主题
 const currentTheme = ref<'blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal'>('blue');
@@ -30,6 +32,13 @@ const mainContentHeight = computed(() => {
 // 窗口大小变化处理
 const handleResize = () => {
   windowHeight.value = window.innerHeight;
+  // 检测是否为移动端 (sm breakpoint: 640px)
+  isMobile.value = window.innerWidth < 640;
+  
+  // 如果是移动端，默认隐藏侧边栏
+  if (isMobile.value) {
+    mobileSidebarVisible.value = false;
+  }
 };
 
 // 监听 ThemeProvider 的主题变化
@@ -45,6 +54,8 @@ watch(() => themeProviderRef.value?.currentTheme, (newTheme) => {
 onMounted(() => {
   console.log('Vue应用已挂载，MixBoxLayout组件已准备就绪');
   window.addEventListener('resize', handleResize);
+  // 初始化时检测屏幕尺寸
+  handleResize();
 });
 
 // 组件卸载时清理
@@ -84,7 +95,18 @@ const exportGlobalContent = () => {
 
 // 切换侧边栏
 const toggleSidebar = () => {
-  sidebarCollapsed.value = !sidebarCollapsed.value;
+  if (isMobile.value) {
+    // 移动端：切换侧边栏显示/隐藏
+    mobileSidebarVisible.value = !mobileSidebarVisible.value;
+  } else {
+    // 桌面端：切换侧边栏折叠/展开
+    sidebarCollapsed.value = !sidebarCollapsed.value;
+  }
+};
+
+// 关闭移动端侧边栏
+const closeMobileSidebar = () => {
+  mobileSidebarVisible.value = false;
 };
 
 </script>
@@ -93,18 +115,36 @@ const toggleSidebar = () => {
   <ThemeProvider ref="themeProviderRef">
     <ElContainer class="app-container" direction="vertical">
       <!-- 头部区域 -->
-      <AppHeader :collapsed="sidebarCollapsed" @toggle-sidebar="toggleSidebar" />
+      <AppHeader 
+        :collapsed="sidebarCollapsed" 
+        :is-mobile="isMobile"
+        :mobile-sidebar-visible="mobileSidebarVisible"
+        @toggle-sidebar="toggleSidebar" 
+      />
       
       <ElContainer>
+        <!-- 移动端遮罩层 -->
+        <div 
+          v-if="isMobile && mobileSidebarVisible" 
+          class="mobile-overlay"
+          @click="closeMobileSidebar"
+        ></div>
+        
         <!-- 侧边栏 -->
         <ElAside 
-          :width="sidebarCollapsed ? '64px' : '280px'"
+          :width="isMobile ? '280px' : (sidebarCollapsed ? '64px' : '280px')"
           class="app-aside"
+          :class="{ 
+            'mobile-visible': isMobile && mobileSidebarVisible,
+            'mobile-hidden': isMobile && !mobileSidebarVisible
+          }"
         >
           <AppSidebar 
-            :collapsed="sidebarCollapsed"
+            :collapsed="isMobile ? false : sidebarCollapsed"
+            :is-mobile="isMobile"
             @reset="resetGlobalContent"
             @export="exportGlobalContent"
+            @close-mobile="closeMobileSidebar"
           />
         </ElAside>
         
@@ -157,20 +197,37 @@ const toggleSidebar = () => {
   flex-direction: column;
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
+/* 移动端遮罩层 */
+.mobile-overlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  backdrop-filter: blur(2px);
+}
+
+/* 响应式设计 - sm breakpoint (640px) */
+@media (max-width: 640px) {
   .app-aside {
     position: fixed;
     top: 60px;
     left: 0;
     height: calc(100vh - 60px);
     z-index: 1000;
+    width: 280px !important;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
   }
   
-  .app-aside:not(.collapsed) {
+  .app-aside.mobile-visible {
     transform: translateX(0);
+  }
+  
+  .app-aside.mobile-hidden {
+    transform: translateX(-100%);
   }
   
   .main-content {

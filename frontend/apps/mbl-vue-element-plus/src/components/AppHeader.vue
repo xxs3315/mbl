@@ -2,7 +2,7 @@
   <div class="app-header">
     <div class="header-left">
       <el-button 
-        :icon="collapsed ? Expand : Fold"
+        :icon="isMobile ? (mobileSidebarVisible ? Fold : Expand) : (collapsed ? Expand : Fold)"
         @click="toggleSidebar"
         circle
         size="small"
@@ -63,10 +63,14 @@ import vueLogo from '../assets/vue.svg'
 // Props
 interface Props {
   collapsed?: boolean
+  isMobile?: boolean
+  mobileSidebarVisible?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  collapsed: false
+  collapsed: false,
+  isMobile: false,
+  mobileSidebarVisible: false
 })
 
 // Emits

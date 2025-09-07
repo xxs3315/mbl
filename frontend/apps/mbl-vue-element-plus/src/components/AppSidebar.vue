@@ -1,36 +1,45 @@
 <template>
-  <div class="app-sidebar" :class="{ collapsed }">
-    <div class="sidebar-header" v-if="!collapsed">
+  <div class="app-sidebar" :class="{ collapsed, 'mobile-sidebar': isMobile }">
+    <div class="sidebar-header" v-if="!collapsed || isMobile">
       <h3>导航菜单</h3>
+      <!-- 移动端关闭按钮 -->
+      <el-button 
+        v-if="isMobile"
+        :icon="Close"
+        @click="handleCloseMobile"
+        circle
+        size="small"
+        class="mobile-close-btn"
+      />
     </div>
     
     <el-menu
       :default-active="activeMenu"
       class="sidebar-menu"
-      :collapse="collapsed"
+      :collapse="isMobile ? false : collapsed"
       @select="handleMenuSelect"
     >
       <el-menu-item index="designer">
         <el-icon class="menu-icon"><Edit /></el-icon>
-        <template #title v-if="!collapsed">设计器</template>
+        <template #title v-if="!collapsed || isMobile">设计器</template>
       </el-menu-item>
       
       <el-menu-item index="templates">
         <el-icon class="menu-icon"><Document /></el-icon>
-        <template #title v-if="!collapsed">模板库</template>
+        <template #title v-if="!collapsed || isMobile">模板库</template>
       </el-menu-item>
       
       <el-menu-item index="components">
         <el-icon class="menu-icon"><Grid /></el-icon>
-        <template #title v-if="!collapsed">组件库</template>
+        <template #title v-if="!collapsed || isMobile">组件库</template>
       </el-menu-item>
       
       <el-menu-item index="assets">
         <el-icon class="menu-icon"><Picture /></el-icon>
-        <template #title v-if="!collapsed">资源管理</template>
+        <template #title v-if="!collapsed || isMobile">资源管理</template>
       </el-menu-item>
       
-      <el-sub-menu index="settings" v-if="!collapsed">
+      <el-sub-menu index="settings" v-if="!collapsed || isMobile">
         <template #title>
           <el-icon class="menu-icon"><Setting /></el-icon>
           <span>设置</span>
@@ -46,7 +55,7 @@
       </el-sub-menu>
     </el-menu>
     
-    <div class="sidebar-footer" v-if="!collapsed">
+    <div class="sidebar-footer" v-if="!collapsed || isMobile">
       <el-button 
         type="primary" 
         :icon="Refresh"
@@ -77,22 +86,26 @@ import {
   Setting,
   Orange,
   Download,
-  Refresh
+  Refresh,
+  Close
 } from '@element-plus/icons-vue'
 
 // Props
 interface Props {
   collapsed?: boolean
+  isMobile?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  collapsed: false
+  collapsed: false,
+  isMobile: false
 })
 
 // Emits
 const emit = defineEmits<{
   reset: []
   export: []
+  'close-mobile': []
 }>()
 
 // 当前激活的菜单
@@ -115,6 +128,11 @@ const handleExport = () => {
   console.log('导出内容')
   emit('export')
 }
+
+// 关闭移动端侧边栏
+const handleCloseMobile = () => {
+  emit('close-mobile')
+}
 </script>
 
 <style scoped>
@@ -129,6 +147,9 @@ const handleExport = () => {
 .sidebar-header {
   padding: 16px;
   border-bottom: 1px solid var(--el-border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .sidebar-header h3 {
@@ -153,11 +174,40 @@ const handleExport = () => {
 
 .sidebar-footer .el-button {
   width: 100%;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 32px !important;
+  line-height: 1 !important;
+  margin-left: 0 !important;
+}
+
+.sidebar-footer .el-button + .el-button {
+  margin-left: 0 !important;
+}
+
+.sidebar-footer .el-button .el-icon {
+  margin-right: 4px !important;
+  vertical-align: middle !important;
+}
+
+.sidebar-footer .el-button span {
+  vertical-align: middle !important;
+  line-height: 1 !important;
 }
 
 .menu-icon {
   font-size: 16px !important;
   width: 16px !important;
   height: 16px !important;
+}
+
+/* 移动端样式 */
+.mobile-close-btn {
+  margin-left: auto;
+}
+
+.mobile-sidebar {
+  /* 移动端侧边栏特殊样式 */
 }
 </style>
