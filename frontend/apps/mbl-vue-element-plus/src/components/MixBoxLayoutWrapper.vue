@@ -53,7 +53,7 @@ const currentContent = ref(props.initialContent);
 // 计算属性
 const mixBoxProps = computed(() => ({
   id: props.id,
-  content: currentContent.value,
+  contents: currentContent.value,
   theme: currentTheme.value,
   width: props.width,
   height: props.height
