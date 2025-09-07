@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { ElContainer, ElAside, ElMain } from 'element-plus'
 import HelloWorld from './components/HelloWorld.vue'
 import MixBoxLayoutWrapper from './components/MixBoxLayoutWrapper.vue'
@@ -11,9 +11,14 @@ import { contents } from "@xxs3315/mbl-lib-example-data";
 import "@xxs3315/mbl-lib/index.css";
 
 // 响应式数据
-const currentTheme = ref<'light' | 'dark'>('light');
 const mixBoxRef = ref<InstanceType<typeof MixBoxLayoutWrapper>>();
 const sidebarCollapsed = ref(false);
+
+// 主题状态 - 直接使用颜色主题
+const currentTheme = ref<'blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal'>('blue');
+
+// ThemeProvider 引用
+const themeProviderRef = ref<InstanceType<typeof ThemeProvider>>();
 
 // 动态高度计算
 const windowHeight = ref(window.innerHeight);
@@ -27,6 +32,15 @@ const handleResize = () => {
   windowHeight.value = window.innerHeight;
 };
 
+// 监听 ThemeProvider 的主题变化
+watch(() => themeProviderRef.value?.currentTheme, (newTheme) => {
+  console.log('App.vue 监听到 ThemeProvider 主题变化:', newTheme);
+  if (newTheme) {
+    currentTheme.value = newTheme;
+    console.log('主题已同步到 MixBoxLayout:', newTheme);
+  }
+}, { immediate: true });
+
 // 组件挂载后的处理
 onMounted(() => {
   console.log('Vue应用已挂载，MixBoxLayout组件已准备就绪');
@@ -39,7 +53,7 @@ onUnmounted(() => {
 });
 
 // 处理主题变化
-const handleThemeChange = (theme: 'light' | 'dark') => {
+const handleThemeChange = (theme: 'blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal') => {
   currentTheme.value = theme;
   console.log('主题已切换为:', theme);
 };
@@ -76,7 +90,7 @@ const toggleSidebar = () => {
 </script>
 
 <template>
-  <ThemeProvider>
+  <ThemeProvider ref="themeProviderRef">
     <ElContainer class="app-container" direction="vertical">
       <!-- 头部区域 -->
       <AppHeader :collapsed="sidebarCollapsed" @toggle-sidebar="toggleSidebar" />
@@ -97,8 +111,6 @@ const toggleSidebar = () => {
         <!-- 主要内容区域 -->
         <ElMain class="app-main" :style="{ height: mainContentHeight }">
           <div class="main-content" :style="{ height: mainContentHeight }">
-
-            
             <!-- MixBoxLayout组件容器 -->
             <MixBoxLayoutWrapper 
               ref="mixBoxRef"

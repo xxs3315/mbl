@@ -11,6 +11,7 @@ const currentTheme = ref<ThemeVariant>(getCurrentTheme())
 
 // 主题切换函数
 const setTheme = (theme: ThemeVariant) => {
+  console.log('ThemeProvider 设置主题:', theme);
   currentTheme.value = theme
   saveTheme(theme)
   applyTheme(theme)
@@ -28,6 +29,12 @@ onMounted(() => {
 
 // 提供主题上下文
 provide('theme', {
+  currentTheme,
+  setTheme
+})
+
+// 暴露主题变化事件
+defineExpose({
   currentTheme,
   setTheme
 })

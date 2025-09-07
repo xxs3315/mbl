@@ -20,7 +20,7 @@ interface Props {
   id?: string;
   title?: string;
   initialContent?: any;
-  theme?: 'light' | 'dark';
+  theme?: 'blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal';
   width?: string | number;
   height?: string | number;
 }
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: 'mixbox-layout',
   title: 'MixBoxLayout 组件',
   initialContent: () => contents,
-  theme: 'light',
+  theme: 'blue',
   width: '100%',
   height: '600px'
 });
@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
 // Emits定义
 const emit = defineEmits<{
   'content-update': [content: any];
-  'theme-change': [theme: 'light' | 'dark'];
+  'theme-change': [theme: 'blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal'];
 }>();
 
 // 使用veaury包装React组件
@@ -61,7 +61,11 @@ const mixBoxProps = computed(() => ({
 
 // 方法
 const toggleTheme = () => {
-  currentTheme.value = currentTheme.value === 'light' ? 'dark' : 'light';
+  // 循环切换颜色主题
+  const themes: ('blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal')[] = ['blue', 'green', 'purple', 'orange', 'red', 'teal'];
+  const currentIndex = themes.indexOf(currentTheme.value);
+  const nextIndex = (currentIndex + 1) % themes.length;
+  currentTheme.value = themes[nextIndex];
   emit('theme-change', currentTheme.value);
 };
 
@@ -88,6 +92,7 @@ const handleContentUpdate = (newContent: any) => {
 
 // 监听props变化
 watch(() => props.theme, (newTheme) => {
+  console.log('MixBoxLayoutWrapper 接收到主题变化:', newTheme);
   currentTheme.value = newTheme;
 });
 
