@@ -1,15 +1,26 @@
 {
   "name": "@xxs3315/mbl-core",
   "version": "1.0.0",
-  "main": "dist/index",
-  "types": "dist/index",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist-esm/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist-esm/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "dist-esm"
   ],
   "scripts": {
-    "build": "pnpm run clean && pnpm run compile",
-    "clean": "rimraf ./dist",
-    "compile": "tsc -p tsconfig.build.json",
+    "build": "pnpm run clean && pnpm run compile:cjs && pnpm run compile:esm",
+    "clean": "rimraf ./dist ./dist-esm",
+    "compile": "pnpm run compile:cjs",
+    "compile:cjs": "tsc -p tsconfig.build.json",
+    "compile:esm": "tsc -p tsconfig.esm.json",
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {

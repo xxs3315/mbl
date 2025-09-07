@@ -1,16 +1,28 @@
 {
   "name": "@xxs3315/mbl-lib",
   "version": "1.0.0",
-  "main": "dist/index",
-  "types": "dist/index",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist-esm/index.js",
+      "require": "./dist/index.js"
+    },
+    "./index.css": "./dist/index.css"
+  },
+  "main": "dist/index.js",
+  "module": "dist-esm/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "dist-esm"
   ],
   "scripts": {
-    "build": "pnpm run clean && pnpm run css && pnpm run compile && pnpm run copy-styled-system",
-    "clean": "rimraf ./dist",
-    "compile": "tsc -p tsconfig.build.json",
-    "copy-styled-system": "copyfiles -u 1 \"src/styled-system/**/*\" dist/",
+    "build": "pnpm run clean && pnpm run css && pnpm run compile:cjs && pnpm run compile:esm && pnpm run copy-styled-system",
+    "clean": "rimraf ./dist ./dist-esm",
+    "compile": "pnpm run compile:cjs",
+    "compile:cjs": "tsc -p tsconfig.build.json",
+    "compile:esm": "tsc -p tsconfig.esm.json",
+    "copy-styled-system": "copyfiles -u 1 \"src/styled-system/**/*\" dist/ && copyfiles -u 1 \"src/styled-system/**/*\" dist-esm/",
     "css": "postcss -o ./dist/index.css ./src/index.css && panda cssgen --outfile dist/index.css",
     "prepare": "panda codegen",
     "prepublishOnly": "pnpm run build"

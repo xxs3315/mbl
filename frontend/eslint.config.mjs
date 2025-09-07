@@ -10,6 +10,7 @@ export default tsEslint.config(
       "node_modules",
       "!.*",
       "**/dist",
+      "**/dist-esm",
       "**/build",
       "apps/nextjs/.next",
       "**/styled-system",

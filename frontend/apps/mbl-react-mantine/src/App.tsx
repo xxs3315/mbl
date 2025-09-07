@@ -1,7 +1,7 @@
 import "./App.css";
 import { MixBoxLayout } from "@xxs3315/mbl-lib";
 import { contents } from "@xxs3315/mbl-lib-example-data";
-import "@xxs3315/mbl-lib/dist/index.css";
+import "@xxs3315/mbl-lib/index.css";
 import { useDisclosure } from "@mantine/hooks";
 import { AppShell, Burger, Group } from "@mantine/core";
 import { ThemeSwitcher } from "./components/ThemeSwitcher";

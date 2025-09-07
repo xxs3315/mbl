@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.build.json",
+
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2020",
+    "outDir": "./dist-esm",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node"
+  },
+
+  "include": [
+    "src/**/*", 
+    "src/typings/**/*", 
+    "src/styled-system/**/*"
+  ]
+}

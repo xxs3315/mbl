@@ -4,7 +4,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import MixBoxLayoutWrapper from './components/MixBoxLayoutWrapper.vue'
 
 import { contents } from "@xxs3315/mbl-lib-example-data";
-import "@xxs3315/mbl-lib/dist/index.css";
+import "@xxs3315/mbl-lib/index.css";
 
 // 响应式数据
 const currentTheme = ref<'light' | 'dark'>('light');

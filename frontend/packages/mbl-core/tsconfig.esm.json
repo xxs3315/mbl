@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.build.json",
+
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2020",
+    "outDir": "./dist-esm",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "moduleResolution": "node"
+  },
+
+  "include": [
+    "src/**/*"
+  ]
+}
