@@ -1,20 +1,5 @@
 <template>
   <div class="mixbox-wrapper">
-    <div class="mixbox-header">
-      <h3>{{ title }}</h3>
-      <div class="mixbox-controls">
-        <button @click="toggleTheme" class="control-btn theme-btn">
-          {{ currentTheme === 'light' ? '🌙' : '☀️' }} {{ currentTheme }}
-        </button>
-        <button @click="resetContent" class="control-btn reset-btn">
-          🔄 重置
-        </button>
-        <button @click="exportContent" class="control-btn export-btn">
-          📤 导出
-        </button>
-      </div>
-    </div>
-    
     <div class="mixbox-content" :style="{ height: height }">
       <VueMixBoxLayout 
         v-bind="mixBoxProps"
