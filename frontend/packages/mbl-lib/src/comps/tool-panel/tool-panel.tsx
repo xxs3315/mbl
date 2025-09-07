@@ -3,7 +3,7 @@ import { Box } from "../../dnd/box";
 import { ItemTypes } from "../../dnd/item-types";
 import { toolPanelComps, toolPanelDataBindings } from "./data";
 import React from "react";
-import { css } from "../../../styled-system/css";
+import { css } from "../../styled-system/css";
 
 interface ToolPanelCompProp {
   id: string;

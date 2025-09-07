@@ -15,7 +15,7 @@ import {
   SeparatorHorizontal,
   FileDigit,
 } from "lucide-react";
-import { css } from "../../styled-system/css";
+import { css } from "../styled-system/css";
 
 // 根据 cat 属性获取对应的图标
 const getIconByCat = (cat?: string, direction?: string) => {

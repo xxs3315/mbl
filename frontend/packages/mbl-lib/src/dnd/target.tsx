@@ -2,7 +2,7 @@ import type { CSSProperties, FC, ReactNode } from "react";
 import { memo } from "react";
 import { useDrop } from "react-dnd";
 import React from "react";
-import { css } from "../../styled-system/css";
+import { css } from "../styled-system/css";
 import { useThemeColors } from "../utils/theme-utils";
 
 const style: CSSProperties = {

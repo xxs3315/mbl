@@ -1,4 +1,3 @@
-import React from "react";
 import "./App.css";
 import { MixBoxLayout } from "@xxs3315/mbl-lib";
 import { contents } from "@xxs3315/mbl-lib-example-data";

@@ -10,7 +10,7 @@ import {
   PlaceholderRendererMeta,
   StackedGroupRendererInjectedProps,
 } from "@xxs3315/mbl-core";
-import { css } from "../styled-system/css";
+import { css } from "./styled-system/css";
 import { cloneDeep } from "lodash-es";
 import arrayMove from "array-move";
 import { nanoid } from "nanoid";

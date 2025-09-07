@@ -6,10 +6,13 @@
     "jsx": "react",
     "esModuleInterop": true,
     "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"]
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowSyntheticDefaultImports": true
   },
 
   "include": [
-    "src/**/*", "src/typings/**/*", "styled-system"
+    "src/**/*", 
+    "src/typings/**/*", 
+    "src/styled-system/**/*"
   ]
 }
