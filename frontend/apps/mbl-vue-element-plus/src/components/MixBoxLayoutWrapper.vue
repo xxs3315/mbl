@@ -3,7 +3,6 @@
     <div class="mixbox-content" :style="{ height: height }">
       <VueMixBoxLayout 
         v-bind="mixBoxProps"
-        @update:content="handleContentUpdate"
       />
     </div>
   </div>
@@ -54,6 +53,7 @@ const currentContent = ref(props.initialContent);
 const mixBoxProps = computed(() => ({
   id: props.id,
   contents: currentContent.value,
+  onContentChange: handleContentUpdate,  // 添加 onContentChange 回调
   theme: currentTheme.value,
   width: props.width,
   height: props.height
@@ -86,6 +86,7 @@ const exportContent = () => {
 };
 
 const handleContentUpdate = (newContent: any) => {
+  console.log('MixBoxLayoutWrapper 接收到内容变化:', newContent);
   currentContent.value = newContent;
   emit('content-update', newContent);
 };
