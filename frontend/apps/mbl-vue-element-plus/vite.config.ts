@@ -6,8 +6,6 @@ import veauryVitePlugins from "veaury/vite/esm/index.mjs";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    // vue(),
-    // react(), // 添加React插件支持
     tsconfigPaths(),
     // Turn off vue and vuejsx plugins
     // vue(),
@@ -25,19 +23,4 @@ export default defineConfig({
       // vueJsxOptions: {...}
     }),
   ],
-  // optimizeDeps: {
-  //   include: [
-  //     "react",
-  //     "react-dom",
-  //     "@xxs3315/mbl-lib",
-  //     "@xxs3315/mbl-lib-example-data",
-  //   ],
-  // },
-  // resolve: {
-  //   alias: {
-  //     // 确保React和Vue使用相同的版本
-  //     react: "react",
-  //     "react-dom": "react-dom",
-  //   },
-  // },
 });
