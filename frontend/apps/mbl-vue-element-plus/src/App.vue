@@ -88,7 +88,7 @@ const toggleSidebar = () => {
               title="MixBoxLayout 组件 (通过 veaury 集成)"
               :initial-content="contents"
               :theme="currentTheme"
-              height="600px"
+              height="100%"
               @theme-change="handleThemeChange"
               @content-update="handleContentUpdate"
             />
@@ -120,6 +120,8 @@ const toggleSidebar = () => {
   height: 100%;
   padding: 16px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 响应式设计 */

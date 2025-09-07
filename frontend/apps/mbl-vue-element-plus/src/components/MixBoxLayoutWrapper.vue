@@ -117,6 +117,9 @@ defineExpose({
   overflow: hidden;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .mixbox-header {
@@ -176,6 +179,8 @@ defineExpose({
 .mixbox-content {
   overflow: hidden;
   position: relative;
+  flex: 1;
+  min-height: 0;
 }
 
 /* 响应式设计 */
