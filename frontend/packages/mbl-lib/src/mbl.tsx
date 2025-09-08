@@ -2249,6 +2249,7 @@ const MixBoxLayoutContent = React.memo<{
         overflow: "hidden",
         position: "relative",
         flex: "1",
+        backgroundColor: "white",
       })}
     >
       {/* 全局遮罩层 - 在小屏幕上显示左侧页面选择器时显示 */}

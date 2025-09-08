@@ -35,7 +35,9 @@ const App = () => {
         longer offset by padding in the main element and it takes the full width
         of the screen when opened.
       </AppShell.Navbar>
-      <AppShell.Main style={{ display: "flex", height: "100vh" }}>
+      <AppShell.Main
+        style={{ display: "flex", height: "100vh", background: "#f2f3f5" }}
+      >
         <MixBoxLayout
           id={"ddb14a5da2a5423e862e3e9afd58f776"}
           contents={contents}
