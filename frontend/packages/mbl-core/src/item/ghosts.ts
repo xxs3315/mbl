@@ -9,14 +9,21 @@ export const initializeGhostElementStyle = (
   if (ghostWrapperElement === undefined) return;
 
   const elementRect = itemElement.getBoundingClientRect();
+
+  // 获取ghost元素的父容器位置（用于absolute定位计算）
+  const parentElement = ghostWrapperElement.parentElement;
+  const parentRect = parentElement
+    ? parentElement.getBoundingClientRect()
+    : { top: 0, left: 0 };
+
+  // 计算相对于父容器的位置（因为现在使用position: absolute）
+  const relativeTop = elementRect.top - parentRect.top;
+  const relativeLeft = elementRect.left - parentRect.left;
+
   const top =
-    direction === "vertical"
-      ? elementRect.top + itemSpacing / 2
-      : elementRect.top;
+    direction === "vertical" ? relativeTop + itemSpacing / 2 : relativeTop;
   const left =
-    direction === "horizontal"
-      ? elementRect.left + itemSpacing / 2
-      : elementRect.left;
+    direction === "horizontal" ? relativeLeft + itemSpacing / 2 : relativeLeft;
   const width =
     direction === "horizontal"
       ? elementRect.width - itemSpacing

@@ -241,7 +241,7 @@ export const List = <T extends ItemIdentifier>(props: Props<T>) => {
         {dropLineElement}
         <div
           ref={ghostWrapperElementRef}
-          style={{ position: "fixed", pointerEvents: "none", zIndex: 40 }}
+          style={{ position: "absolute", pointerEvents: "none", zIndex: 40 }}
         >
           {ghostElement}
         </div>
