@@ -1242,6 +1242,9 @@ const MixBoxLayoutContent = React.memo<{
         onCompositionStart={handleCompositionStart}
         onCompositionEnd={handleCompositionEnd}
         styles={textareaStyles}
+        onFocus={() => {
+          setTimeout(() => setCurrentSelectedId(props.id), 100);
+        }}
       />
     );
   });
@@ -2811,11 +2814,6 @@ const MixBoxLayoutContent = React.memo<{
             })}
           >
             <div
-              className={css({
-                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                transform: "translateZ(0)", // 启用硬件加速
-                willChange: "transform, box-shadow", // 优化动画性能
-              })}
               style={{
                 width: `${canvasWidth}px`,
                 minHeight: `${canvasHeight}px`,
@@ -2835,11 +2833,6 @@ const MixBoxLayoutContent = React.memo<{
               }}
             >
               <div
-                className={css({
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  transform: "translateZ(0)", // 启用硬件加速
-                  willChange: "box-shadow, padding, margin", // 优化动画性能
-                })}
                 onClick={(event) => {
                   event.stopPropagation();
                   setCurrentSelectedId(PAGE_HEADER_ROOT_ID);
@@ -2916,11 +2909,6 @@ const MixBoxLayoutContent = React.memo<{
                 />
               </div>
               <div
-                className={css({
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  transform: "translateZ(0)", // 启用硬件加速
-                  willChange: "box-shadow, padding, margin", // 优化动画性能
-                })}
                 style={{
                   display: "flex",
                   minHeight: `${canvasHeight - (pt2px(currentPageMTop, dpi) + pt2px(currentPageMBottom, dpi))}px`,
@@ -2995,11 +2983,6 @@ const MixBoxLayoutContent = React.memo<{
                 />
               </div>
               <div
-                className={css({
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  transform: "translateZ(0)", // 启用硬件加速
-                  willChange: "box-shadow, margin", // 优化动画性能
-                })}
                 onClick={(event) => {
                   event.stopPropagation();
                   setCurrentSelectedId(PAGE_FOOTER_ROOT_ID);
