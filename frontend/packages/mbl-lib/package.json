@@ -35,6 +35,7 @@
     "@xxs3315/mbl-lib-example-data": "workspace:*",
     "@xxs3315/mbl-state": "workspace:*",
     "@xxs3315/mbl-typings": "workspace:*",
+    "@xxs3315/mbl-utils": "workspace:*",
     "array-move": "^2.2.1",
     "axios": "^1.10.0",
     "lodash-es": "^4.17.21",
