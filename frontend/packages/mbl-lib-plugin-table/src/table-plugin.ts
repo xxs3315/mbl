@@ -11,7 +11,7 @@ import {
   Divider,
 } from "@mantine/core";
 import { pt2px } from "@xxs3315/mbl-utils";
-// import { Asterisk } from "lucide-react";
+import { useCurrentSelectedId, useDpi } from "@xxs3315/mbl-lib";
 
 // SVG 图标定义 - 优化为常量，避免重复创建
 const SVG_PROPS = {
@@ -224,10 +224,10 @@ export const TABLE_PLUGIN_METADATA = {
  */
 export interface TablePluginProps {
   id: string;
-  dpi?: number; // DPI 参数
   onPropsChange?: (newProps: any) => void; // 属性变化回调
   colors?: any; // 主题颜色
-  currentSelectedId?: string;
+  // currentSelectedId 现在通过 useCurrentSelectedId hook 获取，不再通过 props 传递
+  // dpi 现在通过 useDpi hook 获取，不再通过 props 传递
   attrs: {
     pluginId: string;
     value: string;
@@ -288,7 +288,6 @@ const getVerticalStyle = (vertical?: string) => {
 // 带防抖和输入法支持的文本组件
 const TextareaWithComposition = React.memo<{
   props: any;
-  dpi: number;
   onValueChange?: (itemId: string, newValue: string) => void;
   onColumnAction?: (action: string, columnId: string) => void;
   onColumnSelect?: (columnId: string) => void;
@@ -299,7 +298,6 @@ const TextareaWithComposition = React.memo<{
 }>(
   ({
     props,
-    dpi,
     onValueChange,
     onColumnAction,
     onColumnSelect,
@@ -308,6 +306,8 @@ const TextareaWithComposition = React.memo<{
     tableId,
     colors,
   }) => {
+    // 使用 hook 获取 dpi
+    const { dpi } = useDpi();
     const [localValue, setLocalValue] = React.useState(props.value ?? "");
     const [isComposing, setIsComposing] = React.useState(false);
     const debounceTimeoutRef = React.useRef<number | null>(null);
@@ -576,7 +576,6 @@ const TextareaWithComposition = React.memo<{
 // 渲染文本组件
 const renderTextComponent = (
   props: any,
-  dpi: number = 96,
   onValueChange?: (itemId: string, newValue: string) => void,
   onColumnAction?: (action: string, columnId: string) => void,
   onColumnSelect?: (columnId: string) => void,
@@ -587,7 +586,6 @@ const renderTextComponent = (
 ): React.ReactElement => {
   return React.createElement(TextareaWithComposition, {
     props,
-    dpi,
     onValueChange,
     onColumnAction,
     onColumnSelect,
@@ -665,7 +663,6 @@ const createTableItemElement = (
   item: any,
   index: number,
   contentMap: Map<string, any>,
-  dpi: number = 96,
   onValueChange?: (itemId: string, newValue: string) => void,
   onColumnAction?: (action: string, columnId: string) => void,
   onColumnSelect?: (columnId: string) => void,
@@ -685,7 +682,6 @@ const createTableItemElement = (
           childItem,
           childIndex,
           contentMap,
-          dpi,
           onValueChange,
           onColumnAction,
           onColumnSelect,
@@ -749,7 +745,6 @@ const createTableItemElement = (
       item.cat === "text"
         ? renderTextComponent(
             item,
-            dpi,
             onValueChange,
             onColumnAction,
             onColumnSelect,
@@ -769,11 +764,13 @@ const createTableItemElement = (
 export const TableComponent: React.FC<TablePluginProps> = ({
   id: tableId,
   attrs,
-  dpi = 96,
-  currentSelectedId,
   onPropsChange,
   colors,
 }) => {
+  // 使用 hook 获取 currentSelectedId，避免通过 props 传递导致全量重新渲染
+  const { currentSelectedId } = useCurrentSelectedId();
+  // 使用 hook 获取 dpi，避免通过 props 传递导致全量重新渲染
+  const { dpi } = useDpi();
   console.log("currentSelectedId", currentSelectedId);
 
   const { background, columns, pTop, pRight, pBottom, pLeft } = attrs;
@@ -1057,7 +1054,6 @@ export const TableComponent: React.FC<TablePluginProps> = ({
           item,
           index,
           contentMap as any,
-          dpi,
           handleValueChange,
           handleColumnAction,
           handleColumnSelect,
@@ -1070,7 +1066,6 @@ export const TableComponent: React.FC<TablePluginProps> = ({
     [
       topLevelItems,
       contentMap,
-      dpi,
       handleValueChange,
       handleColumnAction,
       handleColumnSelect,

@@ -1417,8 +1417,8 @@ const MixBoxLayoutContent = React.memo<{
                   const pluginProps = {
                     id: props.id,
                     attrs: props,
-                    dpi: dpi,
-                    currentSelectedId: "",
+                    // 不直接传递 dpi，让插件组件自己通过 useDpi hook 订阅
+                    // 不直接传递 currentSelectedId，让插件组件自己订阅
                     colors: colors, // 传递主题颜色
                     onPropsChange: (newProps: any) => {
                       // 通过 handlePluginPropsChange 更新 store
