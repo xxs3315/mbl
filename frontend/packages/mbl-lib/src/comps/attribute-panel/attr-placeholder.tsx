@@ -13,7 +13,7 @@ import {
   SegmentedControl,
   VisuallyHidden,
 } from "@mantine/core";
-import { updateSelectedItemProp } from "../../utils/content-updaters";
+import { updateSelectedItemPropDirect } from "../../utils/content-updaters";
 import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
 
 export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
@@ -21,11 +21,33 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
   const { item: currentSelectedItem, position: currentSelectedItemPosition } =
     useSelectedItem();
 
-  const state = useContentsStoreContext((s) => s);
-  const currentPageIndex = state.currentPageIndex;
+  // 使用细粒度订阅，只订阅需要的状态
+  const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
+  const pages = useContentsStoreContext((s) => s.pages);
+  const setCurrentPageAndContent = useContentsStoreContext(
+    (s) => s.setCurrentPageAndContent,
+  );
+  const currentPageHeaderContent = useContentsStoreContext(
+    (s) => s.currentPageHeaderContent,
+  );
+  const currentPageBodyContent = useContentsStoreContext(
+    (s) => s.currentPageBodyContent,
+  );
+  const currentPageFooterContent = useContentsStoreContext(
+    (s) => s.currentPageFooterContent,
+  );
+
   const defaultPageRootBackgroundColor =
-    state.pages[currentPageIndex].defaultPageRootBackgroundColor;
-  const setCurrentPageAndContent = state.setCurrentPageAndContent;
+    pages[currentPageIndex].defaultPageRootBackgroundColor;
+
+  // 获取对应的 content map
+  const getContentMap = () => {
+    if (currentSelectedItemPosition === "header")
+      return currentPageHeaderContent;
+    if (currentSelectedItemPosition === "footer")
+      return currentPageFooterContent;
+    return currentPageBodyContent;
+  };
 
   return (
     <>
@@ -43,12 +65,12 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
               const num =
                 typeof value === "number" ? value : Number(value) || 0;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "width",
@@ -67,12 +89,12 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
               const num =
                 typeof value === "number" ? value : Number(value) || 0;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "height",
@@ -94,12 +116,12 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
               const num =
                 typeof value === "number" ? value : Number(value) || 0;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "pLeft",
@@ -118,12 +140,12 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
               const num =
                 typeof value === "number" ? value : Number(value) || 0;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "pRight",
@@ -142,12 +164,12 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
               const num =
                 typeof value === "number" ? value : Number(value) || 0;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "pTop",
@@ -166,12 +188,12 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
               const num =
                 typeof value === "number" ? value : Number(value) || 0;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "pBottom",
@@ -209,12 +231,12 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         }
         onChange={(value) => {
           if (!currentSelectedId || !currentSelectedItemPosition) return;
-          updateSelectedItemProp(
+          updateSelectedItemPropDirect(
             {
               currentSelectedId,
               currentPageIndex,
               position: currentSelectedItemPosition,
-              state,
+              contentMap: getContentMap(),
               setCurrentPageAndContent,
             },
             "background",
@@ -232,12 +254,12 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
             value={currentSelectedItem?.horizontal || "center"}
             onChange={(value) => {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "horizontal",

@@ -10,7 +10,7 @@ import {
 import { Asterisk } from "lucide-react";
 import { useContentsStoreContext } from "../../store/store";
 import { useCurrentSelectedId } from "../../providers/current-selected-id-provider";
-import { updateSelectedItemProp } from "../../utils/content-updaters";
+import { updateSelectedItemPropDirect } from "../../utils/content-updaters";
 
 interface AttrHboxColProps {
   id: string;
@@ -21,13 +21,20 @@ export const AttrHboxCol: FC<AttrHboxColProps> = memo(function AttrHboxCol({
   id,
   index,
 }) {
-  const state = useContentsStoreContext((s) => s);
-
-  const {
-    currentPageHeaderContent,
-    currentPageBodyContent,
-    currentPageFooterContent,
-  } = state;
+  // 使用细粒度订阅，只订阅需要的状态
+  const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
+  const setCurrentPageAndContent = useContentsStoreContext(
+    (s) => s.setCurrentPageAndContent,
+  );
+  const currentPageHeaderContent = useContentsStoreContext(
+    (s) => s.currentPageHeaderContent,
+  );
+  const currentPageBodyContent = useContentsStoreContext(
+    (s) => s.currentPageBodyContent,
+  );
+  const currentPageFooterContent = useContentsStoreContext(
+    (s) => s.currentPageFooterContent,
+  );
 
   // 直接通过 id 查找对应的列项
   let selectedItem = null;
@@ -49,14 +56,21 @@ export const AttrHboxCol: FC<AttrHboxColProps> = memo(function AttrHboxCol({
   }
 
   const updateColumnProp = (prop: string, value: any) => {
-    // 直接更新列项本身
-    updateSelectedItemProp(
+    // 直接更新列项本身，使用细粒度方法
+    const contentMap =
+      selectedItemPosition === "header"
+        ? currentPageHeaderContent
+        : selectedItemPosition === "footer"
+          ? currentPageFooterContent
+          : currentPageBodyContent;
+
+    updateSelectedItemPropDirect(
       {
         currentSelectedId: id,
         position: selectedItemPosition as "header" | "body" | "footer",
-        currentPageIndex: state.currentPageIndex,
-        state,
-        setCurrentPageAndContent: state.setCurrentPageAndContent,
+        currentPageIndex,
+        contentMap,
+        setCurrentPageAndContent,
       },
       prop,
       value,

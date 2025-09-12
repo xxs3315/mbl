@@ -395,17 +395,30 @@ const MixBoxLayoutContent = React.memo<{
       };
     }, []);
 
-    // 使用单个订阅获取所有需要的状态
-    const state = useContentsStoreContext((s) => s);
-    const pages = state.pages;
-    const currentPageIndex = state.currentPageIndex;
-    const currentPageHeaderContent = state.currentPageHeaderContent;
-    const currentPageBodyContent = state.currentPageBodyContent;
-    const currentPageFooterContent = state.currentPageFooterContent;
-    const setCurrentPageIndex = state.setCurrentPageIndex;
-    const setCurrentPageAndContent = state.setCurrentPageAndContent;
-    const updateTextItemValue = state.updateTextItemValue;
-    const updatePluginItemProps = state.updatePluginItemProps;
+    // 使用细粒度订阅，只订阅真正需要的状态
+    const pages = useContentsStoreContext((s) => s.pages);
+    const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
+    const currentPageHeaderContent = useContentsStoreContext(
+      (s) => s.currentPageHeaderContent,
+    );
+    const currentPageBodyContent = useContentsStoreContext(
+      (s) => s.currentPageBodyContent,
+    );
+    const currentPageFooterContent = useContentsStoreContext(
+      (s) => s.currentPageFooterContent,
+    );
+    const setCurrentPageIndex = useContentsStoreContext(
+      (s) => s.setCurrentPageIndex,
+    );
+    const setCurrentPageAndContent = useContentsStoreContext(
+      (s) => s.setCurrentPageAndContent,
+    );
+    const updateTextItemValue = useContentsStoreContext(
+      (s) => s.updateTextItemValue,
+    );
+    const updatePluginItemProps = useContentsStoreContext(
+      (s) => s.updatePluginItemProps,
+    );
 
     const currentPage = React.useMemo(() => {
       return pages[currentPageIndex];

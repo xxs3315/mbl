@@ -15,7 +15,7 @@ import {
   VisuallyHidden,
 } from "@mantine/core";
 import React from "react";
-import { updateSelectedItemProp } from "../../utils/content-updaters";
+import { updateSelectedItemPropDirect } from "../../utils/content-updaters";
 import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
 
 export const AttrText: FC = memo(function AttrText() {
@@ -23,15 +23,37 @@ export const AttrText: FC = memo(function AttrText() {
   const { item: currentSelectedItem, position: currentSelectedItemPosition } =
     useSelectedItem();
 
-  const state = useContentsStoreContext((s) => s);
-  const currentPageIndex = state.currentPageIndex;
+  // 使用细粒度订阅，只订阅需要的状态
+  const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
+  const pages = useContentsStoreContext((s) => s.pages);
+  const setCurrentPageAndContent = useContentsStoreContext(
+    (s) => s.setCurrentPageAndContent,
+  );
+  const currentPageHeaderContent = useContentsStoreContext(
+    (s) => s.currentPageHeaderContent,
+  );
+  const currentPageBodyContent = useContentsStoreContext(
+    (s) => s.currentPageBodyContent,
+  );
+  const currentPageFooterContent = useContentsStoreContext(
+    (s) => s.currentPageFooterContent,
+  );
+
   const defaultPageRootFontSize =
-    state.pages[currentPageIndex].defaultPageRootFontSize;
+    pages[currentPageIndex].defaultPageRootFontSize;
   const defaultPageRootFontColor =
-    state.pages[currentPageIndex].defaultPageRootFontColor;
+    pages[currentPageIndex].defaultPageRootFontColor;
   const defaultPageRootBackgroundColor =
-    state.pages[currentPageIndex].defaultPageRootBackgroundColor;
-  const setCurrentPageAndContent = state.setCurrentPageAndContent;
+    pages[currentPageIndex].defaultPageRootBackgroundColor;
+
+  // 获取对应的 content map
+  const getContentMap = () => {
+    if (currentSelectedItemPosition === "header")
+      return currentPageHeaderContent;
+    if (currentSelectedItemPosition === "footer")
+      return currentPageFooterContent;
+    return currentPageBodyContent;
+  };
 
   // 如果当前选中的元素在当前页面中不存在，清除选中状态
   React.useEffect(() => {
@@ -52,12 +74,12 @@ export const AttrText: FC = memo(function AttrText() {
         checked={currentSelectedItem?.bold ?? false}
         onChange={(event) => {
           if (!currentSelectedId || !currentSelectedItemPosition) return;
-          updateSelectedItemProp(
+          updateSelectedItemPropDirect(
             {
               currentSelectedId,
               currentPageIndex,
               position: currentSelectedItemPosition,
-              state,
+              contentMap: getContentMap(),
               setCurrentPageAndContent,
             },
             "bold",
@@ -77,12 +99,12 @@ export const AttrText: FC = memo(function AttrText() {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
               const num =
                 typeof value === "number" ? value : Number(value) || 0;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "pLeft",
@@ -101,12 +123,12 @@ export const AttrText: FC = memo(function AttrText() {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
               const num =
                 typeof value === "number" ? value : Number(value) || 0;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "pRight",
@@ -125,12 +147,12 @@ export const AttrText: FC = memo(function AttrText() {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
               const num =
                 typeof value === "number" ? value : Number(value) || 0;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "pTop",
@@ -149,12 +171,12 @@ export const AttrText: FC = memo(function AttrText() {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
               const num =
                 typeof value === "number" ? value : Number(value) || 0;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "pBottom",
@@ -173,12 +195,12 @@ export const AttrText: FC = memo(function AttrText() {
         onChange={(value) => {
           if (!currentSelectedId || !currentSelectedItemPosition) return;
           const num = typeof value === "number" ? value : Number(value) || 0;
-          updateSelectedItemProp(
+          updateSelectedItemPropDirect(
             {
               currentSelectedId,
               currentPageIndex,
               position: currentSelectedItemPosition,
-              state,
+              contentMap: getContentMap(),
               setCurrentPageAndContent,
             },
             "fontSize",
@@ -214,12 +236,12 @@ export const AttrText: FC = memo(function AttrText() {
         value={currentSelectedItem?.fontColor || defaultPageRootFontColor}
         onChange={(value) => {
           if (!currentSelectedId || !currentSelectedItemPosition) return;
-          updateSelectedItemProp(
+          updateSelectedItemPropDirect(
             {
               currentSelectedId,
               currentPageIndex,
               position: currentSelectedItemPosition,
-              state,
+              contentMap: getContentMap(),
               setCurrentPageAndContent,
             },
             "fontColor",
@@ -255,12 +277,12 @@ export const AttrText: FC = memo(function AttrText() {
         }
         onChange={(value) => {
           if (!currentSelectedId || !currentSelectedItemPosition) return;
-          updateSelectedItemProp(
+          updateSelectedItemPropDirect(
             {
               currentSelectedId,
               currentPageIndex,
               position: currentSelectedItemPosition,
-              state,
+              contentMap: getContentMap(),
               setCurrentPageAndContent,
             },
             "background",
@@ -278,12 +300,12 @@ export const AttrText: FC = memo(function AttrText() {
             value={currentSelectedItem?.horizontal || "center"}
             onChange={(value) => {
               if (!currentSelectedId || !currentSelectedItemPosition) return;
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   currentPageIndex,
                   position: currentSelectedItemPosition,
-                  state,
+                  contentMap: getContentMap(),
                   setCurrentPageAndContent,
                 },
                 "horizontal",

@@ -13,13 +13,17 @@ export interface SelectedItemInfo {
  */
 export function useSelectedItem(): SelectedItemInfo {
   const { currentSelectedId } = useCurrentSelectedId();
-  const state = useContentsStoreContext((s) => s);
 
-  const {
-    currentPageHeaderContent,
-    currentPageBodyContent,
-    currentPageFooterContent,
-  } = state;
+  // 使用细粒度订阅，只订阅需要的 content maps
+  const currentPageHeaderContent = useContentsStoreContext(
+    (s) => s.currentPageHeaderContent,
+  );
+  const currentPageBodyContent = useContentsStoreContext(
+    (s) => s.currentPageBodyContent,
+  );
+  const currentPageFooterContent = useContentsStoreContext(
+    (s) => s.currentPageFooterContent,
+  );
 
   return useMemo(() => {
     if (!currentSelectedId) {

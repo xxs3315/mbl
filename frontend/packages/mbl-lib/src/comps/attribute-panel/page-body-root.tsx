@@ -4,16 +4,18 @@ import { Divider, NumberInput, Title, Grid } from "@mantine/core";
 import React from "react";
 
 export const PageBodyRoot: FC = memo(function PageBodyRoot() {
-  const state = useContentsStoreContext((s) => s);
-  const currentPageIndex = state.currentPageIndex;
-  const currentPage = state.pages[currentPageIndex];
+  // 使用细粒度订阅，只订阅需要的状态
+  const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
+  const pages = useContentsStoreContext((s) => s.pages);
+  const updatePageBodyMargin = useContentsStoreContext(
+    (s) => s.updatePageBodyMargin,
+  );
 
+  const currentPage = pages[currentPageIndex];
   const currentPageBodyMTop = currentPage?.mTopBody;
   const currentPageBodyMRight = currentPage?.mRightBody;
   const currentPageBodyMBottom = currentPage?.mBottomBody;
   const currentPageBodyMLeft = currentPage?.mLeftBody;
-
-  const updatePageBodyMargin = state.updatePageBodyMargin;
 
   return (
     <>

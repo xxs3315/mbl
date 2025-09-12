@@ -15,14 +15,36 @@ import {
 import { useSelectedItem } from "../../hooks/use-selected-item";
 import { useContentsStoreContext } from "../../store/store";
 import { useCurrentSelectedId } from "../../providers/current-selected-id-provider";
-import { updateSelectedItemProp } from "../../utils/content-updaters";
+import { updateSelectedItemPropDirect } from "../../utils/content-updaters";
 import { AttrHboxCol } from "./attr-hbox-col";
 
 export const AttrHbox: FC = memo(function AttrHbox() {
   const { item: currentSelectedItem, position: currentSelectedItemPosition } =
     useSelectedItem();
-  const state = useContentsStoreContext((s) => s);
+  // 使用细粒度订阅，只订阅需要的状态
+  const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
+  const currentPageHeaderContent = useContentsStoreContext(
+    (s) => s.currentPageHeaderContent,
+  );
+  const currentPageBodyContent = useContentsStoreContext(
+    (s) => s.currentPageBodyContent,
+  );
+  const currentPageFooterContent = useContentsStoreContext(
+    (s) => s.currentPageFooterContent,
+  );
+  const setCurrentPageAndContent = useContentsStoreContext(
+    (s) => s.setCurrentPageAndContent,
+  );
   const { currentSelectedId } = useCurrentSelectedId();
+
+  // 获取对应的 content map
+  const getContentMap = () => {
+    if (currentSelectedItemPosition === "header")
+      return currentPageHeaderContent;
+    if (currentSelectedItemPosition === "footer")
+      return currentPageFooterContent;
+    return currentPageBodyContent;
+  };
 
   if (
     !currentSelectedItem ||
@@ -51,13 +73,13 @@ export const AttrHbox: FC = memo(function AttrHbox() {
           <SegmentedControl
             value={currentSelectedItem.vertical || "top"}
             onChange={(value) => {
-              updateSelectedItemProp(
+              updateSelectedItemPropDirect(
                 {
                   currentSelectedId,
                   position: currentSelectedItemPosition,
-                  currentPageIndex: state.currentPageIndex,
-                  state,
-                  setCurrentPageAndContent: state.setCurrentPageAndContent,
+                  currentPageIndex,
+                  contentMap: getContentMap(),
+                  setCurrentPageAndContent,
                 },
                 "vertical",
                 value,

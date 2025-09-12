@@ -1,23 +1,16 @@
-import { Store } from "@xxs3315/mbl-typings";
-
 export type Position = "header" | "body" | "footer";
-
-export function getContentMapByPosition(state: Store, position: Position) {
-  if (position === "header") return state.currentPageHeaderContent;
-  if (position === "footer") return state.currentPageFooterContent;
-  return state.currentPageBodyContent;
-}
 
 export function cloneContentMap(map: Map<any, any>) {
   return new Map(map);
 }
 
-export function updateSelectedItemProp<T extends keyof any>(
+// 细粒度版本，直接接受 content map
+export function updateSelectedItemPropDirect<T extends keyof any>(
   options: {
     currentSelectedId: string;
     position: Position;
     currentPageIndex: number;
-    state: Store;
+    contentMap: Map<string, any>;
     setCurrentPageAndContent: (
       pageIndex: number,
       content: Map<any, any>,
@@ -27,8 +20,7 @@ export function updateSelectedItemProp<T extends keyof any>(
   key: T,
   value: any,
 ) {
-  const sourceMap = getContentMapByPosition(options.state, options.position);
-  const newMap = cloneContentMap(sourceMap);
+  const newMap = cloneContentMap(options.contentMap);
   const item = newMap.get(options.currentSelectedId);
   if (!item) return;
   newMap.set(options.currentSelectedId, { ...item, [key]: value });
@@ -39,12 +31,13 @@ export function updateSelectedItemProp<T extends keyof any>(
   );
 }
 
-export function updateSelectedItemProps<T extends Record<string, any>>(
+// 细粒度版本，直接接受 content map
+export function updateSelectedItemPropsDirect<T extends Record<string, any>>(
   options: {
     currentSelectedId: string;
     position: Position;
     currentPageIndex: number;
-    state: Store;
+    contentMap: Map<string, any>;
     setCurrentPageAndContent: (
       pageIndex: number,
       content: Map<any, any>,
@@ -53,8 +46,7 @@ export function updateSelectedItemProps<T extends Record<string, any>>(
   },
   updates: T,
 ) {
-  const sourceMap = getContentMapByPosition(options.state, options.position);
-  const newMap = cloneContentMap(sourceMap);
+  const newMap = cloneContentMap(options.contentMap);
   const item = newMap.get(options.currentSelectedId);
   if (!item) return;
 

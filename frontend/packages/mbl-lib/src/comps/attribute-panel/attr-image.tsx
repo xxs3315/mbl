@@ -21,8 +21,8 @@ import { useContentsStoreContext } from "../../store/store";
 import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
 import axios, { configureAxios } from "../../utils/axios";
 import {
-  updateSelectedItemProp,
-  updateSelectedItemProps,
+  updateSelectedItemPropDirect,
+  updateSelectedItemPropsDirect,
 } from "../../utils/content-updaters";
 import { DebouncedTextarea } from "../../utils/debounced-textarea";
 
@@ -59,9 +59,29 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
   const { item: currentSelectedItem, position: currentSelectedItemPosition } =
     useSelectedItem();
 
-  const state = useContentsStoreContext((s) => s);
-  const currentPageIndex = state.currentPageIndex;
-  const setCurrentPageAndContent = state.setCurrentPageAndContent;
+  // 使用细粒度订阅，只订阅需要的状态
+  const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
+  const setCurrentPageAndContent = useContentsStoreContext(
+    (s) => s.setCurrentPageAndContent,
+  );
+  const currentPageHeaderContent = useContentsStoreContext(
+    (s) => s.currentPageHeaderContent,
+  );
+  const currentPageBodyContent = useContentsStoreContext(
+    (s) => s.currentPageBodyContent,
+  );
+  const currentPageFooterContent = useContentsStoreContext(
+    (s) => s.currentPageFooterContent,
+  );
+
+  // 获取对应的 content map
+  const getContentMap = () => {
+    if (currentSelectedItemPosition === "header")
+      return currentPageHeaderContent;
+    if (currentSelectedItemPosition === "footer")
+      return currentPageFooterContent;
+    return currentPageBodyContent;
+  };
 
   // 如果当前选中的元素在当前页面中不存在，清除选中状态
   React.useEffect(() => {
@@ -150,12 +170,12 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
       }
       if ("base64" in imageData) {
         // 浏览器base64模式 - 同时更新所有属性
-        updateSelectedItemProps(
+        updateSelectedItemPropsDirect(
           {
             currentSelectedId: currentSelectedId!,
             currentPageIndex,
             position: currentSelectedItemPosition,
-            state,
+            contentMap: getContentMap(),
             setCurrentPageAndContent,
           },
           {
@@ -167,12 +187,12 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         );
       } else {
         // 服务器上传模式 - 同时更新所有属性
-        updateSelectedItemProps(
+        updateSelectedItemPropsDirect(
           {
             currentSelectedId: currentSelectedId!,
             currentPageIndex,
             position: currentSelectedItemPosition,
-            state,
+            contentMap: getContentMap(),
             setCurrentPageAndContent,
           },
           {
@@ -247,12 +267,12 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         }
 
         // 同时更新width和height
-        updateSelectedItemProps(
+        updateSelectedItemPropsDirect(
           {
             currentSelectedId: currentSelectedId!,
             currentPageIndex,
             position: currentSelectedItemPosition,
-            state,
+            contentMap: getContentMap(),
             setCurrentPageAndContent,
           },
           {
@@ -262,12 +282,12 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         );
       } else {
         // 对于其他属性，使用单属性更新
-        updateSelectedItemProp(
+        updateSelectedItemPropDirect(
           {
             currentSelectedId: currentSelectedId!,
             currentPageIndex,
             position: currentSelectedItemPosition,
-            state,
+            contentMap: getContentMap(),
             setCurrentPageAndContent,
           },
           property,

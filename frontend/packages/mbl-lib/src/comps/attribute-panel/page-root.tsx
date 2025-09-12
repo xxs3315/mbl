@@ -6,17 +6,21 @@ import type { PageRectangle, PageOrientation } from "@xxs3315/mbl-typings";
 import { DebouncedTextarea } from "../../utils/debounced-textarea";
 
 export const PageRoot: FC = memo(function PageRoot() {
-  const state = useContentsStoreContext((s) => s);
-  const currentPageIndex = state.currentPageIndex;
-  const currentPage = state.pages[currentPageIndex];
+  // 使用细粒度订阅，只订阅需要的状态
+  const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
+  const pages = useContentsStoreContext((s) => s.pages);
+  const updatePageName = useContentsStoreContext((s) => s.updatePageName);
+  const updatePageRectangle = useContentsStoreContext(
+    (s) => s.updatePageRectangle,
+  );
+  const updatePageOrientation = useContentsStoreContext(
+    (s) => s.updatePageOrientation,
+  );
 
+  const currentPage = pages[currentPageIndex];
   const currentPageTitle = currentPage?.name;
   const currentPageRectangle = currentPage?.rectangle;
   const currentPageOrientation = currentPage?.orientation;
-
-  const updatePageName = state.updatePageName;
-  const updatePageRectangle = state.updatePageRectangle;
-  const updatePageOrientation = state.updatePageOrientation;
 
   return (
     <>

@@ -4,16 +4,18 @@ import { Divider, NumberInput, Title, Grid } from "@mantine/core";
 import { useContentsStoreContext } from "../../store/store";
 
 export const PageFooterRoot: FC = memo(function PageFooterRoot() {
-  const state = useContentsStoreContext((s) => s);
-  const currentPageIndex = state.currentPageIndex;
-  const currentPage = state.pages[currentPageIndex];
+  // 使用细粒度订阅，只订阅需要的状态
+  const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
+  const pages = useContentsStoreContext((s) => s.pages);
+  const updatePageFooterMargin = useContentsStoreContext(
+    (s) => s.updatePageFooterMargin,
+  );
 
+  const currentPage = pages[currentPageIndex];
   const currentPageFooterMLeft = currentPage?.mLeftFooter;
   const currentPageFooterMRight = currentPage?.mRightFooter;
   const currentPageFooterMTop = currentPage?.mTopFooter;
   const currentPageFooterMBottom = currentPage?.mBottomFooter;
-
-  const updatePageFooterMargin = state.updatePageFooterMargin;
 
   return (
     <>
