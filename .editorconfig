@@ -1,0 +1,7 @@
+[*.{js,jsx,ts,tsx,vue}]
+# 缩进使用空格
+indent_style = space
+# 缩进2个字符
+indent_size = 2
+# 行结尾使用 crlf !!!!
+end_of_line = crlf

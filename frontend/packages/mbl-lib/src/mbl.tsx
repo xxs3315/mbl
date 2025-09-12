@@ -48,7 +48,7 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { DpiProvider, useDpi } from "./providers/dpi-provider";
-import { getRectangleSize, mm2px, pt2px } from "./utils/paper";
+import { getRectangleSize, mm2px, pt2px } from "@xxs3315/mbl-utils";
 import { useMount } from "react-use";
 import { MacScrollbar } from "mac-scrollbar";
 import "mac-scrollbar/dist/mac-scrollbar.css";

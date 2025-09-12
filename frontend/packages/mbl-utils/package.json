@@ -1,0 +1,39 @@
+{
+  "name": "@xxs3315/mbl-utils",
+  "version": "1.0.0",
+  "description": "Utility functions for MixBoxLayout - 工具函数库",
+  "keywords": [
+    "mbl",
+    "mix-box-layout",
+    "utils",
+    "utilities",
+    "工具",
+    "工具函数"
+  ],
+  "license": "MIT",
+  "author": "xxs3315",
+  "main": "dist/index.js",
+  "module": "dist-esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "dist-esm",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm run build:cjs && pnpm run build:esm",
+    "build:cjs": "tsc -p tsconfig.build.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "clean": "rimraf dist dist-esm",
+    "dev": "tsc -p tsconfig.build.json --watch"
+  },
+  "dependencies": {
+    "@xxs3315/mbl-typings": "workspace:*",
+    "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.12",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.0"
+  }
+}
