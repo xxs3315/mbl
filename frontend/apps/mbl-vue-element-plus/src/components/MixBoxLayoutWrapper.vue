@@ -13,6 +13,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { applyReactInVue } from 'veaury'
 import { MixBoxLayout } from "@xxs3315/mbl-lib";
 import { contents } from "@xxs3315/mbl-lib-example-data";
+import { tablePlugin } from "@xxs3315/mbl-lib-plugin-table";
 
 // Props定义
 interface Props {
@@ -22,6 +23,11 @@ interface Props {
   theme?: 'blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal';
   width?: string | number;
   height?: string | number;
+  baseUrl?: string;
+  imageUploadPath?: string;
+  imageDownloadPath?: string;
+  plugins?: Array<{ metadata: any; plugin: any }>;
+  enablePluginSystem?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,7 +36,15 @@ const props = withDefaults(defineProps<Props>(), {
   initialContent: () => contents,
   theme: 'blue',
   width: '100%',
-  height: '600px'
+  height: '600px',
+  baseUrl: undefined,
+  imageUploadPath: undefined,
+  imageDownloadPath: undefined,
+  plugins: () => [{
+    metadata: tablePlugin.metadata,
+    plugin: tablePlugin,
+  }],
+  enablePluginSystem: true
 });
 
 // Emits定义
@@ -55,8 +69,11 @@ const mixBoxProps = computed(() => ({
   contents: currentContent.value,
   onContentChange: handleContentUpdate,  // 添加 onContentChange 回调
   theme: currentTheme.value,
-  width: props.width,
-  height: props.height
+  baseUrl: props.baseUrl || "http://localhost:8080",
+  imageUploadPath: props.imageUploadPath || "/api/images/upload",
+  imageDownloadPath: props.imageDownloadPath || "api/images",
+  plugins: props.plugins,
+  enablePluginSystem: props.enablePluginSystem
 }));
 
 // 方法
