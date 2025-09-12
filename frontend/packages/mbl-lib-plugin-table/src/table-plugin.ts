@@ -11,7 +11,11 @@ import {
   Divider,
 } from "@mantine/core";
 import { pt2px } from "@xxs3315/mbl-utils";
-import { useCurrentSelectedId, useDpi } from "@xxs3315/mbl-lib";
+import {
+  useCurrentSelectedId,
+  useDpi,
+  useThemeColorsContext,
+} from "@xxs3315/mbl-lib";
 
 // SVG 图标定义 - 优化为常量，避免重复创建
 const SVG_PROPS = {
@@ -225,7 +229,7 @@ export const TABLE_PLUGIN_METADATA = {
 export interface TablePluginProps {
   id: string;
   onPropsChange?: (newProps: any) => void; // 属性变化回调
-  colors?: any; // 主题颜色
+  // colors 现在通过 useThemeColorsContext hook 获取，不再通过 props 传递
   // currentSelectedId 现在通过 useCurrentSelectedId hook 获取，不再通过 props 传递
   // dpi 现在通过 useDpi hook 获取，不再通过 props 传递
   attrs: {
@@ -294,7 +298,6 @@ const TextareaWithComposition = React.memo<{
   currentSelectedColumnId?: string;
   currentSelectedId?: string;
   tableId?: string;
-  colors?: any; // 主题颜色
 }>(
   ({
     props,
@@ -304,10 +307,11 @@ const TextareaWithComposition = React.memo<{
     currentSelectedColumnId,
     currentSelectedId,
     tableId,
-    colors,
   }) => {
     // 使用 hook 获取 dpi
     const { dpi } = useDpi();
+    // 使用 hook 获取 colors
+    const colors = useThemeColorsContext();
     const [localValue, setLocalValue] = React.useState(props.value ?? "");
     const [isComposing, setIsComposing] = React.useState(false);
     const debounceTimeoutRef = React.useRef<number | null>(null);
@@ -582,7 +586,6 @@ const renderTextComponent = (
   currentSelectedColumnId?: string,
   currentSelectedId?: string,
   tableId?: string,
-  colors?: any,
 ): React.ReactElement => {
   return React.createElement(TextareaWithComposition, {
     props,
@@ -592,7 +595,6 @@ const renderTextComponent = (
     currentSelectedColumnId,
     currentSelectedId,
     tableId,
-    colors,
   });
 };
 
@@ -669,7 +671,6 @@ const createTableItemElement = (
   currentSelectedColumnId?: string,
   currentSelectedId?: string,
   tableId?: string,
-  colors?: any,
 ): React.ReactElement => {
   // 如果有子元素，渲染为容器
   if (item.children && item.children.length > 0) {
@@ -688,7 +689,6 @@ const createTableItemElement = (
           currentSelectedColumnId,
           currentSelectedId,
           tableId,
-          colors,
         ),
     );
 
@@ -751,7 +751,6 @@ const createTableItemElement = (
             currentSelectedColumnId,
             currentSelectedId,
             tableId,
-            colors,
           )
         : React.createElement("span"),
     ),
@@ -765,12 +764,13 @@ export const TableComponent: React.FC<TablePluginProps> = ({
   id: tableId,
   attrs,
   onPropsChange,
-  colors,
 }) => {
   // 使用 hook 获取 currentSelectedId，避免通过 props 传递导致全量重新渲染
   const { currentSelectedId } = useCurrentSelectedId();
   // 使用 hook 获取 dpi，避免通过 props 传递导致全量重新渲染
   const { dpi } = useDpi();
+  // 使用 hook 获取 colors，避免通过 props 传递导致全量重新渲染
+  const colors = useThemeColorsContext();
   console.log("currentSelectedId", currentSelectedId);
 
   const { background, columns, pTop, pRight, pBottom, pLeft } = attrs;
@@ -1060,7 +1060,6 @@ export const TableComponent: React.FC<TablePluginProps> = ({
           currentSelectedColumnId,
           currentSelectedId,
           tableId,
-          colors,
         ),
       ),
     [
@@ -1072,7 +1071,6 @@ export const TableComponent: React.FC<TablePluginProps> = ({
       currentSelectedColumnId,
       currentSelectedId,
       tableId,
-      colors,
     ],
   );
 

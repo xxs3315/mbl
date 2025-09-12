@@ -48,6 +48,10 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { DpiProvider, useDpi } from "./providers/dpi-provider";
+import {
+  ThemeProvider,
+  useThemeColorsContext,
+} from "./providers/theme-provider";
 import { getRectangleSize, mm2px, pt2px } from "@xxs3315/mbl-utils";
 import { useMount } from "react-use";
 import { MacScrollbar } from "mac-scrollbar";
@@ -89,7 +93,7 @@ const TreeNode = React.memo<{
 }>(({ item, content, level, onItemClick, currentSelectedId }) => {
   const [isExpanded, setIsExpanded] = React.useState(true);
   const hasChildren = item.children && item.children.length > 0;
-  const colors = useThemeColors();
+  const colors = useThemeColorsContext();
 
   const getIcon = (cat?: string, direction?: string) => {
     switch (cat) {
@@ -310,7 +314,7 @@ const MixBoxLayoutContent = React.memo<{
     });
 
     // 定义颜色常量
-    const colors = useThemeColors();
+    const colors = useThemeColorsContext();
 
     const { currentSelectedId, setCurrentSelectedId } = useCurrentSelectedId();
 
@@ -1419,7 +1423,7 @@ const MixBoxLayoutContent = React.memo<{
                     attrs: props,
                     // 不直接传递 dpi，让插件组件自己通过 useDpi hook 订阅
                     // 不直接传递 currentSelectedId，让插件组件自己订阅
-                    colors: colors, // 传递主题颜色
+                    // 不直接传递 colors，让插件组件自己通过 useThemeColorsContext hook 订阅
                     onPropsChange: (newProps: any) => {
                       // 通过 handlePluginPropsChange 更新 store
                       handlePluginPropsChange(props.id, newProps, position);
@@ -3360,18 +3364,20 @@ export const MixBoxLayout = React.memo<{
       <MantineProvider theme={dynamicTheme}>
         <ContentsStoreContext.Provider value={store}>
           <DpiProvider>
-            <CurrentSelectedIdProvider>
-              <DndProvider backend={HTML5Backend}>
-                <MixBoxLayoutContent
-                  onContentChange={onContentChange}
-                  baseUrl={baseUrl}
-                  imageUploadPath={imageUploadPath}
-                  imageDownloadPath={imageDownloadPath}
-                  plugins={plugins}
-                  enablePluginSystem={enablePluginSystem}
-                />
-              </DndProvider>
-            </CurrentSelectedIdProvider>
+            <ThemeProvider>
+              <CurrentSelectedIdProvider>
+                <DndProvider backend={HTML5Backend}>
+                  <MixBoxLayoutContent
+                    onContentChange={onContentChange}
+                    baseUrl={baseUrl}
+                    imageUploadPath={imageUploadPath}
+                    imageDownloadPath={imageDownloadPath}
+                    plugins={plugins}
+                    enablePluginSystem={enablePluginSystem}
+                  />
+                </DndProvider>
+              </CurrentSelectedIdProvider>
+            </ThemeProvider>
           </DpiProvider>
         </ContentsStoreContext.Provider>
       </MantineProvider>
