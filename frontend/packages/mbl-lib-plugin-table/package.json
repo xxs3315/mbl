@@ -1,0 +1,47 @@
+{
+  "name": "@xxs3315/mbl-lib-plugin-table",
+  "version": "1.0.0",
+  "description": "Table plugin for MixBoxLayout - 表格插件",
+  "keywords": [
+    "mbl",
+    "mix-box-layout",
+    "plugin",
+    "table",
+    "表格",
+    "插件"
+  ],
+  "license": "MIT",
+  "author": "xxs3315",
+  "main": "dist/index.js",
+  "module": "dist-esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "dist-esm",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm run build:cjs && pnpm run build:esm && pnpm run build:fix-output",
+    "build:cjs": "tsc -p tsconfig.build.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:fix-output": "node scripts/fix-output.js",
+    "clean": "rimraf dist dist-esm",
+    "dev": "tsc -p tsconfig.build.json --watch"
+  },
+  "dependencies": {
+    "@mantine/core": "^8.2.5",
+    "@mantine/hooks": "^8.2.5",
+    "@xxs3315/mbl-core": "workspace:*",
+    "@xxs3315/mbl-utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.0",
+    "@types/react-dom": "~19.1.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "~19.1.0",
+    "react-dom": "~19.1.0"
+  }
+}
