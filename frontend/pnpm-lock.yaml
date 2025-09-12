@@ -166,6 +166,9 @@ importers:
       '@xxs3315/mbl-lib-example-data':
         specifier: workspace:*
         version: link:../../packages/mbl-lib-example-data
+      '@xxs3315/mbl-lib-plugin-table':
+        specifier: workspace:*
+        version: link:../../packages/mbl-lib-plugin-table
       element-plus:
         specifier: ^2.11.2
         version: 2.11.2(vue@3.5.20(typescript@5.9.2))
@@ -347,6 +350,9 @@ importers:
       '@xxs3315/mbl-core':
         specifier: workspace:*
         version: link:../mbl-core
+      '@xxs3315/mbl-lib':
+        specifier: workspace:*
+        version: link:../mbl-lib
       '@xxs3315/mbl-utils':
         specifier: workspace:*
         version: link:../mbl-utils
