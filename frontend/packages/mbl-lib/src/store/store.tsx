@@ -202,6 +202,65 @@ export const createContentsStore = (
                 }
               });
             },
+            updatePluginItemProps: (
+              itemId: string,
+              newProps: any,
+              position: "header" | "body" | "footer" = "body",
+            ) => {
+              set((state) => {
+                let currentContentMap;
+                let pageContentMap;
+
+                switch (position) {
+                  case "header":
+                    currentContentMap = state.currentPageHeaderContent;
+                    pageContentMap =
+                      state.pages[state.currentPageIndex]?.pageHeaderContent;
+                    break;
+                  case "footer":
+                    currentContentMap = state.currentPageFooterContent;
+                    pageContentMap =
+                      state.pages[state.currentPageIndex]?.pageFooterContent;
+                    break;
+                  case "body":
+                  default:
+                    currentContentMap = state.currentPageBodyContent;
+                    pageContentMap =
+                      state.pages[state.currentPageIndex]?.pageBodyContent;
+                    break;
+                }
+
+                // 获取当前项目
+                const currentItem = currentContentMap.get(itemId);
+                if (!currentItem) {
+                  return state; // 项目不存在，直接返回原状态
+                }
+
+                // 检查是否有实际变化，避免不必要的更新
+                let hasChanges = false;
+                for (const [key, value] of Object.entries(newProps)) {
+                  if ((currentItem as any)[key] !== value) {
+                    hasChanges = true;
+                    break;
+                  }
+                }
+
+                if (!hasChanges) {
+                  return state; // 没有变化，直接返回原状态
+                }
+
+                // 直接修改现有对象的属性，不创建新对象
+                Object.assign(currentItem, newProps);
+
+                // 同时更新对应页面的内容
+                if (pageContentMap) {
+                  const pageItem = pageContentMap.get(itemId);
+                  if (pageItem) {
+                    Object.assign(pageItem, newProps);
+                  }
+                }
+              });
+            },
             updatePageName: (pageIndex: number, name: string) => {
               set((state) => {
                 if (state.pages[pageIndex]) {

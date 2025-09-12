@@ -24,6 +24,13 @@ interface AttributePanelRendererProps {
   };
   baseUrl?: string;
   imageUploadPath?: string;
+  plugins?: Array<{ metadata: any; plugin: any }>;
+  enablePluginSystem?: boolean;
+  onPluginPropsChange?: (
+    itemId: string,
+    newProps: any,
+    position: "header" | "body" | "footer",
+  ) => void;
 }
 
 // 缓存组件映射，避免重复创建
@@ -36,7 +43,17 @@ const COMPONENT_MAP = {
 
 export const AttributePanelRenderer: React.FC<AttributePanelRendererProps> =
   React.memo(
-    ({ currentSelectedId, selectedItemInfo, baseUrl, imageUploadPath }) => {
+    ({
+      currentSelectedId,
+      selectedItemInfo,
+      baseUrl,
+      imageUploadPath,
+      plugins,
+      enablePluginSystem = false,
+      onPluginPropsChange,
+    }) => {
+      console.log("AttributePanelRenderer");
+
       // 首先检查是否是特殊页面ID
       if (currentSelectedId in COMPONENT_MAP) {
         const Component =
@@ -49,7 +66,49 @@ export const AttributePanelRenderer: React.FC<AttributePanelRendererProps> =
         return <AttrBlank />;
       }
 
+      const item = selectedItemInfo.item;
       const itemType = selectedItemInfo.item.cat;
+
+      // 检查是否是插件项目
+      if (
+        item.pluginId &&
+        enablePluginSystem &&
+        plugins &&
+        onPluginPropsChange
+      ) {
+        console.log(
+          "[Plugin] Rendering plugin attribute panel:",
+          item.pluginId,
+        );
+
+        // 查找对应的插件
+        const pluginWrapper = plugins.find(
+          (p) => p.metadata.id === item.pluginId,
+        );
+
+        if (pluginWrapper) {
+          const plugin = pluginWrapper.plugin;
+
+          // 调用插件的renderAttrPanel方法
+          if (plugin.renderAttrPanel) {
+            const pluginProps = {
+              id: item.id,
+              attrs: item,
+            };
+
+            const handlePluginPropsChange = (newProps: any) => {
+              console.log("[Plugin] Plugin props changed:", newProps);
+              onPluginPropsChange(
+                item.id,
+                newProps.attrs,
+                selectedItemInfo.position!,
+              );
+            };
+
+            return plugin.renderAttrPanel(pluginProps, handlePluginPropsChange);
+          }
+        }
+      }
 
       // 根据项目类型渲染对应的属性面板
       switch (itemType) {

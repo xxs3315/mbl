@@ -163,6 +163,11 @@ export interface Store extends Omit<ContentData, "pages" | "currentPageIndex"> {
     newValue: string,
     position?: "header" | "body" | "footer",
   ) => void;
+  updatePluginItemProps: (
+    itemId: string,
+    newProps: any,
+    position?: "header" | "body" | "footer",
+  ) => void;
   updatePageName: (pageIndex: number, name: string) => void;
   updatePageRectangle: (pageIndex: number, rectangle: PageRectangle) => void;
   updatePageOrientation: (
