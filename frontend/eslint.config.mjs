@@ -43,6 +43,7 @@ export default tsEslint.config(
     rules: {
       "no-var": "warn",
       "prefer-rest-params": "warn",
+      "@typescript-eslint/no-require-imports": "warn",
       "linebreak-style": ["off", "windows"],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-expressions": "warn",
