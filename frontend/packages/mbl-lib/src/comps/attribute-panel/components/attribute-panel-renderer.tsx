@@ -52,7 +52,12 @@ export const AttributePanelRenderer: React.FC<AttributePanelRendererProps> =
       enablePluginSystem = false,
       onPluginPropsChange,
     }) => {
-      console.log("AttributePanelRenderer");
+      console.log(
+        "AttributePanelRenderer - currentSelectedId:",
+        currentSelectedId,
+        "selectedItemInfo:",
+        selectedItemInfo,
+      );
 
       // 首先检查是否是特殊页面ID
       if (currentSelectedId in COMPONENT_MAP) {

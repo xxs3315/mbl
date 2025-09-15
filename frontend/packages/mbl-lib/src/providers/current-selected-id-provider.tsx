@@ -32,6 +32,14 @@ export function CurrentSelectedIdProvider({
     () => ({
       currentSelectedId,
       setCurrentSelectedId: (newCurrentSelectedId: string) => {
+        console.log(
+          "CurrentSelectedIdProvider - setCurrentSelectedId called:",
+          {
+            newCurrentSelectedId,
+            currentSelectedId,
+            changed: newCurrentSelectedId !== currentSelectedId,
+          },
+        );
         // 只有当值真正改变时才更新状态
         if (newCurrentSelectedId !== currentSelectedId) {
           setCurrentSelectedId(newCurrentSelectedId);

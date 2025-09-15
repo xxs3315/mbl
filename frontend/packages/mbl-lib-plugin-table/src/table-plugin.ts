@@ -312,6 +312,8 @@ const TextareaWithComposition = React.memo<{
     const { dpi } = useDpi();
     // 使用 hook 获取 colors
     const colors = useThemeColorsContext();
+    // 使用 hook 获取 currentSelectedId 和 setCurrentSelectedId
+    const { setCurrentSelectedId } = useCurrentSelectedId();
     const [localValue, setLocalValue] = React.useState(props.value ?? "");
     const [isComposing, setIsComposing] = React.useState(false);
     const debounceTimeoutRef = React.useRef<number | null>(null);
@@ -376,12 +378,46 @@ const TextareaWithComposition = React.memo<{
     );
 
     const handleClick = React.useCallback(() => {
+      console.log("Table Plugin - handleClick:", {
+        tableId,
+        columnId: props.id,
+      });
+      // 更新全局选中状态 - 传递表格ID而不是列ID
+      setCurrentSelectedId(tableId || "");
+      // 更新表格内部选中状态
       onColumnSelect?.(props.id);
-    }, [onColumnSelect, props.id]);
+    }, [setCurrentSelectedId, onColumnSelect, props.id, tableId]);
 
     const handleFocus = React.useCallback(() => {
-      onColumnSelect?.(props.id);
-    }, [onColumnSelect, props.id]);
+      console.log("Table Plugin - handleFocus:", {
+        tableId,
+        columnId: props.id,
+      });
+      // 使用 setTimeout 确保在下一个事件循环中执行，避免与浏览器默认行为冲突
+      setTimeout(() => {
+        // 更新全局选中状态 - 传递表格ID而不是列ID
+        setCurrentSelectedId(tableId || "");
+        // 更新表格内部选中状态
+        onColumnSelect?.(props.id);
+      }, 0);
+    }, [setCurrentSelectedId, onColumnSelect, props.id, tableId]);
+
+    const handleKeyDown = React.useCallback(
+      (event: React.KeyboardEvent) => {
+        console.log("Table Plugin - handleKeyDown:", {
+          key: event.key,
+          tableId,
+          columnId: props.id,
+        });
+        // 处理Tab键切换
+        if (event.key === "Tab") {
+          // 确保在Tab切换前更新选中状态 - 传递表格ID而不是列ID
+          setCurrentSelectedId(tableId || "");
+          onColumnSelect?.(props.id);
+        }
+      },
+      [setCurrentSelectedId, onColumnSelect, props.id, tableId],
+    );
 
     // 按钮样式常量
     const BUTTON_STYLE = {
@@ -568,6 +604,7 @@ const TextareaWithComposition = React.memo<{
         onChange: handleChange,
         onClick: handleClick,
         onFocus: handleFocus,
+        onKeyDown: handleKeyDown,
         onCompositionStart: handleCompositionStart,
         onCompositionEnd: handleCompositionEnd,
         styles: textareaStyles,
@@ -786,6 +823,19 @@ export const TableComponent: React.FC<TablePluginProps> = ({
   React.useEffect(() => {
     setInternalColumns(columns);
   }, [columns]);
+
+  // 监听全局 currentSelectedId 变化，同步表格内部选中状态
+  React.useEffect(() => {
+    // 检查当前选中的ID是否是当前表格
+    if (currentSelectedId === tableId) {
+      // 如果全局选中的ID是当前表格，保持当前选中的列状态
+      // 不需要清除 currentSelectedColumnId，因为用户可能正在编辑某个列
+      console.log("Table selected:", tableId);
+    } else {
+      // 如果选中的不是当前表格，清除内部选中状态
+      setCurrentSelectedColumnId("");
+    }
+  }, [currentSelectedId, tableId]);
 
   // 处理文本值变化
   const handleValueChange = React.useCallback(
