@@ -46,6 +46,7 @@ import {
   PanelRightClose,
   PanelRightOpen,
   LayoutDashboard,
+  LayoutList,
 } from "lucide-react";
 import { DpiProvider, useDpi } from "./providers/dpi-provider";
 import {
@@ -2623,7 +2624,7 @@ const MixBoxLayoutContent = React.memo<{
                   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 })}
               >
-                <LayoutDashboard size={16} />
+                <LayoutList size={16} />
               </ActionIcon>
               <ActionIcon
                 variant="subtle"
@@ -2837,6 +2838,50 @@ const MixBoxLayoutContent = React.memo<{
                 ) : (
                   <PanelRightOpen size={16} />
                 )}
+              </ActionIcon>
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                aria-label="toggle-right-sidebar"
+                onClick={() => {
+                  // 实现全部显示/全部隐藏的切换
+                  const allShown =
+                    showPageSelector && showLeftSidebar && showRightSidebar;
+                  const allHidden =
+                    !showPageSelector && !showLeftSidebar && !showRightSidebar;
+
+                  if (allShown) {
+                    // 如果全部显示，则全部隐藏
+                    setShowPageSelector(false);
+                    setShowLeftSidebar(false);
+                    setShowRightSidebar(false);
+                  } else if (allHidden) {
+                    // 如果全部隐藏，则全部显示
+                    setShowPageSelector(true);
+                    setShowLeftSidebar(true);
+                    setShowRightSidebar(true);
+                  } else {
+                    // 其他情况（部分显示），则全部显示
+                    setShowPageSelector(true);
+                    setShowLeftSidebar(true);
+                    setShowRightSidebar(true);
+                  }
+                }}
+                className={css({
+                  backgroundColor: showRightSidebar ? "purple.500" : "gray.400",
+                  color: "white",
+                  _hover: {
+                    backgroundColor: showRightSidebar
+                      ? "purple.600"
+                      : "gray.500",
+                  },
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                })}
+                style={{
+                  display: !isMobileMode ? "block" : "none",
+                }}
+              >
+                <LayoutDashboard size={16} />
               </ActionIcon>
             </div>
           </div>
