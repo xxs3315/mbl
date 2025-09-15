@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import { MixBoxLayout } from "@xxs3315/mbl-lib";
 import { contents } from "@xxs3315/mbl-lib-example-data";
@@ -6,11 +7,22 @@ import { tablePlugin } from "@xxs3315/mbl-lib-plugin-table";
 import { useDisclosure } from "@mantine/hooks";
 import { AppShell, Burger, Group } from "@mantine/core";
 import { ThemeSwitcher } from "./components/ThemeSwitcher";
+import {
+  LanguageSwitcher,
+  type SupportedLocale,
+} from "./components/LanguageSwitcher";
 import { useTheme } from "./providers/ThemeProvider";
 
 const App = () => {
   const [opened, { toggle }] = useDisclosure();
   const { currentTheme, setTheme } = useTheme();
+  const [currentLocale, setCurrentLocale] =
+    React.useState<SupportedLocale>("zh-CN");
+
+  const handleLocaleChange = (locale: SupportedLocale) => {
+    console.log("App: Changing locale from", currentLocale, "to", locale);
+    setCurrentLocale(locale);
+  };
 
   // 定义插件列表
   const plugins = [
@@ -37,7 +49,16 @@ const App = () => {
             />
             Header
           </Group>
-          <ThemeSwitcher currentTheme={currentTheme} onThemeChange={setTheme} />
+          <Group>
+            <LanguageSwitcher
+              currentLocale={currentLocale}
+              onLocaleChange={handleLocaleChange}
+            />
+            <ThemeSwitcher
+              currentTheme={currentTheme}
+              onThemeChange={setTheme}
+            />
+          </Group>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
@@ -55,6 +76,7 @@ const App = () => {
             console.log(updatedContents);
           }}
           theme={currentTheme}
+          locale={currentLocale}
           baseUrl={"http://localhost:8080"}
           imageUploadPath={"/api/images/upload"}
           imageDownloadPath={"api/images"}

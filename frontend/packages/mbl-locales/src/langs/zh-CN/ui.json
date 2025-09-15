@@ -1,0 +1,29 @@
+{
+  "attributePanel": {
+    "common": {
+      "inputHere": "在此输入...",
+      "pickValue": "选择值",
+      "left": "左",
+      "center": "中",
+      "right": "右",
+      "top": "上",
+      "middle": "中",
+      "bottom": "下"
+    },
+    "text": {
+      "title": "文本属性",
+      "bold": "粗体",
+      "leftPadding": "左内边距",
+      "rightPadding": "右内边距",
+      "topPadding": "上内边距",
+      "bottomPadding": "下内边距",
+      "fontSize": "字体大小",
+      "fontColor": "文字颜色",
+      "backgroundColor": "背景颜色",
+      "horizontalAlign": "水平对齐",
+      "leftAlign": "左对齐",
+      "centerAlign": "居中",
+      "rightAlign": "右对齐"
+    }
+  }
+}

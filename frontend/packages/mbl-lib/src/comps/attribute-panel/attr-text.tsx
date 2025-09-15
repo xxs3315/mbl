@@ -2,6 +2,7 @@ import { FC, memo } from "react";
 import { useContentsStoreContext } from "../../store/store";
 import { useCurrentSelectedId } from "../../providers/current-selected-id-provider";
 import { useSelectedItem } from "../../hooks/use-selected-item";
+import { useI18n } from "../../providers/i18n-provider";
 import {
   Checkbox,
   ColorInput,
@@ -22,6 +23,7 @@ export const AttrText: FC = memo(function AttrText() {
   const { currentSelectedId, setCurrentSelectedId } = useCurrentSelectedId();
   const { item: currentSelectedItem, position: currentSelectedItemPosition } =
     useSelectedItem();
+  const { t } = useI18n();
 
   // 使用细粒度订阅，只订阅需要的状态
   const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
@@ -64,13 +66,13 @@ export const AttrText: FC = memo(function AttrText() {
 
   return (
     <>
-      <Title order={4}>文本属性</Title>
+      <Title order={4}>{t("attributePanel.text.title")}</Title>
       <Divider my="xs" />
 
       <Checkbox
         size="xs"
         fw={500}
-        label="粗体"
+        label={t("attributePanel.text.bold")}
         checked={currentSelectedItem?.bold ?? false}
         onChange={(event) => {
           if (!currentSelectedId || !currentSelectedItemPosition) return;
@@ -92,7 +94,7 @@ export const AttrText: FC = memo(function AttrText() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="左内边距"
+            label={t("attributePanel.text.leftPadding")}
             size="xs"
             value={currentSelectedItem?.pLeft ?? 0}
             onChange={(value) => {
@@ -116,7 +118,7 @@ export const AttrText: FC = memo(function AttrText() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="右内边距"
+            label={t("attributePanel.text.rightPadding")}
             size="xs"
             value={currentSelectedItem?.pRight ?? 0}
             onChange={(value) => {
@@ -140,7 +142,7 @@ export const AttrText: FC = memo(function AttrText() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="上内边距"
+            label={t("attributePanel.text.topPadding")}
             size="xs"
             value={currentSelectedItem?.pTop ?? 0}
             onChange={(value) => {
@@ -164,7 +166,7 @@ export const AttrText: FC = memo(function AttrText() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="下内边距"
+            label={t("attributePanel.text.bottomPadding")}
             size="xs"
             value={currentSelectedItem?.pBottom ?? 0}
             onChange={(value) => {
@@ -188,7 +190,7 @@ export const AttrText: FC = memo(function AttrText() {
       </Grid>
 
       <NumberInput
-        label="字体大小"
+        label={t("attributePanel.text.fontSize")}
         mt="xs"
         size="xs"
         value={currentSelectedItem?.fontSize || defaultPageRootFontSize}
@@ -212,7 +214,7 @@ export const AttrText: FC = memo(function AttrText() {
       />
 
       <ColorInput
-        label="文字颜色"
+        label={t("attributePanel.text.fontColor")}
         mt="xs"
         size="xs"
         format="hex"
@@ -251,7 +253,7 @@ export const AttrText: FC = memo(function AttrText() {
       />
 
       <ColorInput
-        label="背景颜色"
+        label={t("attributePanel.text.backgroundColor")}
         mt="xs"
         size="xs"
         format="hex"
@@ -293,7 +295,7 @@ export const AttrText: FC = memo(function AttrText() {
 
       <div>
         <Text size="xs" fw={500} mb={2} mt="xs">
-          水平对齐
+          {t("attributePanel.text.horizontalAlign")}
         </Text>
         <Stack align="center">
           <SegmentedControl
@@ -323,7 +325,9 @@ export const AttrText: FC = memo(function AttrText() {
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>左对齐</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.text.leftAlign")}
+                    </VisuallyHidden>
                   </>
                 ),
               },
@@ -337,7 +341,9 @@ export const AttrText: FC = memo(function AttrText() {
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>居中</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.text.centerAlign")}
+                    </VisuallyHidden>
                   </>
                 ),
               },
@@ -351,7 +357,9 @@ export const AttrText: FC = memo(function AttrText() {
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>右对齐</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.text.rightAlign")}
+                    </VisuallyHidden>
                   </>
                 ),
               },

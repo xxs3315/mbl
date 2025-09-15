@@ -33,6 +33,7 @@
     "@mantine/notifications": "^8.2.5",
     "@xxs3315/mbl-core": "workspace:*",
     "@xxs3315/mbl-lib-example-data": "workspace:*",
+    "@xxs3315/mbl-locales": "workspace:*",
     "@xxs3315/mbl-state": "workspace:*",
     "@xxs3315/mbl-typings": "workspace:*",
     "@xxs3315/mbl-utils": "workspace:*",
@@ -44,6 +45,7 @@
     "nanoid": "^5.1.5",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
+    "react-i18next": "^15.7.0",
     "react-use": "^17.6.0",
     "zustand": "5.0.5"
   },

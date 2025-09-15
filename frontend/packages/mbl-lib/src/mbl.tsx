@@ -60,6 +60,7 @@ import {
   CurrentSelectedIdProvider,
   useCurrentSelectedId,
 } from "./providers/current-selected-id-provider";
+import { I18nProvider } from "./providers/i18n-provider";
 import {
   PAGE_BODY_ROOT_ID,
   PAGE_FOOTER_ROOT_ID,
@@ -3334,6 +3335,7 @@ export const MixBoxLayout = React.memo<{
   imageDownloadPath?: string;
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
+  locale?: "zh-CN" | "en-US";
 }>(
   ({
     id,
@@ -3345,6 +3347,7 @@ export const MixBoxLayout = React.memo<{
     imageDownloadPath,
     plugins,
     enablePluginSystem = false,
+    locale = "zh-CN",
   }) => {
     // 使用 useMemo 确保 store 只在 id 或 contents 变化时重新创建
     const store = React.useMemo(() => {
@@ -3362,24 +3365,26 @@ export const MixBoxLayout = React.memo<{
 
     return (
       <MantineProvider theme={dynamicTheme}>
-        <ContentsStoreContext.Provider value={store}>
-          <DpiProvider>
-            <ThemeProvider>
-              <CurrentSelectedIdProvider>
-                <DndProvider backend={HTML5Backend}>
-                  <MixBoxLayoutContent
-                    onContentChange={onContentChange}
-                    baseUrl={baseUrl}
-                    imageUploadPath={imageUploadPath}
-                    imageDownloadPath={imageDownloadPath}
-                    plugins={plugins}
-                    enablePluginSystem={enablePluginSystem}
-                  />
-                </DndProvider>
-              </CurrentSelectedIdProvider>
-            </ThemeProvider>
-          </DpiProvider>
-        </ContentsStoreContext.Provider>
+        <I18nProvider defaultLocale={locale}>
+          <ContentsStoreContext.Provider value={store}>
+            <DpiProvider>
+              <ThemeProvider>
+                <CurrentSelectedIdProvider>
+                  <DndProvider backend={HTML5Backend}>
+                    <MixBoxLayoutContent
+                      onContentChange={onContentChange}
+                      baseUrl={baseUrl}
+                      imageUploadPath={imageUploadPath}
+                      imageDownloadPath={imageDownloadPath}
+                      plugins={plugins}
+                      enablePluginSystem={enablePluginSystem}
+                    />
+                  </DndProvider>
+                </CurrentSelectedIdProvider>
+              </ThemeProvider>
+            </DpiProvider>
+          </ContentsStoreContext.Provider>
+        </I18nProvider>
       </MantineProvider>
     );
   },

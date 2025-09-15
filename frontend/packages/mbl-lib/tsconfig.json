@@ -4,7 +4,8 @@
     "jsx": "react",
     "esModuleInterop": true,
     "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"]
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*",

@@ -1,0 +1,45 @@
+{
+  "name": "@xxs3315/mbl-locales",
+  "version": "1.0.0",
+  "description": "Locales functions for MixBoxLayout - 多语言支持库",
+  "keywords": [
+    "mbl",
+    "mix-box-layout",
+    "locales",
+    "utilities",
+    "多语言",
+    "多语言函数"
+  ],
+  "license": "MIT",
+  "author": "xxs3315",
+  "main": "dist/index.js",
+  "module": "dist-esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "dist-esm",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm run build:cjs && pnpm run build:esm",
+    "build:cjs": "tsc -p tsconfig.build.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "clean": "rimraf dist dist-esm",
+    "dev": "tsc -p tsconfig.build.json --watch"
+  },
+  "dependencies": {
+    "@xxs3315/mbl-typings": "workspace:*",
+    "i18next": "^25.5.0",
+    "lodash-es": "^4.17.21",
+    "react-i18next": "^15.7.0"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.12",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "~19.1.0",
+    "react-dom": "~19.1.0"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "attributePanel": {
+    "common": {
+      "inputHere": "Input here...",
+      "pickValue": "Pick value",
+      "left": "Left",
+      "center": "Center",
+      "right": "Right",
+      "top": "Top",
+      "middle": "Middle",
+      "bottom": "Bottom"
+    },
+    "text": {
+      "title": "Text Properties",
+      "bold": "Bold",
+      "leftPadding": "Left Padding",
+      "rightPadding": "Right Padding",
+      "topPadding": "Top Padding",
+      "bottomPadding": "Bottom Padding",
+      "fontSize": "Font Size",
+      "fontColor": "Font Color",
+      "backgroundColor": "Background Color",
+      "horizontalAlign": "Horizontal Alignment",
+      "leftAlign": "Left Align",
+      "centerAlign": "Center",
+      "rightAlign": "Right Align"
+    }
+  }
+}

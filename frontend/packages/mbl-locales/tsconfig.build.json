@@ -7,11 +7,6 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "declaration": true,
     "noEmit": false,
-    "allowImportingTsExtensions": false,
-    "resolveJsonModule": true
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": ["node_modules"]
+    "allowImportingTsExtensions": false
+  }
 }
