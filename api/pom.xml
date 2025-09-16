@@ -78,9 +78,99 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.20.0</version>
 		</dependency>
-		
-		<!-- ImageIO for image processing (使用内置的Java ImageIO) -->
-		<!-- Java内置的ImageIO已经足够处理基本的图片操作 -->
+
+		<!-- pdf -->
+		<dependency>
+			<groupId>com.helger</groupId>
+			<artifactId>ph-pdf-layout</artifactId>
+			<version>8.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.commons</groupId>
+			<artifactId>ph-commons</artifactId>
+			<version>12.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.commons</groupId>
+			<artifactId>ph-collection</artifactId>
+			<version>12.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-api</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-noto-sans-hk</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-noto-sans-sc</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-noto-sans-tc</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-alegreya-sans</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-anaheim</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-exo2</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-kurinto-mono</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-kurinto-sans</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-lato2</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-markazi</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-open-sans</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-roboto</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-source-sans3</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.helger.font</groupId>
+			<artifactId>ph-fonts-source-sans-pro</artifactId>
+			<version>6.0.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
