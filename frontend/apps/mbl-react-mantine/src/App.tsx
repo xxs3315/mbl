@@ -13,7 +13,11 @@ import {
 } from "./components/LanguageSwitcher";
 import { useTheme } from "./providers/ThemeProvider";
 
-const App = () => {
+interface AppProps {
+  baseUrl?: string;
+}
+
+const App: React.FC<AppProps> = ({ baseUrl = "http://localhost:8080" }) => {
   const [opened, { toggle }] = useDisclosure();
   const { currentTheme, setTheme } = useTheme();
   const [currentLocale, setCurrentLocale] =

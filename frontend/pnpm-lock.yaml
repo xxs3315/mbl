@@ -62,6 +62,9 @@ importers:
       '@xxs3315/mbl-lib-plugin-table':
         specifier: workspace:*
         version: link:../../packages/mbl-lib-plugin-table
+      axios:
+        specifier: ^1.10.0
+        version: 1.11.0
       react:
         specifier: ~19.1.0
         version: 19.1.0

@@ -18,6 +18,7 @@
     "@xxs3315/mbl-lib": "workspace:*",
     "@xxs3315/mbl-lib-example-data": "workspace:*",
     "@xxs3315/mbl-lib-plugin-table": "workspace:*",
+    "axios": "^1.10.0",
     "react": "~19.1.0",
     "react-dom": "~19.1.0"
   },
