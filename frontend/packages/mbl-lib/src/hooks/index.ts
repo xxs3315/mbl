@@ -18,3 +18,12 @@ export {
   useSelectedItemInfo,
   type SelectedItemInfo,
 } from "./use-selected-item-info";
+
+// 渲染函数 hooks
+export { useRenderFunctions } from "./use-render-functions";
+
+// 画布尺寸计算 hooks
+export { useCanvasSize } from "./use-canvas-size";
+
+// 交互按钮渲染 hooks
+export { useInteractionButtons } from "./use-interaction-buttons";

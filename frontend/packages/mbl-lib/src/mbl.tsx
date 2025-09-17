@@ -62,6 +62,7 @@ import {
   ControlBar,
   LeftSidebar,
   RightSidebar,
+  TextareaWithComposition,
 } from "./components";
 import {
   useResponsiveLayout,
@@ -70,6 +71,9 @@ import {
   useUndoRedo,
   useContentChange,
   useSelectedItemInfo,
+  useRenderFunctions,
+  useCanvasSize,
+  useInteractionButtons,
 } from "./hooks";
 
 // 内部组件，在 MantineProvider 内部使用 useThemeColors
@@ -194,8 +198,6 @@ const MixBoxLayoutContent = React.memo<{
     }, [pages, currentPageIndex]);
 
     // 从当前页面获取所有属性
-    const currentPageRectangle = currentPage?.rectangle;
-    const currentPageOrientation = currentPage?.orientation;
     const currentPageMTop = currentPage?.mTop;
     const currentPageMRight = currentPage?.mRight;
     const currentPageMBottom = currentPage?.mBottom;
@@ -209,246 +211,20 @@ const MixBoxLayoutContent = React.memo<{
     const currentPageHeaderPBottom = currentPage?.mBottomHeader;
     const currentPageHeaderPLeft = currentPage?.mLeftHeader;
 
-    const [canvasWidth, setCanvasWidth] = React.useState(1920);
-    const [canvasHeight, setCanvasHeight] = React.useState(1080);
+    // 使用画布尺寸计算 hook
+    const { canvasWidth, canvasHeight } = useCanvasSize(currentPage);
 
-    useEffect(() => {
-      console.log(`DPI: ${dpi}`);
-      const width = mm2px(getRectangleSize(currentPageRectangle).width, dpi);
-      const height = mm2px(getRectangleSize(currentPageRectangle).height, dpi);
-      console.log(currentPageRectangle, currentPageOrientation, width, height);
-      setCanvasWidth(currentPageOrientation === "portrait" ? width : height);
-      setCanvasHeight(currentPageOrientation === "portrait" ? height : width);
-    }, [dpi, currentPageRectangle, currentPageOrientation]);
-
-    const renderDropLineElement = React.useCallback(
-      (injectedProps: DropLineRendererInjectedProps) => {
-        return (
-          <div
-            data-name={"drop"}
-            ref={injectedProps.ref}
-            className={css({
-              position: "relative",
-              height: "4px",
-              zIndex: "30",
-            })}
-            style={{
-              ...injectedProps.style,
-              backgroundColor: colors.primary,
-            }}
-          >
-            <div
-              style={{
-                content: '""',
-                position: "absolute",
-                top: "-2px",
-                left: "-4px",
-                height: "8px",
-                width: "8px",
-                borderRadius: "50%",
-                backgroundColor: colors.primary,
-              }}
-            />
-            <div
-              style={{
-                content: '""',
-                position: "absolute",
-                top: "-2px",
-                right: "-4px",
-                height: "8px",
-                width: "8px",
-                borderRadius: "50%",
-                backgroundColor: colors.primary,
-              }}
-            />
-          </div>
-        );
-      },
-      [colors.primary],
-    );
-
-    const dotsSVG = (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-grip-vertical-icon lucide-grip-vertical"
-      >
-        <circle cx="9" cy="12" r="1" />
-        <circle cx="9" cy="5" r="1" />
-        <circle cx="9" cy="19" r="1" />
-        <circle cx="15" cy="12" r="1" />
-        <circle cx="15" cy="5" r="1" />
-        <circle cx="15" cy="19" r="1" />
-      </svg>
-    );
-
-    const copySVG = (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-copy-icon lucide-copy"
-      >
-        <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-      </svg>
-    );
-
-    const deleteSVG = (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-trash2-icon lucide-trash-2"
-      >
-        <path d="M3 6h18" />
-        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-        <line x1="10" x2="10" y1="11" y2="17" />
-        <line x1="14" x2="14" y1="11" y2="17" />
-      </svg>
-    );
-
-    const navSVG = (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-table-of-contents-icon lucide-table-of-contents"
-      >
-        <path d="M16 5H3" />
-        <path d="M16 12H3" />
-        <path d="M16 19H3" />
-        <path d="M21 5h.01" />
-        <path d="M21 12h.01" />
-        <path d="M21 19h.01" />
-      </svg>
-    );
-
-    const renderGhostElement = React.useCallback(
-      ({ isGroup }: GhostRendererMeta<string>) => {
-        return (
-          <div
-            data-name={"ghost"}
-            className={css({
-              height: "full",
-              width: "full",
-              transformOrigin: "32px 32px",
-              opacity: "0.8",
-              boxShadow: "lg",
-              zIndex: "20",
-              ...(isGroup
-                ? {
-                    borderRadius: "none",
-                    border: "1px solid",
-                    paddingX: "0",
-                    paddingBottom: "0",
-                  }
-                : {
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    justifyContent: "space-between",
-                    borderRadius: "none",
-                    border: "1px solid",
-                    borderColor: "gray.300",
-                    backgroundColor: "white",
-                    padding: "0",
-                    fontWeight: "bold",
-                    fontSize: "xs",
-                    lineHeight: "tight",
-                  }),
-            })}
-            style={{
-              borderColor: isGroup ? "#e5e7eb" : undefined, // gray.300 equivalent
-              backgroundColor: isGroup ? "#f3f4f620" : undefined, // primaryLight with 20% opacity
-              color: isGroup ? "#3b82f6" : undefined, // primary color
-            }}
-          >
-            <DragHandleComponent className={css({ display: "none" })}>
-              {dotsSVG}
-            </DragHandleComponent>
-          </div>
-        );
-      },
-      [dotsSVG],
-    );
-
-    const renderPlaceholderElement = React.useCallback(
-      (
-        injectedProps: PlaceholderRendererInjectedProps,
-        { isGroup }: PlaceholderRendererMeta<string>,
-      ) => (
-        <div
-          data-name={"placeholder"}
-          className={css({
-            height: "full",
-            width: "full",
-            transformOrigin: "32px 32px",
-            boxShadow: "lg",
-            zIndex: "20",
-            borderStyle: "dashed",
-            backgroundColor: "transparent",
-            ...(isGroup
-              ? {
-                  opacity: "0.4",
-                }
-              : {
-                  opacity: "0.8",
-                  color: "gray.300",
-                }),
-          })}
-          style={{
-            ...injectedProps.style,
-            borderColor: isGroup ? "#3b82f6" : undefined, // primary color
-            backgroundColor: isGroup ? "#f3f4f620" : undefined, // primaryLight with 20% opacity
-          }}
-        >
-          <DragHandleComponent className={css({ display: "none" })}>
-            {dotsSVG}
-          </DragHandleComponent>
-        </div>
-      ),
-      [dotsSVG],
-    );
-
-    const renderStackedGroupElement = React.useCallback(
-      (injectedProps: StackedGroupRendererInjectedProps) => (
-        <div
-          data-name={"stacked-group"}
-          className={css({
-            borderRadius: "none",
-            border: "1px solid",
-            paddingX: "0",
-            paddingBottom: "0",
-          })}
-          style={{
-            ...injectedProps.style,
-            borderColor: colors.primaryLight,
-            backgroundColor: `${colors.primaryLight}20`,
-            boxShadow: `0 0 0 2px ${colors.primary}`,
-          }}
-        />
-      ),
-      [colors.primaryLight, colors.primary],
-    );
+    // 使用渲染函数 hook
+    const {
+      renderDropLineElement,
+      renderGhostElement,
+      renderPlaceholderElement,
+      renderStackedGroupElement,
+      renderHorizontalDropLineElement,
+      renderHorizontalGhostElement,
+      renderHorizontalPlaceholderElement,
+      renderHorizontalStackedGroupElement,
+    } = useRenderFunctions(colors);
 
     // 使用拖拽处理 hook
     const { copyItem, deleteItem, onDragEnd, onDndDropEnd } = useDragHandlers(
@@ -469,6 +245,75 @@ const MixBoxLayoutContent = React.memo<{
     // 路径缓存，避免重复计算
     const pathCache = React.useRef<Map<string, any[]>>(new Map());
 
+    // 缓存的路径查找函数
+    const getCachedPath = React.useCallback(
+      (itemId: string, content: Map<string, any>, rootId: string) => {
+        // 生成更精确的缓存键，包含内容的结构信息
+        const contentHash = Array.from(content.entries())
+          .map(([id, item]) => `${id}:${item.children?.join(",") || ""}`)
+          .join("|");
+        const cacheKey = `${itemId}-${rootId}-${contentHash}`;
+
+        if (pathCache.current.has(cacheKey)) {
+          return pathCache.current.get(cacheKey)!;
+        }
+
+        const path: any[] = [];
+        let currentId = itemId;
+
+        while (currentId && currentId !== rootId) {
+          const currentItem = content.get(currentId);
+          if (currentItem) {
+            path.unshift(currentItem);
+            // 查找父项目
+            let parentFound = false;
+            for (const [id, item] of content.entries()) {
+              if (item.children && item.children.includes(currentId)) {
+                currentId = id;
+                parentFound = true;
+                break;
+              }
+            }
+            if (!parentFound) break;
+          } else {
+            break;
+          }
+        }
+
+        // 添加root项目
+        const rootItem = content.get(rootId);
+        if (rootItem) {
+          path.unshift(rootItem);
+        }
+
+        pathCache.current.set(cacheKey, path);
+        return path;
+      },
+      [],
+    );
+
+    // 使用交互按钮渲染 hook
+    const {
+      renderDragHandle,
+      renderCopyButton,
+      renderDeleteButton,
+      renderPopover,
+    } = useInteractionButtons(
+      colors,
+      currentSelectedId,
+      togglePopover,
+      isPopoverOpen,
+      closePopover,
+      setCurrentSelectedId,
+      getCachedPath,
+      currentPageHeaderContent,
+      currentPageBodyContent,
+      currentPageFooterContent,
+      PAGE_HEADER_ROOT_ID,
+      PAGE_BODY_ROOT_ID,
+      PAGE_FOOTER_ROOT_ID,
+    );
+
     const onDragStart = React.useCallback((meta: any) => {
       console.log("drag start: ", meta.identifier);
     }, []);
@@ -481,164 +326,6 @@ const MixBoxLayoutContent = React.memo<{
         return { flex: flexValue };
       };
     }, [dpi]);
-
-    const renderHorizontalDropLineElement = React.useCallback(
-      (injectedProps: DropLineRendererInjectedProps) => {
-        return (
-          <div
-            data-name={"drop-horizontal"}
-            ref={injectedProps.ref}
-            className={css({
-              position: "relative",
-              height: "auto",
-              width: "4px",
-              zIndex: "30",
-            })}
-            style={{
-              ...injectedProps.style,
-              backgroundColor: colors.primary,
-            }}
-          >
-            <div
-              style={{
-                content: '""',
-                position: "absolute",
-                top: "-4px",
-                left: "-2px",
-                height: "8px",
-                width: "8px",
-                borderRadius: "50%",
-                backgroundColor: colors.primary,
-              }}
-            />
-            <div
-              style={{
-                content: '""',
-                position: "absolute",
-                bottom: "-4px",
-                left: "-2px",
-                height: "8px",
-                width: "8px",
-                borderRadius: "50%",
-                backgroundColor: colors.primary,
-              }}
-            />
-          </div>
-        );
-      },
-      [colors.primary],
-    );
-    const renderHorizontalGhostElement = React.useCallback(
-      ({ isGroup }: GhostRendererMeta<string>) => {
-        return (
-          <div
-            data-name={"ghost-horizontal"}
-            className={css({
-              height: "full",
-              width: "full",
-              transformOrigin: "32px center",
-              opacity: "0.8",
-              boxShadow: "lg",
-              zIndex: "20",
-              ...(isGroup
-                ? {
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    justifyContent: "space-between",
-                    border: "1px solid",
-                    padding: "0",
-                    fontWeight: "bold",
-                    fontSize: "xs",
-                    lineHeight: "tight",
-                  }
-                : {
-                    display: "flex",
-                    height: "full",
-                    minWidth: "128px",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    borderRadius: "none",
-                    border: "1px solid",
-                    borderColor: "gray.300",
-                    backgroundColor: "white",
-                    paddingX: "16px",
-                    paddingY: "8px",
-                  }),
-            })}
-            style={{
-              borderColor: isGroup ? colors.primaryLight : undefined,
-              backgroundColor: isGroup ? `${colors.primaryLight}20` : undefined,
-              color: isGroup ? colors.primary : undefined,
-            }}
-          >
-            <DragHandleComponent className={css({ display: "none" })}>
-              {dotsSVG}
-            </DragHandleComponent>
-          </div>
-        );
-      },
-      [dotsSVG],
-    );
-    const renderHorizontalPlaceholderElement = React.useCallback(
-      (injectedProps: PlaceholderRendererInjectedProps) => (
-        <div
-          data-name={"placeholder-horizontal"}
-          className={css({
-            display: "flex",
-            height: "full",
-            minWidth: "128px",
-            alignItems: "center",
-            justifyContent: "space-between",
-            borderRadius: "none",
-            border: "1px dashed",
-            borderColor: "gray.300",
-            backgroundColor: "transparent",
-            color: "gray.300",
-            paddingX: "16px",
-            paddingY: "8px",
-            position: "relative",
-          })}
-          style={{
-            ...injectedProps.style,
-            backgroundColor: `${colors.primaryLight}20`,
-          }}
-        >
-          <DragHandleComponent className={css({ display: "none" })}>
-            {dotsSVG}
-          </DragHandleComponent>
-        </div>
-      ),
-      [dotsSVG],
-    );
-    const renderHorizontalStackedGroupElement = React.useCallback(
-      (injectedProps: StackedGroupRendererInjectedProps) => (
-        <div
-          data-name={"stacked-group-horizontal"}
-          className={css({
-            display: "flex",
-            width: "full",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            border: "1px solid",
-            padding: "0",
-            fontWeight: "bold",
-            fontSize: "xs",
-            lineHeight: "tight",
-            minHeight: "full",
-          })}
-          style={{
-            ...injectedProps.style,
-            borderColor: colors.primaryLight,
-            backgroundColor: `${colors.primaryLight}20`,
-            color: colors.primary,
-            boxShadow: `0 0 0 2px ${colors.primary}`,
-          }}
-        />
-      ),
-      [colors.primaryLight, colors.primary],
-    );
 
     const stableAcceptArrays = React.useMemo(
       () => ({
@@ -703,128 +390,6 @@ const MixBoxLayoutContent = React.memo<{
         return stableMoreStyles.flexCenter;
       };
     }, [stableMoreStyles]);
-
-    // 处理 IME 输入的 Textarea 组件
-    const TextareaWithComposition = React.memo<{
-      props: any;
-      updateTextItemValue: (itemId: string, newValue: string) => void;
-    }>(({ props, updateTextItemValue }) => {
-      const [localValue, setLocalValue] = React.useState(props.value ?? "");
-      const [isComposing, setIsComposing] = React.useState(false);
-      const debounceTimeoutRef = React.useRef<number | null>(null);
-
-      // 同步外部值变化到本地状态
-      React.useEffect(() => {
-        setLocalValue(props.value ?? "");
-      }, [props.value]);
-
-      // 防抖更新函数
-      const debouncedUpdate = React.useCallback(
-        (value: string) => {
-          if (debounceTimeoutRef.current) {
-            window.clearTimeout(debounceTimeoutRef.current);
-          }
-          debounceTimeoutRef.current = window.setTimeout(() => {
-            if (updateTextItemValue && value !== props.value) {
-              updateTextItemValue(props.id, value);
-            }
-          }, 300); // 300ms 防抖延迟
-        },
-        [updateTextItemValue, props.id, props.value],
-      );
-
-      // 清理定时器
-      React.useEffect(() => {
-        return () => {
-          if (debounceTimeoutRef.current) {
-            window.clearTimeout(debounceTimeoutRef.current);
-          }
-        };
-      }, []);
-
-      const handleCompositionStart = React.useCallback(() => {
-        setIsComposing(true);
-      }, []);
-
-      const handleCompositionEnd = React.useCallback(
-        (event: React.CompositionEvent<HTMLTextAreaElement>) => {
-          setIsComposing(false);
-          const value = event.currentTarget.value;
-          setLocalValue(value);
-          // 输入法结束时立即更新
-          if (updateTextItemValue && value !== props.value) {
-            updateTextItemValue(props.id, value);
-          }
-        },
-        [props.id, props.value, updateTextItemValue],
-      );
-
-      const handleChange = React.useCallback(
-        (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-          const value = event.currentTarget.value;
-          setLocalValue(value);
-
-          // 只有在非输入法状态下才进行防抖更新
-          if (!isComposing) {
-            debouncedUpdate(value);
-          }
-        },
-        [isComposing, debouncedUpdate],
-      );
-
-      // 缓存样式对象以避免重复创建
-      const textareaStyles = React.useMemo(
-        () => ({
-          root: {
-            paddingTop: `${props.pTop ?? 0}px`,
-            paddingRight: `${props.pRight ?? 0}px`,
-            paddingBottom: `${props.pBottom ?? 0}px`,
-            paddingLeft: `${props.pLeft ?? 0}px`,
-          },
-          input: {
-            textIndent: props.indent ? "2em" : 0,
-            fontSize: pt2px(props.fontSize ?? 0, dpi),
-            fontWeight: props.bold ? "bolder" : "normal",
-            color: props.fontColor,
-            background: props.background,
-            textAlign: props.horizontal,
-            border: "none",
-            padding: 0,
-            "--input-height": "16px",
-            borderRadius: 0,
-          },
-        }),
-        [
-          props.pTop,
-          props.pRight,
-          props.pBottom,
-          props.pLeft,
-          props.indent,
-          props.fontSize,
-          props.bold,
-          props.fontColor,
-          props.background,
-          props.horizontal,
-          dpi,
-        ],
-      );
-
-      return (
-        <Textarea
-          autosize
-          size="xs"
-          radius="xs"
-          value={localValue}
-          onChange={handleChange}
-          onCompositionStart={handleCompositionStart}
-          onCompositionEnd={handleCompositionEnd}
-          styles={textareaStyles}
-          onFocus={() => {
-            setTimeout(() => setCurrentSelectedId(props.id), 100);
-          }}
-        />
-      );
-    });
 
     // 处理插件属性变化 - 使用稳定的 store 方法
     const handlePluginPropsChange = React.useCallback(
@@ -987,300 +552,7 @@ const MixBoxLayoutContent = React.memo<{
             return <span key={`${position}-item-${props.id}-target`} />;
         }
       },
-      [
-        updateTextItemValue,
-        currentPageOrientation,
-        currentPageRectangle,
-        enablePluginSystem,
-        handlePluginPropsChange,
-      ],
-    );
-
-    // 缓存的路径查找函数
-    const getCachedPath = React.useCallback(
-      (itemId: string, content: Map<string, any>, rootId: string) => {
-        // 生成更精确的缓存键，包含内容的结构信息
-        const contentHash = Array.from(content.entries())
-          .map(([id, item]) => `${id}:${item.children?.join(",") || ""}`)
-          .join("|");
-        const cacheKey = `${itemId}-${rootId}-${contentHash}`;
-
-        if (pathCache.current.has(cacheKey)) {
-          return pathCache.current.get(cacheKey)!;
-        }
-
-        const path: any[] = [];
-        let currentId = itemId;
-
-        while (currentId && currentId !== rootId) {
-          const currentItem = content.get(currentId);
-          if (currentItem) {
-            path.unshift(currentItem);
-            // 查找父项目
-            let parentFound = false;
-            for (const [id, item] of content.entries()) {
-              if (item.children && item.children.includes(currentId)) {
-                currentId = id;
-                parentFound = true;
-                break;
-              }
-            }
-            if (!parentFound) break;
-          } else {
-            break;
-          }
-        }
-
-        // 添加root项目
-        const rootItem = content.get(rootId);
-        if (rootItem) {
-          path.unshift(rootItem);
-        }
-
-        pathCache.current.set(cacheKey, path);
-        return path;
-      },
-      [],
-    );
-
-    // 公共的Popover渲染函数
-    const renderPopover = React.useCallback(
-      (itemId: string) => {
-        // 查找当前选中项目所在的position和content
-        let currentPosition: "header" | "body" | "footer" = "body";
-        let currentContent = currentPageBodyContent;
-
-        if (currentPageHeaderContent.has(itemId)) {
-          currentPosition = "header";
-          currentContent = currentPageHeaderContent;
-        } else if (currentPageFooterContent.has(itemId)) {
-          currentPosition = "footer";
-          currentContent = currentPageFooterContent;
-        } else if (currentPageBodyContent.has(itemId)) {
-          currentPosition = "body";
-          currentContent = currentPageBodyContent;
-        }
-
-        // 获取对应position的root ID
-        const rootId =
-          currentPosition === "header"
-            ? PAGE_HEADER_ROOT_ID
-            : currentPosition === "footer"
-              ? PAGE_FOOTER_ROOT_ID
-              : PAGE_BODY_ROOT_ID;
-
-        // 使用缓存的路径查找
-        const itemPath = getCachedPath(itemId, currentContent, rootId);
-
-        return (
-          <Popover
-            offset={2}
-            opened={isPopoverOpen(itemId)}
-            width={200}
-            position="bottom"
-            withArrow
-            shadow="xs"
-            onDismiss={() => closePopover()}
-            styles={{
-              dropdown: {
-                padding: "1px",
-                borderRadius: "1px",
-              },
-            }}
-          >
-            <Popover.Target>
-              <div
-                data-popover-target="true"
-                className={css({
-                  height: "12px",
-                  width: "12px",
-                  cursor: "pointer",
-                  borderRadius: "none",
-                  color: "black",
-                  position: "absolute",
-                  top: "0",
-                  right: "0",
-                  zIndex: "10",
-                })}
-                style={{
-                  display: itemId === currentSelectedId ? "block" : "none",
-                  backgroundColor: colors.primaryLight,
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  togglePopover(itemId);
-                }}
-              >
-                {navSVG}
-              </div>
-            </Popover.Target>
-            <Popover.Dropdown>
-              {/* 显示上级项目 */}
-              {itemPath.slice(0, -1).map((item: any, index: number) => (
-                <NavLink
-                  key={item.id}
-                  label={item.title || item.id.slice(0, 8)}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentSelectedId(item.id);
-                    closePopover();
-                  }}
-                  styles={{
-                    root: {
-                      padding: "0",
-                      marginBottom: "0",
-                      borderRadius: "0",
-                      textAlign: "center",
-                    },
-                  }}
-                />
-              ))}
-
-              {/* 显示当前项目 */}
-              {(() => {
-                const currentItem = currentContent.get(itemId);
-                if (currentItem) {
-                  return (
-                    <NavLink
-                      key={currentItem.id}
-                      label={currentItem.title || currentItem.id.slice(0, 8)}
-                      active={true}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentSelectedId(currentItem.id);
-                        closePopover();
-                      }}
-                      styles={{
-                        root: {
-                          padding: "0",
-                          marginBottom: "0",
-                          borderRadius: "0",
-                          textAlign: "center",
-                        },
-                      }}
-                    />
-                  );
-                }
-                return null;
-              })()}
-            </Popover.Dropdown>
-          </Popover>
-        );
-      },
-      [
-        isPopoverOpen,
-        closePopover,
-        togglePopover,
-        getCachedPath,
-        setCurrentSelectedId,
-        colors.primaryLight,
-        navSVG,
-        currentPageHeaderContent,
-        currentPageBodyContent,
-        currentPageFooterContent,
-        PAGE_HEADER_ROOT_ID,
-        PAGE_BODY_ROOT_ID,
-        PAGE_FOOTER_ROOT_ID,
-      ],
-    );
-
-    // 公共的拖拽手柄渲染函数
-    const renderDragHandle = React.useCallback(
-      (itemId: string, position: "header" | "body" | "footer" = "body") => {
-        return (
-          <DragHandleComponent
-            data-drag-handle="true"
-            className={css({
-              height: "12px",
-              width: "12px",
-              cursor: "grab",
-              borderRadius: "none",
-              color: "black",
-              position: "absolute",
-              top: "0",
-              left: "0",
-              zIndex: "10",
-              display: "block",
-            })}
-          >
-            <div
-              style={{
-                backgroundColor: colors.primaryLight,
-                display: itemId === currentSelectedId ? "block" : "none",
-              }}
-            >
-              {dotsSVG}
-            </div>
-          </DragHandleComponent>
-        );
-      },
-      [currentSelectedId, colors.primaryLight, dotsSVG],
-    );
-
-    // 公共的复制按钮渲染函数
-    const renderCopyButton = React.useCallback(
-      (itemId: string, position: "header" | "body" | "footer" = "body") => {
-        return (
-          <div
-            data-interactive="true"
-            className={css({
-              height: "12px",
-              width: "12px",
-              cursor: "pointer",
-              borderRadius: "none",
-              color: "black",
-              position: "absolute",
-              top: "0",
-              right: "32px",
-              zIndex: "10",
-            })}
-            style={{
-              display: itemId === currentSelectedId ? "block" : "none",
-              backgroundColor: colors.primaryLight,
-            }}
-            onClick={(event) => {
-              copyItem(itemId, position);
-              event.stopPropagation();
-            }}
-          >
-            {copySVG}
-          </div>
-        );
-      },
-      [currentSelectedId, colors.primaryLight, copySVG, copyItem],
-    );
-
-    // 公共的删除按钮渲染函数
-    const renderDeleteButton = React.useCallback(
-      (itemId: string, position: "header" | "body" | "footer" = "body") => {
-        return (
-          <div
-            data-interactive="true"
-            className={css({
-              height: "12px",
-              width: "12px",
-              cursor: "pointer",
-              borderRadius: "none",
-              color: "black",
-              position: "absolute",
-              top: "0",
-              right: "16px",
-              zIndex: "10",
-            })}
-            style={{
-              display: itemId === currentSelectedId ? "block" : "none",
-              backgroundColor: colors.primaryLight,
-            }}
-            onClick={(event) => {
-              deleteItem(itemId, position);
-              event.stopPropagation();
-            }}
-          >
-            {deleteSVG}
-          </div>
-        );
-      },
-      [currentSelectedId, colors.primaryLight, deleteSVG, deleteItem],
+      [updateTextItemValue, enablePluginSystem, handlePluginPropsChange],
     );
 
     const createItemElement = React.useCallback(
@@ -1340,8 +612,8 @@ const MixBoxLayoutContent = React.memo<{
                   }}
                 >
                   {renderDragHandle(item.id, position)}
-                  {renderCopyButton(item.id, position)}
-                  {renderDeleteButton(item.id, position)}
+                  {renderCopyButton(item.id, position, copyItem)}
+                  {renderDeleteButton(item.id, position, deleteItem)}
                   {renderPopover(item.id)}
                   <List
                     identifier={`list-h-${item.id}`}
@@ -1425,8 +697,8 @@ const MixBoxLayoutContent = React.memo<{
                   }}
                 >
                   {renderDragHandle(item.id, position)}
-                  {renderCopyButton(item.id, position)}
-                  {renderDeleteButton(item.id, position)}
+                  {renderCopyButton(item.id, position, copyItem)}
+                  {renderDeleteButton(item.id, position, deleteItem)}
                   {renderPopover(item.id)}
                   <List
                     identifier={`list-v-${item.id}`}
@@ -1499,8 +771,8 @@ const MixBoxLayoutContent = React.memo<{
               }}
             >
               {renderDragHandle(item.id, position)}
-              {renderCopyButton(item.id, position)}
-              {renderDeleteButton(item.id, position)}
+              {renderCopyButton(item.id, position, copyItem)}
+              {renderDeleteButton(item.id, position, deleteItem)}
               {renderPopover(item.id)}
               <div
                 className={css({
@@ -1559,9 +831,6 @@ const MixBoxLayoutContent = React.memo<{
         renderHorizontalPlaceholderElement,
         renderHorizontalStackedGroupElement,
         onDragEnd,
-        dotsSVG,
-        copySVG,
-        deleteSVG,
         renderPopover,
         renderDragHandle,
         renderCopyButton,
