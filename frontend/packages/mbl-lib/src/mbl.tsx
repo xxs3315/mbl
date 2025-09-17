@@ -22,7 +22,6 @@ import {
   MantineProvider,
   Textarea,
   Image as MantineImage,
-  ActionIcon,
   Popover,
   NavLink,
 } from "@mantine/core";
@@ -37,16 +36,6 @@ import {
   useTemporal,
 } from "./store/store";
 import { defaultContents } from "./store/default-data";
-import {
-  Redo,
-  Undo,
-  PanelLeftClose,
-  PanelLeftOpen,
-  PanelRightClose,
-  PanelRightOpen,
-  LayoutDashboard,
-  LayoutList,
-} from "lucide-react";
 import { DpiProvider, useDpi } from "./providers/dpi-provider";
 import {
   ThemeProvider,
@@ -68,216 +57,12 @@ import {
   PAGE_ROOT_ID,
 } from "./constants";
 import { AttributePanelRenderer } from "./comps/attribute-panel/components/attribute-panel-renderer";
-import { Box } from "./dnd/box";
-import { toolPanelComps } from "./comps/tool-panel/data";
 import {
-  ChevronRight,
-  ChevronDown,
-  Square,
-  Type,
-  Image,
-  Table,
-  FileText,
-  Columns3,
-  Rows3,
-  SeparatorHorizontal,
-  FileDigit,
-} from "lucide-react";
-
-// 树形节点组件
-const TreeNode = React.memo<{
-  item: any;
-  content: Map<string, any>;
-  level: number;
-  onItemClick: (itemId: string) => void;
-  currentSelectedId?: string;
-}>(({ item, content, level, onItemClick, currentSelectedId }) => {
-  const [isExpanded, setIsExpanded] = React.useState(true);
-  const hasChildren = item.children && item.children.length > 0;
-  const colors = useThemeColorsContext();
-
-  const getIcon = (cat?: string, direction?: string) => {
-    switch (cat) {
-      case "container":
-        return direction === "horizontal" ? (
-          <Columns3 size={14} />
-        ) : (
-          <Rows3 size={14} />
-        );
-      case "placeholder":
-        return <Square size={14} />;
-      case "text":
-        return <Type size={14} />;
-      case "image":
-        return <Image size={14} />;
-      case "table":
-        return <Table size={14} />;
-      case "page-break":
-        return <SeparatorHorizontal size={14} />;
-      case "page-number":
-        return <FileDigit size={14} />;
-      default:
-        return <FileText size={14} />;
-    }
-  };
-
-  const getItemName = (item: any) => {
-    if (item.id === PAGE_HEADER_ROOT_ID) return "Page Header";
-    if (item.id === PAGE_BODY_ROOT_ID) return "Page Body";
-    if (item.id === PAGE_FOOTER_ROOT_ID) return "Page Footer";
-    return item.title || item.name || item.id.slice(0, 8);
-  };
-
-  const isSelected = currentSelectedId === item.id;
-
-  return (
-    <div>
-      <div
-        className={css({
-          display: "flex",
-          alignItems: "center",
-          paddingY: "3px",
-          paddingRight: "4px",
-          cursor: "pointer",
-          borderRadius: "4px",
-          fontSize: "12px",
-        })}
-        style={{
-          backgroundColor: isSelected ? `${colors.primary}20` : "transparent",
-          color: isSelected ? colors.primary : colors.text,
-          paddingLeft: `${8 + level * 10}px`, // 使用内联样式确保动态缩进生效
-        }}
-        onMouseEnter={(e) => {
-          if (!isSelected) {
-            e.currentTarget.style.backgroundColor = `${colors.primary}10`;
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (!isSelected) {
-            e.currentTarget.style.backgroundColor = "transparent";
-          }
-        }}
-        onClick={() => onItemClick(item.id)}
-      >
-        {hasChildren && (
-          <div
-            className={css({
-              marginRight: "6px",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "12px",
-              height: "12px",
-            })}
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsExpanded(!isExpanded);
-            }}
-          >
-            {isExpanded ? (
-              <ChevronDown size={10} />
-            ) : (
-              <ChevronRight size={10} />
-            )}
-          </div>
-        )}
-        {!hasChildren && (
-          <div className={css({ width: "12px", marginRight: "6px" })} />
-        )}
-        <div
-          className={css({
-            marginRight: "6px",
-            display: "flex",
-            alignItems: "center",
-          })}
-        >
-          {getIcon(item.cat, item.direction)}
-        </div>
-        <span className={css({ flex: "1", lineHeight: "1.2" })}>
-          {getItemName(item)}
-        </span>
-      </div>
-      {hasChildren && isExpanded && (
-        <div>
-          {item.children.map((childId: string) => {
-            const childItem = content.get(childId);
-            return childItem ? (
-              <TreeNode
-                key={childId}
-                item={childItem}
-                content={content}
-                level={level + 1}
-                onItemClick={onItemClick}
-                currentSelectedId={currentSelectedId}
-              />
-            ) : null;
-          })}
-        </div>
-      )}
-    </div>
-  );
-});
-
-// 页面结构树组件
-const PageStructureTree = React.memo<{
-  currentPage: any;
-  currentPageHeaderContent: Map<string, any>;
-  currentPageBodyContent: Map<string, any>;
-  currentPageFooterContent: Map<string, any>;
-  onItemClick: (itemId: string) => void;
-  currentSelectedId?: string;
-}>(
-  ({
-    currentPage,
-    currentPageHeaderContent,
-    currentPageBodyContent,
-    currentPageFooterContent,
-    onItemClick,
-    currentSelectedId,
-  }) => {
-    const pageHeaderRoot = currentPageHeaderContent.get(PAGE_HEADER_ROOT_ID);
-    const pageBodyRoot = currentPageBodyContent.get(PAGE_BODY_ROOT_ID);
-    const pageFooterRoot = currentPageFooterContent.get(PAGE_FOOTER_ROOT_ID);
-
-    // 创建 Page 根节点
-    const pageRoot = {
-      id: PAGE_ROOT_ID,
-      title: currentPage?.name || "当前页面",
-      children: [
-        PAGE_HEADER_ROOT_ID,
-        PAGE_BODY_ROOT_ID,
-        PAGE_FOOTER_ROOT_ID,
-      ].filter((id) => {
-        if (id === PAGE_HEADER_ROOT_ID) return pageHeaderRoot;
-        if (id === PAGE_BODY_ROOT_ID) return pageBodyRoot;
-        if (id === PAGE_FOOTER_ROOT_ID) return pageFooterRoot;
-        return false;
-      }),
-      cat: "page",
-    };
-
-    // 创建合并的内容映射
-    const mergedContent = new Map([
-      [PAGE_ROOT_ID, pageRoot],
-      ...currentPageHeaderContent.entries(),
-      ...currentPageBodyContent.entries(),
-      ...currentPageFooterContent.entries(),
-    ]);
-
-    return (
-      <div className={css({ fontSize: "12px" })}>
-        <TreeNode
-          item={pageRoot}
-          content={mergedContent}
-          level={0}
-          onItemClick={onItemClick}
-          currentSelectedId={currentSelectedId}
-        />
-      </div>
-    );
-  },
-);
+  PageSelector,
+  ControlBar,
+  LeftSidebar,
+  RightSidebar,
+} from "./components";
 
 // 内部组件，在 MantineProvider 内部使用 useThemeColors
 const MixBoxLayoutContent = React.memo<{
@@ -2410,167 +2195,15 @@ const MixBoxLayoutContent = React.memo<{
             }}
           />
         )}
-        {/* 左侧页面选择器 - PDF 页面样式 */}
-        <div
-          className={css({
-            width: showPageSelector ? "180px" : "0px",
-            borderRight: showPageSelector ? "1px solid" : "none",
-            borderRightColor: "gray.300",
-            padding: "0px",
-            backgroundColor: "gray.50",
-            overflowY: "auto",
-            overflowX: "hidden",
-            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-            opacity: showPageSelector ? "1" : "0",
-            visibility: showPageSelector ? "visible" : "hidden",
-            flexShrink: 0,
-            minWidth: showPageSelector ? "180px" : "0px",
-            // 响应式布局：小屏幕时绝对定位，大屏幕时相对定位
-            position: isMobileMode ? "absolute" : "relative",
-            left: isMobileMode ? "0" : "auto",
-            top: isMobileMode ? "0" : "auto",
-            bottom: isMobileMode ? "0" : "auto",
-            height: isMobileMode ? "100%" : "auto",
-            zIndex: isMobileMode ? "60" : "auto",
-            boxShadow: isMobileMode
-              ? showPageSelector
-                ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-                : "none"
-              : "none",
-            // 确保在小屏幕时，当显示时不会被隐藏
-            display: isMobileMode
-              ? showPageSelector
-                ? "block"
-                : "none"
-              : "block",
-          })}
-        >
-          <div
-            className={css({
-              width: "100%",
-              height: "100%",
-              display: showPageSelector ? "flex" : "none",
-              flexDirection: "column",
-            })}
-          >
-            <div
-              className={css({
-                display: showPageSelector ? "flex" : "none",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "16px 16px 12px 16px",
-                borderBottom: "1px solid",
-                borderBottomColor: "gray.200",
-                flexShrink: "0",
-                backgroundColor: "gray.50",
-              })}
-            >
-              <div
-                className={css({
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  color: "gray.800",
-                })}
-              >
-                页面列表
-              </div>
-              {/* 关闭按钮 - 仅在桌面端显示 */}
-              <ActionIcon
-                variant="subtle"
-                aria-label="close-page-selector"
-                onClick={() => setShowPageSelector(false)}
-                className={css({
-                  display: isMobileMode ? "none" : "flex",
-                  color: "gray.500",
-                  _hover: {
-                    backgroundColor: "gray.100",
-                  },
-                })}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </ActionIcon>
-            </div>
-            <MacScrollbar
-              className={css({
-                fontSize: "12px",
-                color: "gray.600",
-                display: showPageSelector ? "block" : "none",
-                flex: "1",
-                overflow: "auto",
-                padding: "16px",
-              })}
-            >
-              <div
-                className={css({
-                  display: showPageSelector ? "flex" : "none",
-                  flexDirection: "column",
-                  gap: "12px",
-                })}
-              >
-                {pages?.map((page, index) => (
-                  <div
-                    key={page.id}
-                    className={css({
-                      border: "1px solid",
-                      borderColor: "rgba(184, 184, 184, 0.5)",
-                      borderRadius: "0px",
-                      padding: "12px",
-                      backgroundColor: "white",
-                      cursor: "pointer",
-                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                      margin: "12px auto",
-                      transform: "translateZ(0)", // 启用硬件加速
-                      willChange: "transform, box-shadow, border-color", // 优化动画性能
-                      _hover: {
-                        borderColor: "rgba(184, 184, 184, 1)",
-                        transform: "translateY(-2px)", // 悬停时轻微上移
-                      },
-                    })}
-                    style={{
-                      boxShadow:
-                        currentPageIndex === index
-                          ? `0 0 6px ${colors.primary}`
-                          : "0 0 12px rgba(0, 0, 0, 0.2)",
-                    }}
-                    onClick={() => setCurrentPageIndex(index)}
-                  >
-                    <div
-                      className={css({
-                        fontSize: "14px",
-                        fontWeight: "600",
-                        color: "gray.700",
-                        marginBottom: "4px",
-                      })}
-                    >
-                      {page.name || `页面 ${index + 1}`}
-                    </div>
-                    <div
-                      className={css({
-                        fontSize: "12px",
-                        color: "gray.500",
-                      })}
-                    >
-                      {page.orientation === "portrait" ? "纵向" : "横向"} ·{" "}
-                      {page.rectangle}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </MacScrollbar>
-          </div>
-        </div>
+        {/* 左侧页面选择器 */}
+        <PageSelector
+          showPageSelector={showPageSelector}
+          isMobileMode={isMobileMode}
+          pages={pages}
+          currentPageIndex={currentPageIndex}
+          onClose={() => setShowPageSelector(false)}
+          onPageSelect={setCurrentPageIndex}
+        />
 
         {/* 右侧主要内容区域 */}
         <div
@@ -2584,312 +2217,49 @@ const MixBoxLayoutContent = React.memo<{
           })}
         >
           {/* 上部 - 控制栏 */}
-          <div
-            className={css({
-              height: "36px",
-              borderBottom: "1px solid",
-              borderBottomColor: "gray.300",
-              backgroundColor: "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "0 2px",
-              flexShrink: 0,
-            })}
-          >
-            {/* 左侧 - 侧边栏控制按钮 */}
-            <div
-              className={css({
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-              })}
-            >
-              <ActionIcon
-                variant="subtle"
-                size="lg"
-                aria-label="toggle-page-selector"
-                onClick={() => {
-                  isMobileMode &&
-                    !showPageSelector &&
-                    setShowLeftSidebar(false);
-                  isMobileMode &&
-                    !showPageSelector &&
-                    setShowRightSidebar(false);
-                  setShowPageSelector(!showPageSelector);
-                }}
-                className={css({
-                  backgroundColor: showPageSelector ? "green.500" : "gray.400",
-                  color: "white",
-                  _hover: {
-                    backgroundColor: showPageSelector
-                      ? "green.600"
-                      : "gray.500",
-                  },
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                })}
-              >
-                <LayoutList size={16} />
-              </ActionIcon>
-              <ActionIcon
-                variant="subtle"
-                size="lg"
-                aria-label="toggle-left-sidebar"
-                onClick={() => setShowLeftSidebar(!showLeftSidebar)}
-                className={css({
-                  backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
-                  color: "white",
-                  _hover: {
-                    backgroundColor: showLeftSidebar ? "blue.600" : "gray.500",
-                  },
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                })}
-              >
-                {showLeftSidebar ? (
-                  <PanelLeftClose size={16} />
-                ) : (
-                  <PanelLeftOpen size={16} />
-                )}
-              </ActionIcon>
-            </div>
-            {/* 中间 - 工具按钮和 Undo/Redo 按钮 */}
-            <div
-              className={css({
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-                flex: "1",
-                minWidth: "0",
-                justifyContent: "center",
-                overflow: "hidden",
-              })}
-            >
-              {/* 工具按钮 - 横向滚动 */}
-              <MacScrollbar
-                className={css({
-                  flexShrink: "1",
-                  minWidth: "0",
-                  maxWidth: "300px", // 限制最大宽度
-                  height: "40px", // 固定高度
-                })}
-              >
-                <div
-                  className={css({
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
-                    height: "100%",
-                    paddingY: "4px",
-                  })}
-                >
-                  {toolPanelComps.map((panel, panelIndex) => (
-                    <React.Fragment key={panel.id}>
-                      {panel.items?.map((item: any, itemIndex: number) => (
-                        <div
-                          key={`toolbar-${panel.id}-${itemIndex}`}
-                          className={css({
-                            flexShrink: "0", // 防止按钮被压缩
-                          })}
-                        >
-                          <Box
-                            name={item.name}
-                            type={item.type}
-                            cat={item.cat}
-                            attrs={item.attrs}
-                            isDropped={false}
-                            direction={item.direction}
-                          />
-                        </div>
-                      ))}
-                    </React.Fragment>
-                  ))}
+          <ControlBar
+            showPageSelector={showPageSelector}
+            showLeftSidebar={showLeftSidebar}
+            showRightSidebar={showRightSidebar}
+            isMobileMode={isMobileMode}
+            undoCount={undoCount}
+            redoCount={redoCount}
+            onTogglePageSelector={() => {
+              isMobileMode && !showPageSelector && setShowLeftSidebar(false);
+              isMobileMode && !showPageSelector && setShowRightSidebar(false);
+              setShowPageSelector(!showPageSelector);
+            }}
+            onToggleLeftSidebar={() => setShowLeftSidebar(!showLeftSidebar)}
+            onToggleRightSidebar={() => setShowRightSidebar(!showRightSidebar)}
+            onToggleAllSidebars={() => {
+              // 实现全部显示/全部隐藏的切换
+              const allShown =
+                showPageSelector && showLeftSidebar && showRightSidebar;
+              const allHidden =
+                !showPageSelector && !showLeftSidebar && !showRightSidebar;
 
-                  {/* 插件工具栏 */}
-                  {enablePluginSystem && plugins && plugins.length > 0 && (
-                    <React.Fragment key="plugins-panel">
-                      {plugins.map((pluginWrapper, pluginIndex) => {
-                        const plugin = pluginWrapper.plugin;
-                        const metadata = pluginWrapper.metadata;
-
-                        // 获取插件的工具栏配置
-                        const toolbarConfig = plugin.getToolbarConfig?.() || {
-                          type: "element",
-                          cat: metadata.category || "plugin",
-                          attrs: {
-                            pluginId: metadata.id,
-                            ...metadata.defaultConfig,
-                          },
-                        };
-
-                        return (
-                          <div
-                            key={`plugin-${metadata.id}-${pluginIndex}`}
-                            className={css({
-                              flexShrink: "0", // 防止按钮被压缩
-                            })}
-                          >
-                            <Box
-                              name={metadata.name || metadata.id}
-                              type={toolbarConfig.type}
-                              cat={toolbarConfig.cat}
-                              attrs={toolbarConfig.attrs}
-                              isDropped={false}
-                              direction={toolbarConfig.direction}
-                            />
-                          </div>
-                        );
-                      })}
-                    </React.Fragment>
-                  )}
-                </div>
-              </MacScrollbar>
-              {/*分割短竖线 - 响应式显示 */}
-              <div
-                className={css({
-                  width: "1px",
-                  height: "12px",
-                  backgroundColor: "gray.200",
-                  marginX: "4px",
-                  flexShrink: "0",
-                  display: {
-                    base: "none", // 小屏幕隐藏分隔线
-                    sm: "block", // 大屏幕显示
-                  },
-                })}
-              />
-
-              {/* Undo/Redo 按钮 - 始终显示 */}
-              <div
-                className={css({
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px",
-                  flexShrink: "0",
-                })}
-              >
-                <ActionIcon
-                  variant="subtle"
-                  size="lg"
-                  aria-label="undo"
-                  onClick={() => temporal.getState().undo()}
-                  disabled={undoCount === 0}
-                  className={css({
-                    backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
-                    color: "white",
-                    _hover: {
-                      backgroundColor: showLeftSidebar
-                        ? "blue.600"
-                        : "gray.500",
-                    },
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                    "&:disabled, &[data-disabled]": {
-                      backgroundColor: "transparent !important",
-                    },
-                  })}
-                >
-                  <Undo size={16} />
-                </ActionIcon>
-                <ActionIcon
-                  variant="subtle"
-                  size="lg"
-                  aria-label="redo"
-                  onClick={() => temporal.getState().redo()}
-                  disabled={redoCount === 0}
-                  className={css({
-                    backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
-                    color: "white",
-                    _hover: {
-                      backgroundColor: showLeftSidebar
-                        ? "blue.600"
-                        : "gray.500",
-                    },
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                    "&:disabled, &[data-disabled]": {
-                      backgroundColor: "transparent !important",
-                    },
-                  })}
-                >
-                  <Redo size={16} />
-                </ActionIcon>
-              </div>
-            </div>
-
-            {/* 右侧 - 侧边栏控制按钮 */}
-            <div
-              className={css({
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-              })}
-            >
-              <ActionIcon
-                variant="subtle"
-                size="lg"
-                aria-label="toggle-right-sidebar"
-                onClick={() => setShowRightSidebar(!showRightSidebar)}
-                className={css({
-                  backgroundColor: showRightSidebar ? "purple.500" : "gray.400",
-                  color: "white",
-                  _hover: {
-                    backgroundColor: showRightSidebar
-                      ? "purple.600"
-                      : "gray.500",
-                  },
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                })}
-              >
-                {showRightSidebar ? (
-                  <PanelRightClose size={16} />
-                ) : (
-                  <PanelRightOpen size={16} />
-                )}
-              </ActionIcon>
-              <ActionIcon
-                variant="subtle"
-                size="lg"
-                aria-label="toggle-right-sidebar"
-                onClick={() => {
-                  // 实现全部显示/全部隐藏的切换
-                  const allShown =
-                    showPageSelector && showLeftSidebar && showRightSidebar;
-                  const allHidden =
-                    !showPageSelector && !showLeftSidebar && !showRightSidebar;
-
-                  if (allShown) {
-                    // 如果全部显示，则全部隐藏
-                    setShowPageSelector(false);
-                    setShowLeftSidebar(false);
-                    setShowRightSidebar(false);
-                  } else if (allHidden) {
-                    // 如果全部隐藏，则全部显示
-                    setShowPageSelector(true);
-                    setShowLeftSidebar(true);
-                    setShowRightSidebar(true);
-                  } else {
-                    // 其他情况（部分显示），则全部显示
-                    setShowPageSelector(true);
-                    setShowLeftSidebar(true);
-                    setShowRightSidebar(true);
-                  }
-                }}
-                className={css({
-                  backgroundColor: showRightSidebar ? "purple.500" : "gray.400",
-                  color: "white",
-                  _hover: {
-                    backgroundColor: showRightSidebar
-                      ? "purple.600"
-                      : "gray.500",
-                  },
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                })}
-                style={{
-                  display: !isMobileMode ? "block" : "none",
-                }}
-              >
-                <LayoutDashboard size={16} />
-              </ActionIcon>
-            </div>
-          </div>
+              if (allShown) {
+                // 如果全部显示，则全部隐藏
+                setShowPageSelector(false);
+                setShowLeftSidebar(false);
+                setShowRightSidebar(false);
+              } else if (allHidden) {
+                // 如果全部隐藏，则全部显示
+                setShowPageSelector(true);
+                setShowLeftSidebar(true);
+                setShowRightSidebar(true);
+              } else {
+                // 其他情况（部分显示），则全部显示
+                setShowPageSelector(true);
+                setShowLeftSidebar(true);
+                setShowRightSidebar(true);
+              }
+            }}
+            onUndo={() => temporal.getState().undo()}
+            onRedo={() => temporal.getState().redo()}
+            plugins={plugins}
+            enablePluginSystem={enablePluginSystem}
+          />
 
           {/* 下部 - 左中右三栏布局 */}
           <div
@@ -2921,118 +2291,17 @@ const MixBoxLayoutContent = React.memo<{
               />
             )}
             {/* 左侧边栏 */}
-            <div
-              className={css({
-                width: showLeftSidebar ? "270px" : "0px",
-                borderRight: showLeftSidebar ? "1px solid" : "none",
-                borderRightColor: "gray.300",
-                backgroundColor: "gray.50",
-                padding: showLeftSidebar ? "0px" : "0px",
-                overflowY: "auto",
-                overflowX: "hidden",
-                flexShrink: 0,
-                transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
-                opacity: showLeftSidebar ? "1" : "0",
-                visibility: showLeftSidebar ? "visible" : "hidden",
-                minWidth: showLeftSidebar ? "270px" : "0px",
-                // 响应式布局：小屏幕时绝对定位，大屏幕时相对定位
-                position: isMobileMode ? "absolute" : "relative",
-                left: isMobileMode ? "0" : "auto",
-                top: isMobileMode ? "0" : "auto",
-                bottom: isMobileMode ? "0" : "auto",
-                height: isMobileMode ? "100%" : "auto",
-                zIndex: isMobileMode ? "60" : "auto",
-                boxShadow: isMobileMode
-                  ? showLeftSidebar
-                    ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-                    : "none"
-                  : "none",
-                // 确保在小屏幕时，当显示时不会被隐藏
-                display: isMobileMode
-                  ? showLeftSidebar
-                    ? "block"
-                    : "none"
-                  : "block",
-              })}
-            >
-              <div
-                className={css({
-                  width: "100%",
-                  height: "100%",
-                  display: showLeftSidebar ? "flex" : "none",
-                  flexDirection: "column",
-                })}
-              >
-                <div
-                  className={css({
-                    display: showLeftSidebar ? "flex" : "none",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "16px 16px 12px 16px",
-                    borderBottom: "1px solid",
-                    borderColor: "gray.200",
-                    flexShrink: "0",
-                    backgroundColor: "gray.50",
-                  })}
-                >
-                  <div
-                    className={css({
-                      fontSize: "14px",
-                      fontWeight: "bold",
-                      color: "gray.800",
-                    })}
-                  >
-                    页面信息
-                  </div>
-                  {/* 关闭按钮 - 仅在桌面端显示 */}
-                  <ActionIcon
-                    variant="subtle"
-                    aria-label="close-left-sidebar"
-                    onClick={() => setShowLeftSidebar(false)}
-                    className={css({
-                      display: isMobileMode ? "none" : "flex",
-                      color: "gray.500",
-                      _hover: {
-                        backgroundColor: "gray.100",
-                      },
-                    })}
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </ActionIcon>
-                </div>
-                <MacScrollbar
-                  className={css({
-                    fontSize: "12px",
-                    color: "gray.600",
-                    display: showLeftSidebar ? "block" : "none",
-                    flex: "1",
-                    overflow: "auto",
-                    padding: "16px",
-                  })}
-                >
-                  <PageStructureTree
-                    currentPage={currentPage}
-                    currentPageHeaderContent={currentPageHeaderContent}
-                    currentPageBodyContent={currentPageBodyContent}
-                    currentPageFooterContent={currentPageFooterContent}
-                    onItemClick={setCurrentSelectedId}
-                    currentSelectedId={currentSelectedId}
-                  />
-                </MacScrollbar>
-              </div>
-            </div>
+            <LeftSidebar
+              showLeftSidebar={showLeftSidebar}
+              isMobileMode={isMobileMode}
+              currentPage={currentPage}
+              currentPageHeaderContent={currentPageHeaderContent}
+              currentPageBodyContent={currentPageBodyContent}
+              currentPageFooterContent={currentPageFooterContent}
+              currentSelectedId={currentSelectedId}
+              onItemClick={setCurrentSelectedId}
+              onClose={() => setShowLeftSidebar(false)}
+            />
 
             {/* 中间主要内容区域 */}
             <MacScrollbar
@@ -3262,111 +2531,19 @@ const MixBoxLayoutContent = React.memo<{
             </MacScrollbar>
 
             {/* 右侧边栏 */}
-            <div
-              className={css({
-                width: showRightSidebar ? "270px" : "0px",
-                borderLeft: showRightSidebar ? "1px solid" : "none",
-                borderLeftColor: "gray.300",
-                backgroundColor: "gray.50",
-                padding: showRightSidebar ? "0px" : "0px",
-                overflowY: "auto",
-                overflowX: "hidden",
-                flexShrink: 0,
-                transition: "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
-                opacity: showRightSidebar ? "1" : "0",
-                visibility: showRightSidebar ? "visible" : "hidden",
-                minWidth: showRightSidebar ? "270px" : "0px",
-                // 响应式布局：小屏幕时绝对定位，大屏幕时相对定位
-                position: isMobileMode ? "absolute" : "relative",
-                right: isMobileMode ? "0" : "auto",
-                top: isMobileMode ? "0" : "auto",
-                bottom: isMobileMode ? "0" : "auto",
-                height: isMobileMode ? "100%" : "auto",
-                zIndex: isMobileMode ? "60" : "auto",
-                boxShadow: isMobileMode
-                  ? showRightSidebar
-                    ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-                    : "none"
-                  : "none",
-                // 确保在小屏幕时，当显示时不会被隐藏
-                display: isMobileMode
-                  ? showRightSidebar
-                    ? "block"
-                    : "none"
-                  : "block",
-              })}
-            >
-              <div
-                className={css({
-                  width: "100%",
-                  height: "100%",
-                  display: showRightSidebar ? "flex" : "none",
-                  flexDirection: "column",
-                })}
-              >
-                <div
-                  className={css({
-                    display: showRightSidebar ? "flex" : "none",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "16px 16px 12px 16px",
-                    borderBottom: "1px solid",
-                    borderBottomColor: "gray.200",
-                    flexShrink: "0",
-                    backgroundColor: "gray.50",
-                  })}
-                >
-                  <div
-                    className={css({
-                      fontSize: "14px",
-                      fontWeight: "bold",
-                      color: "gray.800",
-                    })}
-                  >
-                    操作面板
-                  </div>
-                  {/* 关闭按钮 - 仅在桌面端显示 */}
-                  <ActionIcon
-                    variant="subtle"
-                    aria-label="close-right-sidebar"
-                    onClick={() => setShowRightSidebar(false)}
-                    className={css({
-                      display: isMobileMode ? "none" : "flex",
-                      color: "gray.500",
-                      _hover: {
-                        backgroundColor: "gray.100",
-                      },
-                    })}
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </ActionIcon>
-                </div>
-                <MacScrollbar
-                  className={css({
-                    fontSize: "12px",
-                    color: "gray.600",
-                    display: showRightSidebar ? "block" : "none",
-                    flex: "1",
-                    overflow: "auto",
-                    padding: "16px",
-                  })}
-                >
-                  {compAttrPanel}
-                </MacScrollbar>
-              </div>
-            </div>
+            <RightSidebar
+              showRightSidebar={showRightSidebar}
+              isMobileMode={isMobileMode}
+              currentSelectedId={currentSelectedId}
+              selectedItemInfo={selectedItemInfo}
+              baseUrl={baseUrl}
+              imageUploadPath={imageUploadPath}
+              imageDownloadPath={imageDownloadPath}
+              plugins={plugins}
+              enablePluginSystem={enablePluginSystem}
+              onPluginPropsChange={handlePluginPropsChange}
+              onClose={() => setShowRightSidebar(false)}
+            />
           </div>
         </div>
       </div>
