@@ -12,7 +12,7 @@ import {
   useContentsStoreContext,
 } from "./store/store";
 import { defaultContents } from "./store/default-data";
-import { DpiProvider, useDpi } from "./providers/dpi-provider";
+import { DpiProvider } from "./providers/dpi-provider";
 import {
   ThemeProvider,
   useThemeColorsContext,
@@ -30,7 +30,6 @@ import {
   PAGE_HEADER_ROOT_ID,
   PAGE_ROOT_ID,
 } from "./constants";
-import { AttributePanelRenderer } from "./comps/attribute-panel/components/attribute-panel-renderer";
 import { css } from "./styled-system/css";
 import {
   PageSelector,
@@ -44,7 +43,7 @@ import {
   usePopoverState,
   useUndoRedo,
   useContentChange,
-  useSelectedItemInfo,
+  useSelectedItem,
   useRenderFunctions,
   useCanvasSize,
   useInteractionButtons,
@@ -78,8 +77,6 @@ const MixBoxLayoutContent = React.memo<{
   }) => {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-    const { dpi } = useDpi();
-
     // 使用 DPI 计算器 hook
     useDpiCalculator();
 
@@ -106,7 +103,6 @@ const MixBoxLayoutContent = React.memo<{
 
         // 如果点击的是交互按钮，阻止事件冒泡
         if (
-          // target.closest("[data-drag-handle]") ||
           target.closest("[data-interactive]") ||
           target.closest("[data-popover-target]")
         ) {
@@ -114,25 +110,13 @@ const MixBoxLayoutContent = React.memo<{
         }
       };
 
-      // const handleGlobalMouseMove = (e: MouseEvent) => {
-      //   // 在拖拽过程中阻止不必要的事件传播
-      //   if (e.buttons > 0) {
-      //     // 鼠标按下状态
-      //     e.stopPropagation();
-      //   }
-      // };
-
       // 使用passive: true提高性能
       document.addEventListener("mousedown", handleGlobalMouseDown, {
         passive: false,
       });
-      // document.addEventListener("mousemove", handleGlobalMouseMove, {
-      //   passive: false,
-      // });
 
       return () => {
         document.removeEventListener("mousedown", handleGlobalMouseDown);
-        // document.removeEventListener("mousemove", handleGlobalMouseMove);
       };
     }, []);
 
@@ -417,16 +401,6 @@ const MixBoxLayoutContent = React.memo<{
       stableMoreStyles,
     );
 
-    // 生成页面选择器的选项
-    const pageSelectOptions = React.useMemo(() => {
-      if (!pages) return [];
-
-      return pages.map((page, index) => ({
-        value: page.id,
-        label: page.name || `页面 ${index + 1}`,
-      }));
-    }, [pages]);
-
     // 使用撤销重做 hook
     const { undoCount, redoCount, undo, redo } = useUndoRedo();
 
@@ -434,36 +408,7 @@ const MixBoxLayoutContent = React.memo<{
     useContentChange(onContentChange);
 
     // 使用选中项信息 hook
-    const selectedItemInfo = useSelectedItemInfo(
-      currentSelectedId,
-      currentPageHeaderContent,
-      currentPageBodyContent,
-      currentPageFooterContent,
-    );
-
-    const compAttrPanel = React.useMemo(() => {
-      return (
-        <AttributePanelRenderer
-          currentSelectedId={currentSelectedId}
-          selectedItemInfo={selectedItemInfo}
-          baseUrl={baseUrl}
-          imageUploadPath={imageUploadPath}
-          imageDownloadPath={imageDownloadPath}
-          plugins={plugins}
-          enablePluginSystem={enablePluginSystem}
-          onPluginPropsChange={handlePluginPropsChange}
-        />
-      );
-    }, [
-      currentSelectedId,
-      selectedItemInfo,
-      baseUrl,
-      imageUploadPath,
-      imageDownloadPath,
-      plugins,
-      enablePluginSystem,
-      handlePluginPropsChange,
-    ]);
+    const selectedItemInfo = useSelectedItem();
 
     return (
       <div

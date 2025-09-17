@@ -12,10 +12,8 @@ export function useCanvasSize(currentPage: any) {
   const currentPageOrientation = currentPage?.orientation;
 
   React.useEffect(() => {
-    console.log(`DPI: ${dpi}`);
     const width = mm2px(getRectangleSize(currentPageRectangle).width, dpi);
     const height = mm2px(getRectangleSize(currentPageRectangle).height, dpi);
-    console.log(currentPageRectangle, currentPageOrientation, width, height);
     setCanvasWidth(currentPageOrientation === "portrait" ? width : height);
     setCanvasHeight(currentPageOrientation === "portrait" ? height : width);
   }, [dpi, currentPageRectangle, currentPageOrientation]);

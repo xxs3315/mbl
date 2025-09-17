@@ -28,7 +28,6 @@ export function usePopoverState() {
   }, []);
 
   return {
-    popoverStates,
     togglePopover,
     isPopoverOpen,
     closePopover,

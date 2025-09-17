@@ -15,9 +15,10 @@ export { useContentChange } from "./use-content-change";
 
 // 选中项信息 hooks
 export {
-  useSelectedItemInfo,
+  useSelectedItem,
+  useSelectedItemType,
   type SelectedItemInfo,
-} from "./use-selected-item-info";
+} from "./use-selected-item";
 
 // 渲染函数 hooks
 export { useRenderFunctions } from "./use-render-functions";
