@@ -17,7 +17,6 @@ import {
   useLocation,
 } from "react-router-dom";
 import Designer from "./components/Designer";
-import TaskCenter from "./components/TaskCenter";
 import Homepage from "./components/Homepage";
 
 interface AppProps {

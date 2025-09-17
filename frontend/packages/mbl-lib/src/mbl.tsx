@@ -26,7 +26,6 @@ import {
   Popover,
   NavLink,
 } from "@mantine/core";
-import { useThemeColors } from "./utils/theme-utils";
 import { theme, themeVariants, type ThemeVariant } from "./theme";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
@@ -286,6 +285,8 @@ const MixBoxLayoutContent = React.memo<{
   baseUrl?: string;
   imageUploadPath?: string;
   imageDownloadPath?: string;
+  pdfGeneratePath?: string;
+  pdfDownloadPath?: string;
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
 }>(
@@ -294,6 +295,8 @@ const MixBoxLayoutContent = React.memo<{
     baseUrl,
     imageUploadPath,
     imageDownloadPath,
+    pdfGeneratePath,
+    pdfDownloadPath,
     plugins,
     enablePluginSystem = false,
   }) => {
@@ -2359,6 +2362,7 @@ const MixBoxLayoutContent = React.memo<{
           selectedItemInfo={selectedItemInfo}
           baseUrl={baseUrl}
           imageUploadPath={imageUploadPath}
+          imageDownloadPath={imageDownloadPath}
           plugins={plugins}
           enablePluginSystem={enablePluginSystem}
           onPluginPropsChange={handlePluginPropsChange}
@@ -2369,6 +2373,7 @@ const MixBoxLayoutContent = React.memo<{
       selectedItemInfo,
       baseUrl,
       imageUploadPath,
+      imageDownloadPath,
       plugins,
       enablePluginSystem,
       handlePluginPropsChange,
@@ -3378,6 +3383,8 @@ export const MixBoxLayout = React.memo<{
   baseUrl?: string;
   imageUploadPath?: string;
   imageDownloadPath?: string;
+  pdfGeneratePath?: string;
+  pdfDownloadPath?: string;
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
   locale?: "zh-CN" | "en-US";
@@ -3390,6 +3397,8 @@ export const MixBoxLayout = React.memo<{
     baseUrl,
     imageUploadPath,
     imageDownloadPath,
+    pdfGeneratePath,
+    pdfDownloadPath,
     plugins,
     enablePluginSystem = false,
     locale = "zh-CN",

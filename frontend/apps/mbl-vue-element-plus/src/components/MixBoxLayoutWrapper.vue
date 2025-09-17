@@ -71,7 +71,6 @@ const mixBoxProps = computed(() => ({
   theme: currentTheme.value,
   baseUrl: props.baseUrl || "http://localhost:8080",
   imageUploadPath: props.imageUploadPath || "/api/images/upload",
-  imageDownloadPath: props.imageDownloadPath || "api/images",
   plugins: props.plugins,
   enablePluginSystem: props.enablePluginSystem
 }));

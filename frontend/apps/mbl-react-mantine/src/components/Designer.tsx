@@ -28,7 +28,6 @@ const Designer: React.FC = () => {
       locale={currentLocale}
       baseUrl={"http://localhost:8080"}
       imageUploadPath={"/api/images/upload"}
-      imageDownloadPath={"api/images"}
       plugins={plugins}
       enablePluginSystem={true}
     />

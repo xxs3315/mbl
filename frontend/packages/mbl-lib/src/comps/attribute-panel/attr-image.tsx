@@ -30,6 +30,7 @@ import { DebouncedTextarea } from "../../utils/debounced-textarea";
 interface ImageUploadConfig {
   baseUrl?: string;
   imageUploadPath?: string;
+  imageDownloadPath?: string;
 }
 
 // 图片数据接口
@@ -54,6 +55,7 @@ interface ImageData {
 export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
   baseUrl,
   imageUploadPath,
+  imageDownloadPath,
 }) {
   const { currentSelectedId, setCurrentSelectedId } = useCurrentSelectedId();
   const { item: currentSelectedItem, position: currentSelectedItemPosition } =
@@ -198,7 +200,11 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
           {
             origWidth: imageData.width,
             origHeight: imageData.height,
-            value: baseUrl ? `${baseUrl}${imageData.url}` : imageData.url,
+            value: imageDownloadPath
+              ? `${imageDownloadPath}${imageData.filename}`
+              : baseUrl
+                ? `${baseUrl}${imageData.url}`
+                : imageData.url,
             height: newHeight,
           },
         );

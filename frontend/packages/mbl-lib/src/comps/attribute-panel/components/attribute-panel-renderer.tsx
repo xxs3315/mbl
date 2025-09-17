@@ -24,6 +24,7 @@ interface AttributePanelRendererProps {
   };
   baseUrl?: string;
   imageUploadPath?: string;
+  imageDownloadPath?: string;
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
   onPluginPropsChange?: (
@@ -48,6 +49,7 @@ export const AttributePanelRenderer: React.FC<AttributePanelRendererProps> =
       selectedItemInfo,
       baseUrl,
       imageUploadPath,
+      imageDownloadPath,
       plugins,
       enablePluginSystem = false,
       onPluginPropsChange,
@@ -122,7 +124,11 @@ export const AttributePanelRenderer: React.FC<AttributePanelRendererProps> =
           return <AttrText />;
         case "image":
           return (
-            <AttrImage baseUrl={baseUrl} imageUploadPath={imageUploadPath} />
+            <AttrImage
+              baseUrl={baseUrl}
+              imageUploadPath={imageUploadPath}
+              imageDownloadPath={imageDownloadPath}
+            />
           );
         case "placeholder":
           return <AttrPlaceholder />;
