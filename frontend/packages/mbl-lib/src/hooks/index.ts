@@ -27,3 +27,18 @@ export { useCanvasSize } from "./use-canvas-size";
 
 // 交互按钮渲染 hooks
 export { useInteractionButtons } from "./use-interaction-buttons";
+
+// 项目元素创建 hooks
+export { useItemElement } from "./use-item-element";
+
+// 组件渲染器 hooks
+export { useComponentRenderer } from "./use-component-renderer";
+
+// 稳定样式 hooks
+export { useStableStyles } from "./use-stable-styles";
+
+// DPI 计算器 hooks
+export { useDpiCalculator } from "./use-dpi-calculator";
+
+// 画布渲染器 hooks
+export { useCanvasRenderer } from "./use-canvas-renderer";
