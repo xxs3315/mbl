@@ -1,16 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import App from "./App.tsx";
 import "./index.css";
+import { ThemeProvider } from "./providers/ThemeProvider.tsx";
+import { LocaleProvider } from "./providers/LocaleProvider.tsx";
 
-import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css";
-import { ThemeProvider } from "./providers/ThemeProvider";
-
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
+    <LocaleProvider>
+      <ThemeProvider>
+        <LocaleProvider>
+          <App />
+        </LocaleProvider>
+      </ThemeProvider>
+    </LocaleProvider>
   </React.StrictMode>,
 );

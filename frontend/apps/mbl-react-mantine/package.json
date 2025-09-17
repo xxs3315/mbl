@@ -20,7 +20,8 @@
     "@xxs3315/mbl-lib-plugin-table": "workspace:*",
     "axios": "^1.10.0",
     "react": "~19.1.0",
-    "react-dom": "~19.1.0"
+    "react-dom": "~19.1.0",
+    "react-router-dom": "^7.9.1"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
