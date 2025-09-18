@@ -1,0 +1,52 @@
+{
+  "name": "@xxs3315/mbl-dnd",
+  "version": "0.0.1",
+  "description": "Drag and Drop components for MBL",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist-esm/index.js",
+      "require": "./dist/index.js"
+    },
+    "./box.css": {
+      "import": "./dist-esm/box.css",
+      "require": "./dist/box.css"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist-esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "dist-esm",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm run build:cjs && pnpm run build:esm && pnpm run copy-css",
+    "build:cjs": "tsc -p tsconfig.build.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "clean": "rimraf dist dist-esm",
+    "copy-css": "copyfiles -u 1 \"src/box.css\" dist/ && copyfiles -u 1 \"src/box.css\" dist-esm/",
+    "dev": "tsc -p tsconfig.build.json --watch"
+  },
+  "dependencies": {
+    "@mantine/core": "^8.2.5",
+    "lucide-react": "^0.541.0",
+    "react": "~19.1.0",
+    "react-dnd": "^16.0.1",
+    "react-dom": "~19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.0",
+    "@types/react-dom": "~19.1.0",
+    "copyfiles": "^2.4.1",
+    "rimraf": "~6.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@mantine/core": "^8.2.5",
+    "react": "~19.1.0",
+    "react-dnd": "^16.0.1",
+    "react-dom": "~19.1.0"
+  }
+}

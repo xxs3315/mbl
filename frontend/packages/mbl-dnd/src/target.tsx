@@ -2,8 +2,6 @@ import type { CSSProperties, FC, ReactNode } from "react";
 import { memo } from "react";
 import { useDrop } from "react-dnd";
 import React from "react";
-import { css } from "../styled-system/css";
-import { useThemeColors } from "../utils/theme-utils";
 
 const style: CSSProperties = {
   padding: "0",
@@ -30,8 +28,6 @@ export const DndTarget: FC<DustbinProps> = memo(function Dustbin({
   greedy,
   moreStyle,
 }) {
-  const colors = useThemeColors();
-
   const [{ isOver, isOverCurrent }, drop] = useDrop({
     accept,
     drop(item: unknown, monitor) {
@@ -47,22 +43,20 @@ export const DndTarget: FC<DustbinProps> = memo(function Dustbin({
     }),
   });
 
-  let backgroundColor = `${colors.primaryLight}10`;
+  let backgroundColor = "blue.50";
   let boxShadow = "none";
 
   if (isOverCurrent || (isOver && greedy)) {
-    backgroundColor = `${colors.primary}80`;
-    boxShadow = `0 0 5px 2px ${colors.primary}`;
+    console.log("hhhhh");
+    backgroundColor = "blue.300";
+    boxShadow = `0 0 5px 2px blue`;
   }
 
   return (
     <div
       ref={drop as any}
-      style={{ ...style, backgroundColor, boxShadow, ...moreStyle }}
+      style={{ ...style, backgroundColor, boxShadow, ...moreStyle, flex: 1 }}
       data-id="dndTarget"
-      className={css({
-        flex: "1",
-      })}
       id={`dnd-target-${identifier}`}
     >
       {children}

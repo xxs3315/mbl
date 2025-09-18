@@ -1,4 +1,4 @@
-import { ItemTypes } from "../../../dnd/item-types";
+import { ItemTypes } from "@xxs3315/mbl-dnd";
 import type {
   ToolPanelCompPayload,
   ToolPanelDataBindingPayload,

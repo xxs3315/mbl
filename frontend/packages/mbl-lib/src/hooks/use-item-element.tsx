@@ -1,9 +1,7 @@
 import React from "react";
 import { css } from "../styled-system/css";
 import { Item, List } from "@xxs3315/mbl-core";
-import { DndTarget } from "../dnd/target";
-import { ItemTypes } from "../dnd/item-types";
-import { pt2px } from "@xxs3315/mbl-utils";
+import { DndTarget } from "@xxs3315/mbl-dnd";
 import { useDpi } from "../providers/dpi-provider";
 
 export function useItemElement(

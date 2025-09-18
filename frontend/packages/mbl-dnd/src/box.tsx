@@ -2,8 +2,8 @@ import { Tooltip, ActionIcon } from "@mantine/core";
 import type { FC, ReactNode } from "react";
 import { memo } from "react";
 import { useDrag } from "react-dnd";
-import { useThemeColors } from "../utils/theme-utils";
 import React from "react";
+import "@mantine/core/styles.css";
 import {
   Square,
   Type,
@@ -15,7 +15,6 @@ import {
   SeparatorHorizontal,
   FileDigit,
 } from "lucide-react";
-import { css } from "../styled-system/css";
 
 // 根据 cat 属性获取对应的图标
 const getIconByCat = (cat?: string, direction?: string) => {
@@ -72,7 +71,6 @@ export const Box: FC<BoxProps> = memo(function Box({
   bind,
   direction,
 }) {
-  const colors = useThemeColors();
   const [{ opacity }, drag] = useDrag(
     () => ({
       type,
@@ -100,19 +98,7 @@ export const Box: FC<BoxProps> = memo(function Box({
   if (children) {
     // 如果有 children，保持原有的 div 形式（用于 ToolPanel 中的标签显示）
     return (
-      <div
-        ref={drag as any}
-        style={{ opacity }}
-        data-testid="box"
-        className={css({
-          _hover: {
-            transform: "translateY(-2px)",
-            borderColor: "blue.500",
-            boxShadow:
-              "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-          },
-        })}
-      >
+      <div ref={drag as any} style={{ opacity }}>
         {children}
       </div>
     );
@@ -126,18 +112,10 @@ export const Box: FC<BoxProps> = memo(function Box({
         variant="subtle"
         size="lg"
         aria-label={name}
-        style={{ opacity, cursor: "move" }}
-        className={css({
-          backgroundColor: "blue.500",
-          color: "white",
-          _hover: {
-            backgroundColor: "blue.600",
-          },
-          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-          "&:disabled, &[data-disabled]": {
-            backgroundColor: "transparent !important",
-          },
-        })}
+        style={{
+          opacity,
+          cursor: "move",
+        }}
       >
         {icon}
       </ActionIcon>

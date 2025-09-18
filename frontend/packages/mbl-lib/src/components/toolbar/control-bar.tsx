@@ -1,8 +1,9 @@
 import React from "react";
 import { css } from "../../styled-system/css";
-import { ActionIcon } from "@mantine/core";
+import { ActionIcon, Popover } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
-import { Box } from "../../dnd/box";
+import { Box } from "@xxs3315/mbl-dnd";
+import "@xxs3315/mbl-dnd/box.css";
 import { toolPanelComps } from "../../comps/tool-panel/data";
 import {
   Redo,
@@ -14,6 +15,7 @@ import {
   LayoutDashboard,
   LayoutList,
 } from "lucide-react";
+import { ControlBarDataSources } from "./control-bar-data-sources";
 
 interface ControlBarProps {
   showPageSelector: boolean;
@@ -204,6 +206,47 @@ export const ControlBar = React.memo<ControlBarProps>(
               )}
             </div>
           </MacScrollbar>
+
+          {/* 分割短竖线 - 响应式显示 */}
+          <div
+            className={css({
+              width: "1px",
+              height: "12px",
+              backgroundColor: "gray.200",
+              marginX: "4px",
+              flexShrink: "0",
+              display: {
+                base: "none", // 小屏幕隐藏分隔线
+                sm: "block", // 大屏幕显示
+              },
+            })}
+          />
+
+          <Popover width={200} position="bottom" withArrow shadow="md">
+            <Popover.Target>
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                aria-label="undo"
+                className={css({
+                  backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
+                  color: "white",
+                  _hover: {
+                    backgroundColor: showLeftSidebar ? "blue.600" : "gray.500",
+                  },
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  "&:disabled, &[data-disabled]": {
+                    backgroundColor: "transparent !important",
+                  },
+                })}
+              >
+                <Undo size={16} />
+              </ActionIcon>
+            </Popover.Target>
+            <Popover.Dropdown>
+              <ControlBarDataSources id={"data-sources"} />
+            </Popover.Dropdown>
+          </Popover>
 
           {/* 分割短竖线 - 响应式显示 */}
           <div
