@@ -1,6 +1,5 @@
 import { Accordion, Avatar, Group, Tabs, Text } from "@mantine/core";
 import { Box } from "@xxs3315/mbl-dnd";
-import "@xxs3315/mbl-dnd/box.css";
 import { toolPanelComps } from "./data";
 import React from "react";
 import { css } from "../../styled-system/css";

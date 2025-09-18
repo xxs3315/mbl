@@ -16,6 +16,7 @@ import {
   useDpi,
   useThemeColorsContext,
 } from "@xxs3315/mbl-lib";
+import { PageItem } from "@xxs3315/mbl-typings";
 
 // SVG 图标定义 - 优化为常量，避免重复创建
 const SVG_PROPS = {
@@ -511,7 +512,7 @@ const TextareaWithComposition = React.memo<{
     const renderFloatingButtons = React.useMemo(() => {
       const isSelected =
         currentSelectedColumnId === props.id && currentSelectedId === tableId;
-      if (!isSelected || !onColumnAction) return null;
+      if (!isSelected || !onColumnAction || props.readOnly) return null; // 只读模式下不显示浮动按钮
 
       return React.createElement(
         "div",
@@ -602,12 +603,14 @@ const TextareaWithComposition = React.memo<{
         size: "xs",
         radius: "xs",
         value: localValue,
-        onChange: handleChange,
-        onClick: handleClick,
-        onFocus: handleFocus,
-        onKeyDown: handleKeyDown,
-        onCompositionStart: handleCompositionStart,
-        onCompositionEnd: handleCompositionEnd,
+        readOnly: props.readOnly || false, // 添加 readOnly 属性
+        onChange: props.readOnly ? undefined : handleChange, // 只读时不处理变化
+        onClick: props.readOnly ? undefined : handleClick, // 只读时不处理点击
+        onFocus: props.readOnly ? undefined : handleFocus, // 只读时不处理焦点
+        onKeyDown: props.readOnly ? undefined : handleKeyDown, // 只读时不处理键盘事件
+        tabIndex: props.readOnly ? -1 : undefined, // 只读时移除Tab键焦点
+        onCompositionStart: props.readOnly ? undefined : handleCompositionStart, // 只读时不处理输入法
+        onCompositionEnd: props.readOnly ? undefined : handleCompositionEnd, // 只读时不处理输入法
         styles: textareaStyles,
       }),
       renderFloatingButtons,
@@ -1098,32 +1101,96 @@ export const TableComponent: React.FC<TablePluginProps> = ({
   );
 
   // 渲染所有顶级元素 - 使用 useMemo 缓存
-  const topLevelElements = React.useMemo(
-    () =>
-      topLevelItems.map((item: any, index: number) =>
-        createTableItemElement(
-          item,
-          index,
-          contentMap as any,
-          handleValueChange,
-          handleColumnAction,
-          handleColumnSelect,
-          currentSelectedColumnId,
-          currentSelectedId,
-          tableId,
-        ),
+  const topLevelElements = React.useMemo(() => {
+    const elements = topLevelItems.map((item: any, index: number) =>
+      createTableItemElement(
+        item,
+        index,
+        contentMap as any,
+        handleValueChange,
+        handleColumnAction,
+        handleColumnSelect,
+        currentSelectedColumnId,
+        currentSelectedId,
+        tableId,
       ),
-    [
-      topLevelItems,
-      contentMap,
-      handleValueChange,
-      handleColumnAction,
-      handleColumnSelect,
-      currentSelectedColumnId,
-      currentSelectedId,
-      tableId,
-    ],
-  );
+    );
+
+    // 如果第一行存在，添加一行与第一行列分布完全一致的textarea行
+    if (topLevelItems.length > 0) {
+      const firstRow: any = topLevelItems[0];
+      if (firstRow && firstRow.children && firstRow.children.length > 0) {
+        // 创建与第一行结构相同的textarea行，使用相同的样式但不包含浮动工具条
+        const textareaRow = React.createElement(
+          "div",
+          {
+            key: "textarea-row",
+            style: {
+              display: "flex",
+              width: "100%",
+              marginTop: "1px",
+              marginRiht: "1px",
+              marginBottom: "1px",
+              marginLeft: "0",
+              rowGap: "1px",
+              columnGap: "1px",
+              border: "1px solid #e5e7eb",
+            },
+          },
+          firstRow.children.map((columnId: string, columnIndex: number) => {
+            const columnData: PageItem = contentMap.get(columnId) as any;
+            if (!columnData) return null;
+
+            // 使用与第一行相同的样式，但创建textarea而不是文本元素
+            return React.createElement(
+              "div",
+              {
+                key: `textarea-column-${columnId}`,
+                style: {
+                  ...getFlexStyle(columnData),
+                  ...getVerticalStyle(columnData.vertical),
+                  position: "relative",
+                  marginRight:
+                    columnIndex < firstRow.children.length - 1 ? "0" : "0",
+                },
+              },
+              React.createElement(TextareaWithComposition, {
+                props: {
+                  id: `textarea-column-${columnId}`,
+                  value: "",
+                  readOnly: true, // 设置为只读
+                },
+                onValueChange: (newValue: string) => {
+                  // 只读模式下不处理值变化
+                  console.log(
+                    `Column ${columnIndex + 1} is read-only, value change ignored:`,
+                    newValue,
+                  );
+                },
+                onColumnAction: undefined, // 不显示浮动工具条
+                onColumnSelect: undefined, // 不处理列选择
+                currentSelectedColumnId: "",
+                currentSelectedId: "",
+                tableId: tableId,
+              }),
+            );
+          }),
+        );
+        elements.push(textareaRow);
+      }
+    }
+
+    return elements;
+  }, [
+    topLevelItems,
+    contentMap,
+    handleValueChange,
+    handleColumnAction,
+    handleColumnSelect,
+    currentSelectedColumnId,
+    currentSelectedId,
+    tableId,
+  ]);
 
   return React.createElement(
     "div",

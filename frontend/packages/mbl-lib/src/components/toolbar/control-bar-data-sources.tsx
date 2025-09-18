@@ -3,7 +3,6 @@ import { css } from "../../styled-system/css";
 import { toolPanelDataBindings } from "../../comps/tool-panel/data";
 import { ItemTypes } from "@xxs3315/mbl-dnd";
 import { Box } from "@xxs3315/mbl-dnd";
-import "@xxs3315/mbl-dnd/box.css";
 import { DotsSVG } from "../icons";
 
 interface ControlBarDataSourcesProps {

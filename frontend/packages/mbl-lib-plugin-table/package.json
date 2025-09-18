@@ -32,6 +32,7 @@
     "@mantine/core": "^8.2.5",
     "@mantine/hooks": "^8.2.5",
     "@xxs3315/mbl-core": "workspace:*",
+    "@xxs3315/mbl-dnd": "workspace:*",
     "@xxs3315/mbl-lib": "workspace:*",
     "@xxs3315/mbl-utils": "workspace:*"
   },

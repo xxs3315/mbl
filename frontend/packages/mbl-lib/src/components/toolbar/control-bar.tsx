@@ -3,7 +3,6 @@ import { css } from "../../styled-system/css";
 import { ActionIcon, Popover } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
 import { Box } from "@xxs3315/mbl-dnd";
-import "@xxs3315/mbl-dnd/box.css";
 import { toolPanelComps } from "../../comps/tool-panel/data";
 import {
   Redo,
