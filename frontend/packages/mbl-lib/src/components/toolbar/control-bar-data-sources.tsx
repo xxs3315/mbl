@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "../../styled-system/css";
-import { toolPanelDataBindings } from "../../comps/tool-panel/data";
+import { toolPanelDataBindings } from "@xxs3315/mbl-data-bindings";
 import { ItemTypes } from "@xxs3315/mbl-dnd";
 import { Box } from "@xxs3315/mbl-dnd";
 import { DotsSVG } from "../icons";

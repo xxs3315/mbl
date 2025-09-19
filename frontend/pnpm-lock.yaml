@@ -180,6 +180,15 @@ importers:
         specifier: ~6.0.0
         version: 6.0.1
 
+  packages/mbl-data-bindings:
+    devDependencies:
+      rimraf:
+        specifier: ^5.0.0
+        version: 5.0.10
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.2
+
   packages/mbl-dnd:
     dependencies:
       '@mantine/core':
@@ -231,6 +240,9 @@ importers:
       '@xxs3315/mbl-core':
         specifier: workspace:*
         version: link:../mbl-core
+      '@xxs3315/mbl-data-bindings':
+        specifier: workspace:*
+        version: link:../mbl-data-bindings
       '@xxs3315/mbl-dnd':
         specifier: workspace:*
         version: link:../mbl-dnd

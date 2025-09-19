@@ -439,7 +439,7 @@ const TextareaWithComposition = React.memo<{
 
     const BUTTONS_CONTAINER_STYLE = {
       position: "absolute",
-      top: "-12px",
+      top: "-24px",
       right: "0",
       display: "flex",
       gap: "3px",

@@ -13,22 +13,6 @@ interface ToolPanelCompProp {
   items?: any;
 }
 
-interface ToolPanelDataBindingProp {
-  id: string;
-  name: string;
-  description: string;
-  abbreviation: string;
-  image: string;
-  shape: "list" | "scatter";
-  request: string;
-  value: any;
-  bindings: any;
-  type?: string;
-}
-
-export type ToolPanelDataBindingPayload = ToolPanelDataBindingProp &
-  Partial<{ onClick: (id?: string) => void }>;
-
 export type ToolPanelCompPayload = ToolPanelCompProp &
   Partial<{ onClick: (id?: string) => void }>;
 
@@ -133,67 +117,9 @@ const ToolPanel = () => {
     );
   });
 
-  // const dataBindingItems = toolPanelDataBindings.map((panel, index) => {
-  //   return (
-  //     <Accordion.Item value={panel.id} key={panel.id}>
-  //       <Accordion.Control>
-  //         <Box
-  //           name={panel.name}
-  //           type={
-  //             panel.shape === "scatter"
-  //               ? ItemTypes.BINDING_SCATTER
-  //               : ItemTypes.BINDING
-  //           }
-  //           cat={"binding"}
-  //           attrs={null}
-  //           isDropped={false}
-  //           key={`${index}${panel.id}`}
-  //           id={panel.id}
-  //           value={panel.value}
-  //           request={panel.request}
-  //           shape={panel.shape}
-  //         >
-  //           <AccordionDataBindingLabel {...panel} />
-  //         </Box>
-  //       </Accordion.Control>
-  //       <Accordion.Panel>
-  //         <div className={css({
-  //           marginX: "0.5",
-  //           marginY: "0.5",
-  //           display: "grid",
-  //           gridTemplateColumns: "repeat(4, 1fr)",
-  //           gap: "0.5",
-  //           textAlign: "center",
-  //           fontSize: "xs"
-  //         })}>
-  //           {panel.bindings?.map((item: any, itemIndex: number) => (
-  //             <Box
-  //               name={item.name}
-  //               type={
-  //                 panel.shape === "scatter"
-  //                   ? ItemTypes.BINDING_ITEM_SCATTER
-  //                   : ItemTypes.BINDING_ITEM
-  //               }
-  //               cat={item.cat}
-  //               attrs={item.attrs}
-  //               isDropped={false}
-  //               key={`${index}${itemIndex}`}
-  //               bind={item.bind}
-  //             />
-  //           ))}
-  //         </div>
-  //       </Accordion.Panel>
-  //     </Accordion.Item>
-  //   );
-  // });
-
   const controlsTab = () => {
     return <Accordion chevronPosition="right">{controlItems}</Accordion>;
   };
-
-  // const dataBindingsTab = () => {
-  //   return <Accordion chevronPosition="right">{dataBindingItems}</Accordion>;
-  // };
 
   return (
     <Tabs defaultValue="components">
@@ -202,14 +128,7 @@ const ToolPanel = () => {
         <Tabs.Tab value="data-binding">{"数据"}</Tabs.Tab>
         {/* <Tabs.Tab value="theme">{"theme.settings"}</Tabs.Tab> */}
       </Tabs.List>
-
       <Tabs.Panel value="components">{controlsTab()}</Tabs.Panel>
-
-      {/*<Tabs.Panel value="data-binding">{dataBindingsTab()}</Tabs.Panel>*/}
-
-      {/* <Tabs.Panel value="theme">
-				<ThemePanel />
-			</Tabs.Panel> */}
     </Tabs>
   );
 };
