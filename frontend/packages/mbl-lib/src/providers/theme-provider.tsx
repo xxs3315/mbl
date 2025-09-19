@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode } from "react";
-import { useThemeColors, type ThemeColors } from "../utils/theme-utils";
+import { useThemeColors, type ThemeColors } from "@xxs3315/mbl-themes";
 
 // Theme Context 类型定义
 interface ThemeContextType {

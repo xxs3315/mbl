@@ -1,0 +1,49 @@
+{
+  "name": "@xxs3315/mbl-themes",
+  "version": "1.0.0",
+  "description": "Theme utilities and configurations for MBL project - MBL项目主题工具和配置",
+  "keywords": [
+    "mbl",
+    "theme",
+    "mantine",
+    "colors",
+    "styling",
+    "ui"
+  ],
+  "license": "MIT",
+  "author": "xxs3315",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist-esm/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist-esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "dist-esm",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm run build:cjs && pnpm run build:esm",
+    "build:cjs": "tsc -p tsconfig.build.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "clean": "rimraf dist dist-esm",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "@mantine/core": "^8.2.5"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.0",
+    "rimraf": "~6.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "~19.1.0"
+  }
+}

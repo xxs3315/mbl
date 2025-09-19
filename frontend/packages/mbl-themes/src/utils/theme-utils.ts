@@ -1,5 +1,6 @@
 import { useMantineTheme } from "@mantine/core";
 import { theme } from "../theme";
+import React from "react";
 
 // 颜色接口定义
 export interface ThemeColors {

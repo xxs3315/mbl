@@ -240,6 +240,9 @@ importers:
       '@xxs3315/mbl-state':
         specifier: workspace:*
         version: link:../mbl-state
+      '@xxs3315/mbl-themes':
+        specifier: workspace:*
+        version: link:../mbl-themes
       '@xxs3315/mbl-typings':
         specifier: workspace:*
         version: link:../mbl-typings
@@ -416,6 +419,25 @@ importers:
       unbuild:
         specifier: ^3.0.1
         version: 3.6.1(sass@1.89.2)(typescript@5.9.2)(vue@3.5.20(typescript@5.9.2))
+
+  packages/mbl-themes:
+    dependencies:
+      '@mantine/core':
+        specifier: ^8.2.5
+        version: 8.2.5(@mantine/hooks@8.2.5(react@19.1.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react:
+        specifier: ~19.1.0
+        version: 19.1.0
+    devDependencies:
+      '@types/react':
+        specifier: ~19.1.0
+        version: 19.1.6
+      rimraf:
+        specifier: ~6.0.0
+        version: 6.0.1
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.2
 
   packages/mbl-typings:
     devDependencies:

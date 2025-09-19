@@ -2,7 +2,7 @@ import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { MantineProvider } from "@mantine/core";
-import { theme, themeVariants, type ThemeVariant } from "./theme";
+import { theme, themeVariants, type ThemeVariant } from "@xxs3315/mbl-themes";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import { ContentData } from "@xxs3315/mbl-typings";
