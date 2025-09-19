@@ -16,18 +16,6 @@
     "isolatedModules": true,
     "noEmit": true,
 
-    /* 路径映射 - 指向构建后的 dist 目录 */
-    "baseUrl": ".",
-    "paths": {
-      "@xxs3315/mbl-lib": ["../../packages/mbl-lib/dist"],
-      "@xxs3315/mbl-lib-plugin-table": ["../../packages/mbl-lib-plugin-table/dist"],
-      "@xxs3315/mbl-lib-example-data": ["../../packages/mbl-lib-example-data/dist"],
-      "@xxs3315/mbl-utils": ["../../packages/mbl-utils/dist"],
-      "@xxs3315/mbl-typings": ["../../packages/mbl-typings/dist"],
-      "@xxs3315/mbl-core": ["../../packages/mbl-core/dist"],
-      "@xxs3315/mbl-state": ["../../packages/mbl-state/dist"]
-    },
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": false,
