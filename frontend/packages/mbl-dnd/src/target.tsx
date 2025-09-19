@@ -44,11 +44,12 @@ export const DndTarget: FC<DustbinProps> = memo(function Dustbin({
     }),
   });
 
+  const colors = useThemeColorsContext();
+
   let backgroundColor = "blue.50";
   let boxShadow = "none";
 
   if (isOverCurrent || (isOver && greedy)) {
-    const colors = useThemeColorsContext();
     backgroundColor = "blue.300";
     boxShadow = `0 0 5px 2px ${colors.primary}`;
   }
