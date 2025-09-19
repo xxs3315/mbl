@@ -2,6 +2,7 @@ import type { CSSProperties, FC, ReactNode } from "react";
 import { memo } from "react";
 import { useDrop } from "react-dnd";
 import React from "react";
+import { useThemeColorsContext } from "@xxs3315/mbl-providers";
 
 const style: CSSProperties = {
   padding: "0",
@@ -47,9 +48,9 @@ export const DndTarget: FC<DustbinProps> = memo(function Dustbin({
   let boxShadow = "none";
 
   if (isOverCurrent || (isOver && greedy)) {
-    console.log("hhhhh");
+    const colors = useThemeColorsContext();
     backgroundColor = "blue.300";
-    boxShadow = `0 0 5px 2px blue`;
+    boxShadow = `0 0 5px 2px ${colors.primary}`;
   }
 
   return (

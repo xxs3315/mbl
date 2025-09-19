@@ -185,6 +185,9 @@ importers:
       '@mantine/core':
         specifier: ^8.2.5
         version: 8.2.5(@mantine/hooks@8.2.5(react@19.1.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@xxs3315/mbl-providers':
+        specifier: workspace:*
+        version: link:../mbl-providers
       lucide-react:
         specifier: ^0.541.0
         version: 0.541.0(react@19.1.0)
