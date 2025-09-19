@@ -29,12 +29,7 @@ import {
   PAGE_ROOT_ID,
 } from "./constants";
 import { css } from "./styled-system/css";
-import {
-  PageSelector,
-  ControlBar,
-  LeftSidebar,
-  RightSidebar,
-} from "./components";
+import { PageSelector, ControlBar, LeftSidebar, RightSidebar } from "./layout";
 import {
   useResponsiveLayout,
   useDragHandlers,

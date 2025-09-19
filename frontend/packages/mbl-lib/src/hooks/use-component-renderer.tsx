@@ -3,7 +3,7 @@ import { css } from "../styled-system/css";
 import { Image as MantineImage } from "@mantine/core";
 import { pt2px } from "@xxs3315/mbl-utils";
 import { useDpi } from "@xxs3315/mbl-providers";
-import { TextareaWithComposition } from "../components";
+import { TextareaWithComposition } from "../layout";
 
 export function useComponentRenderer(
   updateTextItemValue?: (

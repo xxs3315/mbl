@@ -2,7 +2,7 @@ import React from "react";
 import { css } from "../styled-system/css";
 import { DragHandleComponent } from "@xxs3315/mbl-core";
 import { Popover, NavLink } from "@mantine/core";
-import { DotsSVG, CopySVG, DeleteSVG, NavSVG } from "../components/icons";
+import { DotsSVG, CopySVG, DeleteSVG, NavSVG } from "../layout/icons";
 
 export function useInteractionButtons(
   colors: any,
