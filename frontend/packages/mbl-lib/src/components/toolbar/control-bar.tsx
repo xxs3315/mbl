@@ -131,7 +131,7 @@ export const ControlBar = React.memo<ControlBarProps>(
             className={css({
               flexShrink: "1",
               minWidth: "0",
-              maxWidth: "300px", // 限制最大宽度
+              maxWidth: !isMobileMode ? "100%" : "300px", // 限制最大宽度
               height: "40px", // 固定高度
             })}
           >
