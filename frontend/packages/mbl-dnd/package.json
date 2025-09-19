@@ -22,9 +22,10 @@
     "README.md"
   ],
   "scripts": {
-    "build": "pnpm run build:cjs && pnpm run build:esm && pnpm run copy-css",
+    "build": "pnpm run build:cjs && pnpm run build:esm && pnpm run build:fix-output && pnpm run copy-css",
     "build:cjs": "tsc -p tsconfig.build.json",
     "build:esm": "tsc -p tsconfig.esm.json",
+    "build:fix-output": "node scripts/fix-output.js",
     "clean": "rimraf dist dist-esm",
     "copy-css": "copyfiles -u 1 \"src/box.css\" dist/ && copyfiles -u 1 \"src/box.css\" dist-esm/",
     "dev": "tsc -p tsconfig.build.json --watch"
