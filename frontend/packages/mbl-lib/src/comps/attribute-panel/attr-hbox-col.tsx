@@ -9,7 +9,6 @@ import {
 } from "@mantine/core";
 import { Asterisk } from "lucide-react";
 import { useContentsStoreContext } from "../../store/store";
-import { useCurrentSelectedId } from "../../providers/current-selected-id-provider";
 import { updateSelectedItemPropDirect } from "../../utils/content-updaters";
 
 interface AttrHboxColProps {

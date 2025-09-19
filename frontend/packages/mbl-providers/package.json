@@ -1,17 +1,25 @@
 {
-  "name": "@xxs3315/mbl-lib-plugin-table",
+  "name": "@xxs3315/mbl-providers",
   "version": "1.0.0",
-  "description": "Table plugin for MixBoxLayout - 表格插件",
+  "description": "React Context Providers for MBL project - MBL项目的React Context Providers",
   "keywords": [
     "mbl",
-    "mix-box-layout",
-    "plugin",
-    "table",
-    "表格",
-    "插件"
+    "providers",
+    "react",
+    "context",
+    "theme",
+    "i18n",
+    "dpi"
   ],
   "license": "MIT",
   "author": "xxs3315",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist-esm/index.js",
+      "require": "./dist/index.js"
+    }
+  },
   "main": "dist/index.js",
   "module": "dist-esm/index.js",
   "types": "dist/index.d.ts",
@@ -26,24 +34,20 @@
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:fix-output": "node scripts/fix-output.js",
     "clean": "rimraf dist dist-esm",
-    "dev": "tsc -p tsconfig.build.json --watch"
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "@mantine/core": "^8.2.5",
-    "@mantine/hooks": "^8.2.5",
-    "@xxs3315/mbl-core": "workspace:*",
-    "@xxs3315/mbl-dnd": "workspace:*",
-    "@xxs3315/mbl-providers": "workspace:*",
-    "@xxs3315/mbl-utils": "workspace:*"
+    "@xxs3315/mbl-locales": "workspace:*",
+    "@xxs3315/mbl-themes": "workspace:*",
+    "react-i18next": "^15.1.1"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
-    "@types/react-dom": "~19.1.0",
-    "rimraf": "^5.0.0",
+    "rimraf": "~6.0.0",
     "typescript": "^5.0.0"
   },
   "peerDependencies": {
-    "react": "~19.1.0",
-    "react-dom": "~19.1.0"
+    "react": "~19.1.0"
   }
 }

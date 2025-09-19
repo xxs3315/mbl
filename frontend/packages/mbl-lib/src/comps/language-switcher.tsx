@@ -1,6 +1,6 @@
 import React from "react";
 import { SegmentedControl } from "@mantine/core";
-import { useI18n } from "../providers/i18n-provider";
+import { useI18n } from "@xxs3315/mbl-providers";
 import type { SupportedLocale } from "@xxs3315/mbl-locales";
 
 interface LanguageSwitcherProps {

@@ -1,8 +1,8 @@
 import React from "react";
 import { Textarea } from "@mantine/core";
 import { pt2px } from "@xxs3315/mbl-utils";
-import { useDpi } from "../../providers/dpi-provider";
-import { useCurrentSelectedId } from "../../providers/current-selected-id-provider";
+import { useDpi } from "@xxs3315/mbl-providers";
+import { useCurrentSelectedId } from "@xxs3315/mbl-providers";
 
 interface TextareaWithCompositionProps {
   props: any;

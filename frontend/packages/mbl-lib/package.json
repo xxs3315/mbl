@@ -35,6 +35,7 @@
     "@xxs3315/mbl-dnd": "workspace:*",
     "@xxs3315/mbl-lib-example-data": "workspace:*",
     "@xxs3315/mbl-locales": "workspace:*",
+    "@xxs3315/mbl-providers": "workspace:*",
     "@xxs3315/mbl-state": "workspace:*",
     "@xxs3315/mbl-themes": "workspace:*",
     "@xxs3315/mbl-typings": "workspace:*",

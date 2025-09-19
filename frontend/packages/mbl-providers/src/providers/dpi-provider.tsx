@@ -1,12 +1,12 @@
 import React from "react";
 import { createContext, useContext, useState } from "react";
 
-type DpiProviderProps = {
+export type DpiProviderProps = {
   children: React.ReactNode;
   defaultDpi?: number;
 };
 
-type DpiProviderState = {
+export type DpiProviderState = {
   dpi: number;
   setDpi: (dpi: number) => void;
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "../../styled-system/css";
-import { useThemeColorsContext } from "../../providers/theme-provider";
+import { useThemeColorsContext } from "@xxs3315/mbl-providers";
 import {
   ChevronRight,
   ChevronDown,

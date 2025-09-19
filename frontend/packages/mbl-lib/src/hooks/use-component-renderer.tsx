@@ -2,7 +2,7 @@ import React from "react";
 import { css } from "../styled-system/css";
 import { Image as MantineImage } from "@mantine/core";
 import { pt2px } from "@xxs3315/mbl-utils";
-import { useDpi } from "../providers/dpi-provider";
+import { useDpi } from "@xxs3315/mbl-providers";
 import { TextareaWithComposition } from "../components";
 
 export function useComponentRenderer(

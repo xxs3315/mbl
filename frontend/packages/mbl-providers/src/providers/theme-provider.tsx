@@ -2,7 +2,7 @@ import React, { createContext, useContext, ReactNode } from "react";
 import { useThemeColors, type ThemeColors } from "@xxs3315/mbl-themes";
 
 // Theme Context 类型定义
-interface ThemeContextType {
+export interface ThemeContextType {
   colors: ThemeColors;
 }
 
@@ -10,7 +10,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 // Provider Props 类型
-interface ThemeProviderProps {
+export interface ThemeProviderProps {
   children: ReactNode;
 }
 

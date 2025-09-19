@@ -1,6 +1,6 @@
 import React from "react";
 import { pt2px } from "@xxs3315/mbl-utils";
-import { useDpi } from "../providers/dpi-provider";
+import { useDpi } from "@xxs3315/mbl-providers";
 import { ItemTypes } from "@xxs3315/mbl-dnd";
 
 export function useStableStyles() {

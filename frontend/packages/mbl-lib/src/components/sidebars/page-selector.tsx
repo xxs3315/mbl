@@ -2,7 +2,7 @@ import React from "react";
 import { css } from "../../styled-system/css";
 import { ActionIcon } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
-import { useThemeColorsContext } from "../../providers/theme-provider";
+import { useThemeColorsContext } from "@xxs3315/mbl-providers";
 
 interface PageSelectorProps {
   showPageSelector: boolean;

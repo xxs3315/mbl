@@ -1,8 +1,8 @@
 import { FC, memo } from "react";
 import { useContentsStoreContext } from "../../store/store";
-import { useCurrentSelectedId } from "../../providers/current-selected-id-provider";
+import { useCurrentSelectedId } from "@xxs3315/mbl-providers";
 import { useSelectedItem } from "../../hooks/use-selected-item";
-import { useI18n } from "../../providers/i18n-provider";
+import { useI18n } from "@xxs3315/mbl-providers";
 import {
   Checkbox,
   ColorInput,

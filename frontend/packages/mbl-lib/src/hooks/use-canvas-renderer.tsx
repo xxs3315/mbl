@@ -3,7 +3,7 @@ import { css } from "../styled-system/css";
 import { List } from "@xxs3315/mbl-core";
 import { DndTarget } from "@xxs3315/mbl-dnd";
 import { pt2px } from "@xxs3315/mbl-utils";
-import { useDpi } from "../providers/dpi-provider";
+import { useDpi } from "@xxs3315/mbl-providers";
 import {
   PAGE_HEADER_ROOT_ID,
   PAGE_BODY_ROOT_ID,

@@ -1,6 +1,6 @@
 import React from "react";
 import { getRectangleSize, mm2px } from "@xxs3315/mbl-utils";
-import { useDpi } from "../providers/dpi-provider";
+import { useDpi } from "@xxs3315/mbl-providers";
 
 export function useCanvasSize(currentPage: any) {
   const { dpi } = useDpi();

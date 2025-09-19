@@ -237,6 +237,9 @@ importers:
       '@xxs3315/mbl-locales':
         specifier: workspace:*
         version: link:../mbl-locales
+      '@xxs3315/mbl-providers':
+        specifier: workspace:*
+        version: link:../mbl-providers
       '@xxs3315/mbl-state':
         specifier: workspace:*
         version: link:../mbl-state
@@ -341,9 +344,9 @@ importers:
       '@xxs3315/mbl-dnd':
         specifier: workspace:*
         version: link:../mbl-dnd
-      '@xxs3315/mbl-lib':
+      '@xxs3315/mbl-providers':
         specifier: workspace:*
-        version: link:../mbl-lib
+        version: link:../mbl-providers
       '@xxs3315/mbl-utils':
         specifier: workspace:*
         version: link:../mbl-utils
@@ -394,6 +397,31 @@ importers:
       rimraf:
         specifier: ^5.0.0
         version: 5.0.10
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.2
+
+  packages/mbl-providers:
+    dependencies:
+      '@xxs3315/mbl-locales':
+        specifier: workspace:*
+        version: link:../mbl-locales
+      '@xxs3315/mbl-themes':
+        specifier: workspace:*
+        version: link:../mbl-themes
+      react:
+        specifier: ~19.1.0
+        version: 19.1.0
+      react-i18next:
+        specifier: ^15.1.1
+        version: 15.7.3(i18next@25.5.2(typescript@5.9.2))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.2)
+    devDependencies:
+      '@types/react':
+        specifier: ~19.1.0
+        version: 19.1.6
+      rimraf:
+        specifier: ~6.0.0
+        version: 6.0.1
       typescript:
         specifier: ^5.0.0
         version: 5.9.2

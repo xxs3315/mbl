@@ -12,18 +12,16 @@ import {
   useContentsStoreContext,
 } from "./store/store";
 import { defaultContents } from "./store/default-data";
-import { DpiProvider } from "./providers/dpi-provider";
 import {
+  DpiProvider,
   ThemeProvider,
   useThemeColorsContext,
-} from "./providers/theme-provider";
-import { MacScrollbar } from "mac-scrollbar";
-import "mac-scrollbar/dist/mac-scrollbar.css";
-import {
   CurrentSelectedIdProvider,
   useCurrentSelectedId,
-} from "./providers/current-selected-id-provider";
-import { I18nProvider } from "./providers/i18n-provider";
+  I18nProvider,
+} from "@xxs3315/mbl-providers";
+import { MacScrollbar } from "mac-scrollbar";
+import "mac-scrollbar/dist/mac-scrollbar.css";
 import {
   PAGE_BODY_ROOT_ID,
   PAGE_FOOTER_ROOT_ID,

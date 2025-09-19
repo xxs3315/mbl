@@ -2,7 +2,7 @@ import React from "react";
 import { css } from "../styled-system/css";
 import { Item, List } from "@xxs3315/mbl-core";
 import { DndTarget } from "@xxs3315/mbl-dnd";
-import { useDpi } from "../providers/dpi-provider";
+import { useDpi } from "@xxs3315/mbl-providers";
 
 export function useItemElement(
   colors: any,

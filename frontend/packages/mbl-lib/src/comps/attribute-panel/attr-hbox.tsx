@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { useSelectedItem } from "../../hooks/use-selected-item";
 import { useContentsStoreContext } from "../../store/store";
-import { useCurrentSelectedId } from "../../providers/current-selected-id-provider";
+import { useCurrentSelectedId } from "@xxs3315/mbl-providers";
 import { updateSelectedItemPropDirect } from "../../utils/content-updaters";
 import { AttrHboxCol } from "./attr-hbox-col";
 

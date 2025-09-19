@@ -1,12 +1,12 @@
 import React from "react";
 import { createContext, useContext, useState } from "react";
 
-type CurrentSelectedIdProviderProps = {
+export type CurrentSelectedIdProviderProps = {
   children: React.ReactNode;
   defaultCurrentSelectedId?: string;
 };
 
-type CurrentSelectedIdProviderState = {
+export type CurrentSelectedIdProviderState = {
   currentSelectedId: string;
   setCurrentSelectedId: (currentSelectedId: string) => void;
 };

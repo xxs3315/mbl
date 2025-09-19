@@ -1,5 +1,5 @@
 import { useMount } from "react-use";
-import { useDpi } from "../providers/dpi-provider";
+import { useDpi } from "@xxs3315/mbl-providers";
 
 export function useDpiCalculator() {
   const { setDpi } = useDpi();

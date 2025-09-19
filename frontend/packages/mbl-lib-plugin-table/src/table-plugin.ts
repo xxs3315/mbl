@@ -15,7 +15,7 @@ import {
   useCurrentSelectedId,
   useDpi,
   useThemeColorsContext,
-} from "@xxs3315/mbl-lib";
+} from "@xxs3315/mbl-providers";
 import { PageItem } from "@xxs3315/mbl-typings";
 
 // SVG 图标定义 - 优化为常量，避免重复创建

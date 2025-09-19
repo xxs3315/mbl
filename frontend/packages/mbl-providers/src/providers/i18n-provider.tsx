@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { I18nextProvider } from "react-i18next";
 import { i18n, initI18n, type SupportedLocale } from "@xxs3315/mbl-locales";
 
-interface I18nContextType {
+export interface I18nContextType {
   locale: SupportedLocale;
   setLocale: (locale: SupportedLocale) => void;
   t: (key: string, options?: any) => string;
@@ -10,7 +10,7 @@ interface I18nContextType {
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
-interface I18nProviderProps {
+export interface I18nProviderProps {
   children: React.ReactNode;
   defaultLocale?: SupportedLocale;
 }
