@@ -94,7 +94,15 @@ const DataBindingPanel: React.FC = () => {
 
   return (
     <Box p="0" bd="none">
-      <Paper p="0" bd="none">
+      <Paper
+        p="0"
+        bd="none"
+        styles={{
+          root: {
+            backgroundColor: "transparent",
+          },
+        }}
+      >
         {/* 固定标题部分 */}
         <Box style={{ flexShrink: 0 }}>
           <Header

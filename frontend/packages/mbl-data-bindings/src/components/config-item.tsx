@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Paper,
   Stack,
@@ -8,10 +8,12 @@ import {
   Badge,
   ActionIcon,
   Tooltip,
+  Modal,
+  Button,
 } from "@mantine/core";
-import { Trash, Code, GripVertical } from "lucide-react";
+import { Trash, Code, GripVertical, Edit3 } from "lucide-react";
 import AceEditor from "react-ace";
-import { DataBindingConfig, JsonField } from "../types";
+import { DataBindingConfig } from "../types";
 import { parseJsonStructure } from "../field-parser";
 import {
   getInputValidation,
@@ -19,6 +21,8 @@ import {
   getEditorStyle,
   getEditorProps,
 } from "../editor-utils";
+import { formatJson } from "../json-utils";
+import { notifications } from "@mantine/notifications";
 
 interface ConfigItemProps {
   config: DataBindingConfig;
@@ -35,10 +39,86 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
   onDelete,
   onFormat,
 }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalValue, setModalValue] = useState(config.value);
+  const editorRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const validationError = getInputValidation(config.value, config.request);
   const fields =
     config.request === "data" ? parseJsonStructure(config.value) : [];
   const editorConfig = getEditorConfig(config.request);
+
+  const handleOpenModal = () => {
+    setModalValue(config.value);
+    setModalOpen(true);
+  };
+
+  const handleSaveModal = () => {
+    onUpdateValue(config.id, modalValue);
+    setModalOpen(false);
+  };
+
+  const handleCancelModal = () => {
+    setModalValue(config.value);
+    setModalOpen(false);
+  };
+
+  // Modal中的格式化JSON功能
+  const handleFormatModalJson = () => {
+    if (config.request !== "data") return;
+
+    try {
+      const formatted = formatJson(modalValue);
+      if (formatted === modalValue) {
+        notifications.show({
+          title: "提示",
+          message: "JSON已经是格式化状态",
+          color: "blue",
+        });
+      } else {
+        setModalValue(formatted);
+        notifications.show({
+          title: "成功",
+          message: "JSON格式化完成",
+          color: "green",
+        });
+      }
+    } catch (error) {
+      notifications.show({
+        title: "错误",
+        message: "JSON格式错误，无法格式化",
+        color: "red",
+      });
+    }
+  };
+
+  // 监听容器尺寸变化，对Ace Editor进行resize
+  useEffect(() => {
+    if (!modalOpen || !containerRef.current || !editorRef.current) {
+      return;
+    }
+
+    const resizeEditor = () => {
+      if (editorRef.current) {
+        editorRef.current.resize();
+      }
+    };
+
+    const observer = new ResizeObserver(() => {
+      // 延迟执行resize，确保DOM更新完成
+      setTimeout(resizeEditor, 50);
+    });
+
+    observer.observe(containerRef.current);
+
+    // 初始resize
+    setTimeout(resizeEditor, 100);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [modalOpen]);
 
   return (
     <Paper p="xs" withBorder>
@@ -78,12 +158,22 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
           </ActionIcon>
         </Group>
 
-        <Group justify="space-between" align="center" mb="xs">
+        <Group justify="space-between" align="center" mb="0">
           <Text size="xs" fw={500}>
             {config.request === "url" ? "URL地址" : "JSON数据"}
           </Text>
-          {config.request === "data" && (
-            <Group gap="xs">
+          <Group gap="xs">
+            <Tooltip label="大窗口编辑">
+              <ActionIcon
+                size="xs"
+                variant="light"
+                color="green"
+                onClick={handleOpenModal}
+              >
+                <Edit3 size={12} />
+              </ActionIcon>
+            </Tooltip>
+            {config.request === "data" && (
               <Tooltip label="格式化JSON">
                 <ActionIcon
                   size="xs"
@@ -94,8 +184,8 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                   <Code size={12} />
                 </ActionIcon>
               </Tooltip>
-            </Group>
-          )}
+            )}
+          </Group>
         </Group>
 
         <Box
@@ -162,7 +252,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
         {/* 显示可供绑定的字段 */}
         {config.request === "data" && fields.length > 0 && (
           <Box>
-            <Text size="xs" fw={500} mb="xs">
+            <Text size="xs" fw={500} mb="0">
               可供绑定的字段:
             </Text>
             <Group gap="xs">
@@ -198,6 +288,100 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
           </Box>
         )}
       </Stack>
+
+      {/* 大窗口编辑Modal */}
+      <Modal
+        opened={modalOpen}
+        onClose={handleCancelModal}
+        title={`编辑 ${config.name}`}
+        size="xl"
+        centered
+        styles={{
+          content: {
+            height: "80vh",
+          },
+          body: {
+            height: "calc(80vh - 60px)",
+            display: "flex",
+            flexDirection: "column",
+          },
+        }}
+      >
+        <Stack gap="md" style={{ height: "100%" }}>
+          <Text size="sm" c="dimmed">
+            {config.description}
+          </Text>
+
+          {/* Modal中的错误提示 */}
+          {config.request === "data" &&
+            getInputValidation(modalValue, config.request) && (
+              <Text size="xs" c="red">
+                {getInputValidation(modalValue, config.request)}
+              </Text>
+            )}
+
+          {/* 编辑器容器 - 使用视窗高度百分比 */}
+          <div
+            ref={containerRef}
+            style={{
+              height: "calc(100% - 80px)",
+              minHeight: "0",
+              border: "1px solid #ccc",
+            }}
+            id="modal-container-editor"
+          >
+            <AceEditor
+              mode={config.request === "data" ? "json" : "text"}
+              theme={editorTheme}
+              value={modalValue}
+              onChange={setModalValue}
+              placeholder={
+                config.request === "url"
+                  ? "请输入API地址，如：https://api.example.com/data"
+                  : "请输入JSON数据"
+              }
+              editorProps={{ $blockScrolling: true }}
+              setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                enableSnippets: true,
+                showLineNumbers: true,
+                tabSize: 2,
+                useWorker: false,
+              }}
+              style={{ width: "100%", height: "100%" }}
+              onLoad={(editor) => {
+                // 保存editor引用
+                editorRef.current = editor;
+                // 初始resize
+                setTimeout(() => {
+                  editor.resize();
+                }, 100);
+              }}
+            />
+          </div>
+
+          {/* 按钮组 */}
+          <Group justify="flex-end" gap="sm">
+            <Button variant="light" onClick={handleCancelModal} size="sm">
+              取消
+            </Button>
+            {config.request === "data" && (
+              <Button
+                variant="light"
+                onClick={handleFormatModalJson}
+                size="sm"
+                leftSection={<Code size={14} />}
+              >
+                格式化JSON
+              </Button>
+            )}
+            <Button onClick={handleSaveModal} size="sm">
+              确定
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </Paper>
   );
 };

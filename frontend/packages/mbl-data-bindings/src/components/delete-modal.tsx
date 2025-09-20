@@ -19,7 +19,6 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
       title="确认删除"
       centered
       size="sm"
-      withinPortal={false}
     >
       <Stack gap="xs">
         <Text size="sm">确定要删除这个数据绑定配置吗？</Text>

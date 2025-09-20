@@ -120,6 +120,8 @@ export const getEditorStyle = () => ({
   textRendering: "optimizeSpeed" as const, // 使用optimizeSpeed而不是optimizeLegibility
   // 确保字体渲染一致性
   fontDisplay: "block" as const,
+  width: "100%",
+  height: "100%",
 });
 
 /**
