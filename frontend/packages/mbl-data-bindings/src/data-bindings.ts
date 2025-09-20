@@ -44,43 +44,43 @@ export const toolPanelDataBindings: ToolPanelDataBindingPayload[] = [
 				"userId": 3,
 				"id": 23,
 				"title": "maxime id vitae nihil numquam",
-				"body": "veritatis unde neque eligendi\nquae quod architecto quo neque vitae\nest illo sit tempora doloremque fugit quod\net et vel beatae sequi ullam sed tenetur perspiciatis"
+				"body": "veritatis unde neque eligendi quae quod architecto quo neque vitae est illo sit tempora doloremque fugit quod et et vel beatae sequi ullam sed tenetur perspiciatis"
 			},
 			{
 				"userId": 3,
 				"id": 24,
 				"title": "autem hic labore sunt dolores incidunt",
-				"body": "enim et ex nulla\nomnis voluptas quia qui\nvoluptatem consequatur numquam aliquam sunt\ntotam recusandae id dignissimos aut sed asperiores deserunt"
+				"body": "enim et ex nulla omnis voluptas quia qui voluptatem consequatur numquam aliquam sunt totam recusandae id dignissimos aut sed asperiores deserunt"
 			},
 			{
 				"userId": 3,
 				"id": 25,
 				"title": "rem alias distinctio quo quis",
-				"body": "ullam consequatur ut\nomnis quis sit vel consequuntur\nipsa eligendi ipsum molestiae et omnis error nostrum\nmolestiae illo tempore quia et distinctio"
+				"body": "ullam consequatur ut omnis quis sit vel consequuntur ipsa eligendi ipsum molestiae et omnis error nostrum molestiae illo tempore quia et distinctio"
 			},
 			{
 				"userId": 3,
 				"id": 26,
 				"title": "est et quae odit qui non",
-				"body": "similique esse doloribus nihil accusamus\nomnis dolorem fuga consequuntur reprehenderit fugit recusandae temporibus\nperspiciatis cum ut laudantium\nomnis aut molestiae vel vero"
+				"body": "similique esse doloribus nihil accusamus omnis dolorem fuga consequuntur reprehenderit fugit recusandae temporibus perspiciatis cum ut laudantium omnis aut molestiae vel vero"
 			},
 			{
 				"userId": 3,
 				"id": 27,
 				"title": "quasi id et eos tenetur aut quo autem",
-				"body": "eum sed dolores ipsam sint possimus debitis occaecati\ndebitis qui qui et\nut placeat enim earum aut odit facilis\nconsequatur suscipit necessitatibus rerum sed inventore temporibus consequatur"
+				"body": "eum sed dolores ipsam sint possimus debitis occaecati debitis qui qui et ut placeat enim earum aut odit facilis consequatur suscipit necessitatibus rerum sed inventore temporibus consequatur"
 			},
 			{
 				"userId": 3,
 				"id": 28,
 				"title": "delectus ullam et corporis nulla voluptas sequi",
-				"body": "non et quaerat ex quae ad maiores\nmaiores recusandae totam aut blanditiis mollitia quas illo\nut voluptatibus voluptatem\nsimilique nostrum eum"
+				"body": "non et quaerat ex quae ad maiores maiores recusandae totam aut blanditiis mollitia quas illo ut voluptatibus voluptatem similique nostrum eum"
 			},
 			{
 				"userId": 3,
 				"id": 29,
 				"title": "iusto eius quod necessitatibus culpa ea",
-				"body": "odit magnam ut saepe sed non qui\ntempora atque nihil\naccusamus illum doloribus illo dolor\neligendi repudiandae odit magni similique sed cum maiores"
+				"body": "odit magnam ut saepe sed non qui tempora atque nihil accusamus illum doloribus illo dolor eligendi repudiandae odit magni similique sed cum maiores"
 			}
 		]`,
     bindings: [
@@ -118,7 +118,7 @@ export const toolPanelDataBindings: ToolPanelDataBindingPayload[] = [
 		  "userId": 1,
 		  "id": 1,
 		  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-		  "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+		  "body": "quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit molestiae ut ut quas totam nostrum rerum est autem sunt rem eveniet architecto"
 		}`,
     bindings: [
       { name: "序号", bind: "id" },
