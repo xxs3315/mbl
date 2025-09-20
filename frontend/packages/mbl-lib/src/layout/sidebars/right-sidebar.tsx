@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "../../styled-system/css";
-import { ActionIcon } from "@mantine/core";
+import { ActionIcon, Tabs } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
 import { AttributePanelRenderer } from "../../comps/attribute-panel/components/attribute-panel-renderer";
 
@@ -88,22 +88,35 @@ export const RightSidebar = React.memo<RightSidebarProps>(
               display: showRightSidebar ? "flex" : "none",
               justifyContent: "space-between",
               alignItems: "center",
-              padding: "16px 16px 12px 16px",
-              borderBottom: "1px solid",
-              borderBottomColor: "gray.200",
+              padding: "4px 6px 2px 6px",
               flexShrink: "0",
               backgroundColor: "gray.50",
             })}
           >
-            <div
+            <Tabs
+              value="operation-panel"
               className={css({
-                fontSize: "14px",
-                fontWeight: "bold",
-                color: "gray.800",
+                flex: "1",
               })}
             >
-              操作面板
-            </div>
+              <Tabs.List
+                className={css({
+                  borderBottom: "none",
+                })}
+              >
+                <Tabs.Tab
+                  value="operation-panel"
+                  className={css({
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    color: "gray.800",
+                    padding: "8px 16px",
+                  })}
+                >
+                  操作面板
+                </Tabs.Tab>
+              </Tabs.List>
+            </Tabs>
             {/* 关闭按钮 - 仅在桌面端显示 */}
             <ActionIcon
               variant="subtle"
