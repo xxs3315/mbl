@@ -56,7 +56,7 @@ export const saveEditorTheme = (theme: EditorTheme): void => {
  */
 export const getEditorConfig = (request: "url" | "data") => {
   const baseConfig = {
-    fontSize: 10,
+    fontSize: 12, // 与CSS中的fontSize保持一致
     showPrintMargin: false,
     showGutter: true,
     highlightActiveLine: false,
@@ -73,6 +73,12 @@ export const getEditorConfig = (request: "url" | "data") => {
     autoScrollEditorIntoView: true,
     scrollPastEnd: false,
     animatedScroll: true,
+    // 修复等宽字体相关配置
+    fixedWidthGutter: true, // 固定行号宽度
+    showFoldWidgets: false, // 禁用折叠控件，避免宽度计算问题
+    enableBasicAutocompletion: false, // 暂时禁用自动完成，避免字体计算干扰
+    enableLiveAutocompletion: false,
+    enableSnippets: false,
   };
 
   if (request === "data") {
@@ -100,8 +106,20 @@ export const getEditorConfig = (request: "url" | "data") => {
  * 获取编辑器样式
  */
 export const getEditorStyle = () => ({
-  fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
-  lineHeight: "1.2",
+  // 使用更兼容的等宽字体配置
+  fontFamily: '"Consolas", "Monaco", "Courier New", monospace',
+  fontSize: "12px", // 使用px而不是相对单位
+  lineHeight: "1.4", // 稍微增加行高
+  // 修复等宽字体导致的光标错位
+  fontVariantNumeric: "tabular-nums",
+  fontFeatureSettings: '"tnum"',
+  letterSpacing: "0px", // 明确指定px单位
+  // 强制字体渲染优化
+  WebkitFontSmoothing: "antialiased" as const,
+  MozOsxFontSmoothing: "grayscale" as const,
+  textRendering: "optimizeSpeed" as const, // 使用optimizeSpeed而不是optimizeLegibility
+  // 确保字体渲染一致性
+  fontDisplay: "block" as const,
 });
 
 /**

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { css } from "../../styled-system/css";
 import { ActionIcon, Tabs } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
 import { PageStructureTree } from "../tree/page-structure-tree";
+import { DataBindingPanel } from "@xxs3315/mbl-data-bindings";
 
 interface LeftSidebarProps {
   showLeftSidebar: boolean;
@@ -28,6 +29,7 @@ export const LeftSidebar = React.memo<LeftSidebarProps>(
     onItemClick,
     onClose,
   }) => {
+    const [activeTab, setActiveTab] = useState<string>("page-info");
     return (
       <div
         className={css({
@@ -71,6 +73,7 @@ export const LeftSidebar = React.memo<LeftSidebarProps>(
             flexDirection: "column",
           })}
         >
+          {/* 固定标题部分 */}
           <div
             className={css({
               display: showLeftSidebar ? "flex" : "none",
@@ -82,7 +85,8 @@ export const LeftSidebar = React.memo<LeftSidebarProps>(
             })}
           >
             <Tabs
-              value="page-info"
+              value={activeTab}
+              onChange={(value) => setActiveTab(value || "page-info")}
               className={css({
                 flex: "1",
               })}
@@ -102,6 +106,17 @@ export const LeftSidebar = React.memo<LeftSidebarProps>(
                   })}
                 >
                   页面信息
+                </Tabs.Tab>
+                <Tabs.Tab
+                  value="data-binding"
+                  className={css({
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    color: "gray.800",
+                    padding: "8px 16px",
+                  })}
+                >
+                  数据绑定
                 </Tabs.Tab>
               </Tabs.List>
             </Tabs>
@@ -133,24 +148,49 @@ export const LeftSidebar = React.memo<LeftSidebarProps>(
               </svg>
             </ActionIcon>
           </div>
+
+          {/* 可滚动内容部分 */}
           <MacScrollbar
             className={css({
-              fontSize: "12px",
-              color: "gray.600",
-              display: showLeftSidebar ? "block" : "none",
               flex: "1",
               overflow: "auto",
-              padding: "16px",
             })}
           >
-            <PageStructureTree
-              currentPage={currentPage}
-              currentPageHeaderContent={currentPageHeaderContent}
-              currentPageBodyContent={currentPageBodyContent}
-              currentPageFooterContent={currentPageFooterContent}
-              onItemClick={onItemClick}
-              currentSelectedId={currentSelectedId}
-            />
+            <Tabs
+              value={activeTab}
+              onChange={(value) => setActiveTab(value || "page-info")}
+            >
+              <Tabs.Panel value="page-info">
+                <div
+                  className={css({
+                    fontSize: "12px",
+                    color: "gray.600",
+                    padding: "16px",
+                  })}
+                >
+                  <PageStructureTree
+                    currentPage={currentPage}
+                    currentPageHeaderContent={currentPageHeaderContent}
+                    currentPageBodyContent={currentPageBodyContent}
+                    currentPageFooterContent={currentPageFooterContent}
+                    onItemClick={onItemClick}
+                    currentSelectedId={currentSelectedId}
+                  />
+                </div>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="data-binding">
+                <div
+                  className={css({
+                    fontSize: "12px",
+                    color: "gray.600",
+                    padding: "16px",
+                  })}
+                >
+                  <DataBindingPanel />
+                </div>
+              </Tabs.Panel>
+            </Tabs>
           </MacScrollbar>
         </div>
       </div>

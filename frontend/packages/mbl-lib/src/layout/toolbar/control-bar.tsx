@@ -222,47 +222,6 @@ export const ControlBar = React.memo<ControlBarProps>(
             })}
           />
 
-          <Popover width={600} position="bottom" withArrow shadow="md">
-            <Popover.Target>
-              <ActionIcon
-                variant="subtle"
-                size="lg"
-                aria-label="undo"
-                className={css({
-                  backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
-                  color: "white",
-                  _hover: {
-                    backgroundColor: showLeftSidebar ? "blue.600" : "gray.500",
-                  },
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  "&:disabled, &[data-disabled]": {
-                    backgroundColor: "transparent !important",
-                  },
-                })}
-              >
-                <Undo size={16} />
-              </ActionIcon>
-            </Popover.Target>
-            <Popover.Dropdown>
-              <DataBindingPanel />
-            </Popover.Dropdown>
-          </Popover>
-
-          {/* 分割短竖线 - 响应式显示 */}
-          <div
-            className={css({
-              width: "1px",
-              height: "12px",
-              backgroundColor: "gray.200",
-              marginX: "4px",
-              flexShrink: "0",
-              display: {
-                base: "none", // 小屏幕隐藏分隔线
-                sm: "block", // 大屏幕显示
-              },
-            })}
-          />
-
           {/* Undo/Redo 按钮 - 始终显示 */}
           <div
             className={css({

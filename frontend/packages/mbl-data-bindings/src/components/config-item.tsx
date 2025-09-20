@@ -122,6 +122,34 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
             setOptions={editorConfig}
             editorProps={getEditorProps()}
             style={getEditorStyle()}
+            onLoad={(editor) => {
+              // 修复等宽字体导致的光标错位
+              const fixFontRendering = () => {
+                setTimeout(() => {
+                  editor.resize();
+                  editor.renderer.updateFull();
+                }, 0);
+              };
+
+              // 初始修复
+              fixFontRendering();
+
+              // 监听字体加载完成
+              if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(() => {
+                  fixFontRendering();
+                });
+              }
+
+              // 监听窗口大小变化
+              const handleResize = () => fixFontRendering();
+              window.addEventListener("resize", handleResize);
+
+              // 清理监听器
+              editor.on("destroy", () => {
+                window.removeEventListener("resize", handleResize);
+              });
+            }}
           />
         </Box>
 

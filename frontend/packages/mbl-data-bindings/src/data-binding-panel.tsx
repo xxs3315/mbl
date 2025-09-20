@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Box, Paper, Stack } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { Check } from "lucide-react";
-import { MacScrollbar } from "mac-scrollbar";
-import "mac-scrollbar/dist/mac-scrollbar.css";
 
 // 导入Ace Editor相关
 import AceEditor from "react-ace";
@@ -95,16 +93,8 @@ const DataBindingPanel: React.FC = () => {
   };
 
   return (
-    <Box
-      p="0"
-      bd="none"
-      style={{ height: "100%", display: "flex", flexDirection: "column" }}
-    >
-      <Paper
-        p="0"
-        bd="none"
-        style={{ height: "100%", display: "flex", flexDirection: "column" }}
-      >
+    <Box p="0" bd="none">
+      <Paper p="0" bd="none">
         {/* 固定标题部分 */}
         <Box style={{ flexShrink: 0 }}>
           <Header
@@ -115,33 +105,31 @@ const DataBindingPanel: React.FC = () => {
           />
         </Box>
 
-        {/* 可滚动内容部分 */}
-        <MacScrollbar style={{ height: "400px" }}>
-          {configs.length === 0 ? (
-            <EmptyState />
-          ) : (
-            <Stack gap="xs">
-              {configs.map((config) => (
-                <ConfigItem
-                  key={config.id}
-                  config={config}
-                  editorTheme={editorTheme}
-                  onUpdateValue={handleUpdateConfigValue}
-                  onDelete={handleOpenDeleteModal}
-                  onFormat={handleFormatConfigJson}
-                />
-              ))}
-            </Stack>
-          )}
-        </MacScrollbar>
-      </Paper>
+        {/* 内容部分 */}
+        {configs.length === 0 ? (
+          <EmptyState />
+        ) : (
+          <Stack gap="xs">
+            {configs.map((config) => (
+              <ConfigItem
+                key={config.id}
+                config={config}
+                editorTheme={editorTheme}
+                onUpdateValue={handleUpdateConfigValue}
+                onDelete={handleOpenDeleteModal}
+                onFormat={handleFormatConfigJson}
+              />
+            ))}
+          </Stack>
+        )}
 
-      {/* 删除确认对话框 */}
-      <DeleteModal
-        opened={deleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
-        onConfirm={() => configToDelete && handleDeleteConfig(configToDelete)}
-      />
+        {/* 删除确认对话框 */}
+        <DeleteModal
+          opened={deleteModalOpen}
+          onClose={() => setDeleteModalOpen(false)}
+          onConfirm={() => configToDelete && handleDeleteConfig(configToDelete)}
+        />
+      </Paper>
     </Box>
   );
 };
