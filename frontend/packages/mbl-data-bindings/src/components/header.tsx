@@ -31,9 +31,9 @@ export const Header: React.FC<HeaderProps> = ({
         数据绑定配置
       </Title>
       <Group gap="xs">
-        <Menu shadow="md" width={120} withinPortal={false}>
+        <Menu shadow="md" width={160} withinPortal={false}>
           <Menu.Target>
-            <ActionIcon size="xs" variant="light" color="gray">
+            <ActionIcon size="xs" variant="light" title="编辑器主题">
               <Palette size={12} />
             </ActionIcon>
           </Menu.Target>
@@ -43,52 +43,132 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => onThemeChange("github")}
               style={{
                 backgroundColor:
-                  editorTheme === "github" ? "#e3f2fd" : "transparent",
+                  editorTheme === "github"
+                    ? "var(--mantine-color-blue-light)"
+                    : "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  editorTheme === "github"
+                    ? "var(--mantine-color-blue-2)"
+                    : "var(--mantine-color-gray-1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  editorTheme === "github"
+                    ? "var(--mantine-color-blue-light)"
+                    : "transparent";
               }}
             >
-              GitHub
+              <Stack gap={2}>
+                <Text size="xs" fw={500}>
+                  GitHub
+                </Text>
+                <Text size="xs" c="dimmed">
+                  明亮主题
+                </Text>
+              </Stack>
             </Menu.Item>
             <Menu.Item
               onClick={() => onThemeChange("monokai")}
               style={{
                 backgroundColor:
-                  editorTheme === "monokai" ? "#e3f2fd" : "transparent",
+                  editorTheme === "monokai"
+                    ? "var(--mantine-color-blue-light)"
+                    : "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  editorTheme === "monokai"
+                    ? "var(--mantine-color-blue-2)"
+                    : "var(--mantine-color-gray-1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  editorTheme === "monokai"
+                    ? "var(--mantine-color-blue-light)"
+                    : "transparent";
               }}
             >
-              Monokai
+              <Stack gap={2}>
+                <Text size="xs" fw={500}>
+                  Monokai
+                </Text>
+                <Text size="xs" c="dimmed">
+                  暗色主题
+                </Text>
+              </Stack>
             </Menu.Item>
             <Menu.Item
               onClick={() => onThemeChange("tomorrow")}
               style={{
                 backgroundColor:
-                  editorTheme === "tomorrow" ? "#e3f2fd" : "transparent",
+                  editorTheme === "tomorrow"
+                    ? "var(--mantine-color-blue-light)"
+                    : "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  editorTheme === "tomorrow"
+                    ? "var(--mantine-color-blue-2)"
+                    : "var(--mantine-color-gray-1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  editorTheme === "tomorrow"
+                    ? "var(--mantine-color-blue-light)"
+                    : "transparent";
               }}
             >
-              Tomorrow
+              <Stack gap={2}>
+                <Text size="xs" fw={500}>
+                  Tomorrow
+                </Text>
+                <Text size="xs" c="dimmed">
+                  经典主题
+                </Text>
+              </Stack>
             </Menu.Item>
             <Menu.Item
               onClick={() => onThemeChange("kuroir")}
               style={{
                 backgroundColor:
-                  editorTheme === "kuroir" ? "#e3f2fd" : "transparent",
+                  editorTheme === "kuroir"
+                    ? "var(--mantine-color-blue-light)"
+                    : "transparent",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  editorTheme === "kuroir"
+                    ? "var(--mantine-color-blue-2)"
+                    : "var(--mantine-color-gray-1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  editorTheme === "kuroir"
+                    ? "var(--mantine-color-blue-light)"
+                    : "transparent";
               }}
             >
-              Kuroir
+              <Stack gap={2}>
+                <Text size="xs" fw={500}>
+                  Kuroir
+                </Text>
+                <Text size="xs" c="dimmed">
+                  简洁主题
+                </Text>
+              </Stack>
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
-        <Menu shadow="md" width={180} withinPortal={false}>
+        <Menu shadow="md" width={200} withinPortal={false}>
           <Menu.Target>
-            <Button
-              size="xs"
-              leftSection={<Plus size={12} />}
-              rightSection={<ChevronDown size={12} />}
-              variant="filled"
-            >
-              新增配置
-            </Button>
+            <ActionIcon size="xs" variant="light" title="新增配置">
+              <Plus size={12} />
+            </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
+            <Menu.Label>新增配置</Menu.Label>
             {availableConfigTypes.map((configType) => (
               <Menu.Item
                 key={configType.id}

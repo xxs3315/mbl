@@ -151,7 +151,6 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
           <ActionIcon
             size="xs"
             variant="light"
-            color="red"
             onClick={() => onDelete(config.id)}
           >
             <Trash size={12} />
@@ -164,12 +163,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
           </Text>
           <Group gap="xs">
             <Tooltip label="大窗口编辑">
-              <ActionIcon
-                size="xs"
-                variant="light"
-                color="green"
-                onClick={handleOpenModal}
-              >
+              <ActionIcon size="xs" variant="light" onClick={handleOpenModal}>
                 <Edit3 size={12} />
               </ActionIcon>
             </Tooltip>
@@ -178,7 +172,6 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                 <ActionIcon
                   size="xs"
                   variant="light"
-                  color="blue"
                   onClick={() => onFormat(config.id)}
                 >
                   <Code size={12} />
@@ -212,34 +205,6 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
             setOptions={editorConfig}
             editorProps={getEditorProps()}
             style={getEditorStyle()}
-            onLoad={(editor) => {
-              // 修复等宽字体导致的光标错位
-              const fixFontRendering = () => {
-                setTimeout(() => {
-                  editor.resize();
-                  editor.renderer.updateFull();
-                }, 0);
-              };
-
-              // 初始修复
-              fixFontRendering();
-
-              // 监听字体加载完成
-              if (document.fonts && document.fonts.ready) {
-                document.fonts.ready.then(() => {
-                  fixFontRendering();
-                });
-              }
-
-              // 监听窗口大小变化
-              const handleResize = () => fixFontRendering();
-              window.addEventListener("resize", handleResize);
-
-              // 清理监听器
-              editor.on("destroy", () => {
-                window.removeEventListener("resize", handleResize);
-              });
-            }}
           />
         </Box>
 
