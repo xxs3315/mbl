@@ -52,7 +52,7 @@ export interface BoxProps {
   children?: ReactNode;
   request?: string;
   value?: any;
-  shape?: "list" | "scatter";
+  shape?: "list" | "object";
   bind?: string;
   direction?: string;
 }

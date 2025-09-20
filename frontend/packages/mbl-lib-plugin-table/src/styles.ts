@@ -1,10 +1,9 @@
-// 样式常量 - 避免重复创建对象
+// 样式常量
 export const HORIZONTAL_CONTAINER_STYLE = {
   display: "flex",
   flexDirection: "row",
   alignItems: "stretch",
   justifyContent: "flex-start",
-  border: "1px solid #e5e7eb",
   padding: "0",
 } as const;
 
@@ -13,7 +12,6 @@ export const VERTICAL_CONTAINER_STYLE = {
   flexDirection: "column",
   alignItems: "stretch",
   justifyContent: "flex-start",
-  border: "1px solid #e5e7eb",
   padding: "0",
 } as const;
 
@@ -23,18 +21,14 @@ export const INNER_HORIZONTAL_STYLE = {
   flexDirection: "row",
   alignItems: "stretch",
   justifyContent: "flex-start",
-  border: "1px solid #e5e7eb",
   padding: "0",
-  backgroundColor: "#f3f4f620",
   color: "#3b82f6",
   gap: "1px",
 } as const;
 
 export const INNER_VERTICAL_STYLE = {
   borderRadius: "none",
-  border: "1px solid #e5e7eb",
   padding: "0",
-  backgroundColor: "#f3f4f620",
   display: "flex",
   flexDirection: "column",
   gap: "1px",
@@ -49,7 +43,6 @@ export const LEAF_NODE_STYLE = {
   justifyContent: "space-between",
   borderRadius: "none",
   border: "none",
-  backgroundColor: "white",
   padding: "0",
 } as const;
 
@@ -57,7 +50,7 @@ export const LEAF_INNER_STYLE = {
   height: "100%",
   minHeight: "16px",
   width: "100%",
-  padding: "0px",
+  padding: "1px",
 } as const;
 
 // 按钮样式

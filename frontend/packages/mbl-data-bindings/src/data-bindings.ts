@@ -4,7 +4,7 @@ interface ToolPanelDataBindingProp {
   description: string;
   abbreviation: string;
   image: string;
-  shape: "list" | "scatter";
+  shape: "list" | "object";
   request: string;
   value: any;
   bindings: any;
@@ -96,7 +96,7 @@ export const toolPanelDataBindings: ToolPanelDataBindingPayload[] = [
     description: "绑定一个远程json对象",
     abbreviation: "测3",
     image: "测3",
-    shape: "scatter",
+    shape: "object",
     request: "url",
     value: "https://jsonplaceholder.typicode.com/posts/1",
     bindings: [
@@ -112,7 +112,7 @@ export const toolPanelDataBindings: ToolPanelDataBindingPayload[] = [
     description: "绑定一个静态json对象",
     abbreviation: "测4",
     image: "测4",
-    shape: "scatter",
+    shape: "object",
     request: "data",
     value: `{
 		  "userId": 1,

@@ -1,5 +1,5 @@
 import React from "react";
-import { pt2px } from "@xxs3315/mbl-utils";
+import { DndTarget, ItemTypes } from "@xxs3315/mbl-dnd";
 import {
   useCurrentSelectedId,
   useDpi,
@@ -381,7 +381,7 @@ export const TableComponent: React.FC<TableComponentProps> = ({
       ),
     );
 
-    // 如果第一行存在，添加一行与第一行列分布完全一致的textarea行
+    // 如果第一行存在，添加一行与第一行列分布完全一致的textarea行，作为绑定占位
     if (topLevelItems.length > 0) {
       const firstRow: any = topLevelItems[0];
       if (firstRow && firstRow.children && firstRow.children.length > 0) {
@@ -391,13 +391,10 @@ export const TableComponent: React.FC<TableComponentProps> = ({
             style={{
               display: "flex",
               width: "100%",
-              marginTop: "1px",
-              marginRight: "1px",
-              marginBottom: "1px",
-              marginLeft: "0",
-              rowGap: "1px",
+              margin: "0",
+              padding: "0",
+              rowGap: "0",
               columnGap: "1px",
-              border: "1px solid #e5e7eb",
             }}
           >
             {firstRow.children.map((columnId: string, columnIndex: number) => {
@@ -411,23 +408,41 @@ export const TableComponent: React.FC<TableComponentProps> = ({
                     ...getFlexStyle(columnData),
                     ...getVerticalStyle(columnData.vertical),
                     position: "relative",
-                    marginRight:
-                      columnIndex < firstRow.children.length - 1 ? "0" : "0",
+                    padding: "1px",
+                    paddingRight: "1px",
+                    paddingBottom: "1px",
                   }}
                 >
-                  <TextComponent
-                    props={{
-                      id: `textarea-column-${columnId}`,
-                      value: "",
-                      readOnly: true,
+                  <DndTarget
+                    identifier={`${tableId}-${columnId}`}
+                    data-title={`${tableId}-${columnId}`}
+                    accept={[ItemTypes.BINDING_LIST_ITEM]}
+                    lastDroppedItem={null}
+                    onDrop={() => {}}
+                    key={9999}
+                    greedy={false}
+                    moreStyle={{
+                      marginTop: 0,
+                      padding: "0",
+                      width: "100%",
+                      height: "100%",
+                      minHeight: "24px",
                     }}
-                    onValueChange={() => {}}
-                    onColumnAction={undefined}
-                    onColumnSelect={undefined}
-                    currentSelectedColumnId=""
-                    currentSelectedId=""
-                    tableId={tableId}
-                  />
+                  >
+                    <TextComponent
+                      props={{
+                        id: `textarea-column-binding-${columnId}`,
+                        value: "",
+                        readOnly: true,
+                      }}
+                      onValueChange={() => {}}
+                      onColumnAction={undefined}
+                      onColumnSelect={undefined}
+                      currentSelectedColumnId=""
+                      currentSelectedId=""
+                      tableId={tableId}
+                    />
+                  </DndTarget>
                 </div>
               );
             })}

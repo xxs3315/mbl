@@ -82,7 +82,11 @@ export const ControlBarDataSources = React.memo<ControlBarDataSourcesProps>(
                 >
                   <Box
                     name={binding.name}
-                    type={dataBinding.type || ItemTypes.ELEMENT}
+                    type={
+                      binding.shape === "object"
+                        ? ItemTypes.BINDING_OBJECT_ITEM
+                        : ItemTypes.BINDING_LIST_ITEM
+                    }
                     cat="data-binding-item"
                     isDropped={false}
                     bind={binding.bind}
