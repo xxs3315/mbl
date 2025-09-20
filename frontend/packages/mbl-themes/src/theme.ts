@@ -82,7 +82,7 @@ const teal: MantineColorsTuple = [
 // 创建主题配置
 export const theme = createTheme({
   primaryColor: "blue",
-  primaryShade: 6,
+  primaryShade: 7,
   fontFamily:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   fontFamilyMonospace: "Monaco, Courier, monospace",
