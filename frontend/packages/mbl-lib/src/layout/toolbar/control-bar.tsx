@@ -15,6 +15,7 @@ import {
   LayoutList,
 } from "lucide-react";
 import { ControlBarDataSources } from "./control-bar-data-sources";
+import { DataBindingPanel } from "@xxs3315/mbl-data-bindings";
 
 interface ControlBarProps {
   showPageSelector: boolean;
@@ -221,7 +222,7 @@ export const ControlBar = React.memo<ControlBarProps>(
             })}
           />
 
-          <Popover width={200} position="bottom" withArrow shadow="md">
+          <Popover width={600} position="bottom" withArrow shadow="md">
             <Popover.Target>
               <ActionIcon
                 variant="subtle"
@@ -243,7 +244,7 @@ export const ControlBar = React.memo<ControlBarProps>(
               </ActionIcon>
             </Popover.Target>
             <Popover.Dropdown>
-              <ControlBarDataSources id={"data-sources"} />
+              <DataBindingPanel />
             </Popover.Dropdown>
           </Popover>
 

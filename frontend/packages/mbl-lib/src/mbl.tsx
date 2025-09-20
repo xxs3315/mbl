@@ -26,7 +26,6 @@ import {
   PAGE_BODY_ROOT_ID,
   PAGE_FOOTER_ROOT_ID,
   PAGE_HEADER_ROOT_ID,
-  PAGE_ROOT_ID,
 } from "./constants";
 import { css } from "./styled-system/css";
 import { PageSelector, ControlBar, LeftSidebar, RightSidebar } from "./layout";
