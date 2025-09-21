@@ -151,8 +151,9 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
             </Text>
           </Box>
           <ActionIcon
-            size="xs"
-            variant="light"
+            size="sm"
+            variant="subtle"
+            color="red"
             onClick={() => onDelete(config.id)}
           >
             <Trash size={12} />
@@ -165,15 +166,21 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
           </Text>
           <Group gap="xs">
             <Tooltip label="大窗口编辑">
-              <ActionIcon size="xs" variant="light" onClick={handleOpenModal}>
+              <ActionIcon
+                size="sm"
+                variant="subtle"
+                color="blue"
+                onClick={handleOpenModal}
+              >
                 <Edit3 size={12} />
               </ActionIcon>
             </Tooltip>
             {config.request === "data" && (
               <Tooltip label="格式化JSON">
                 <ActionIcon
-                  size="xs"
-                  variant="light"
+                  size="sm"
+                  variant="subtle"
+                  color="green"
                   onClick={() => onFormat(config.id)}
                 >
                   <Code size={12} />
@@ -184,7 +191,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
         </Group>
 
         <Box
-          mb="xs"
+          mb="0"
           style={{
             border: validationError ? "1px solid #fa5252" : "1px solid #e9ecef",
             borderRadius: "4px",
@@ -219,7 +226,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
         {/* 显示可供绑定的字段 */}
         {config.request === "data" && fields.length > 0 && (
           <Box>
-            <Text size="xs" fw={500} mb="0">
+            <Text size="xs" fw={500} mb="0" mt="xs">
               可供绑定的字段:
             </Text>
             <Group gap="xs">
@@ -351,12 +358,13 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
 
           {/* 按钮组 */}
           <Group justify="flex-end" gap="sm">
-            <Button variant="light" onClick={handleCancelModal} size="sm">
+            <Button variant="subtle" onClick={handleCancelModal} size="sm">
               取消
             </Button>
             {config.request === "data" && (
               <Button
-                variant="light"
+                variant="subtle"
+                color="green"
                 onClick={handleFormatModalJson}
                 size="sm"
                 leftSection={<Code size={14} />}

@@ -33,7 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
       <Group gap="xs">
         <Menu shadow="md" width={160} withinPortal={false}>
           <Menu.Target>
-            <ActionIcon size="xs" variant="light" title="编辑器主题">
+            <ActionIcon size="sm" variant="subtle" title="编辑器主题">
               <Palette size={12} />
             </ActionIcon>
           </Menu.Target>
@@ -163,7 +163,7 @@ export const Header: React.FC<HeaderProps> = ({
         </Menu>
         <Menu shadow="md" width={200} withinPortal={false}>
           <Menu.Target>
-            <ActionIcon size="xs" variant="light" title="新增配置">
+            <ActionIcon size="sm" variant="subtle" title="新增配置">
               <Plus size={12} />
             </ActionIcon>
           </Menu.Target>

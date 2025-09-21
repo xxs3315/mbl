@@ -120,7 +120,7 @@ export const RightSidebar = React.memo<RightSidebarProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  操作面板
+                  属性编辑
                 </Tabs.Tab>
                 <Tabs.Tab
                   value="task-center"
@@ -193,11 +193,21 @@ export const RightSidebar = React.memo<RightSidebarProps>(
               </MacScrollbar>
             )}
             {activeTab === "task-center" && (
-              <TaskCenter
-                baseUrl={baseUrl}
-                taskStatusPath={taskStatusPath}
-                pdfDownloadPath={pdfDownloadPath}
-              />
+              <MacScrollbar
+                className={css({
+                  fontSize: "12px",
+                  color: "gray.600",
+                  height: "100%",
+                  overflow: "auto",
+                  padding: "16px",
+                })}
+              >
+                <TaskCenter
+                  baseUrl={baseUrl}
+                  taskStatusPath={taskStatusPath}
+                  pdfDownloadPath={pdfDownloadPath}
+                />
+              </MacScrollbar>
             )}
           </div>
         </div>

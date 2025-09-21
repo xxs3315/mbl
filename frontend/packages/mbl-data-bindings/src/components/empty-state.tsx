@@ -7,12 +7,12 @@ export const EmptyState: React.FC = () => {
     <Alert
       icon={<AlertCircle size={12} />}
       title="暂无配置"
-      color="blue"
       variant="light"
       styles={{
         root: { padding: "8px" },
         title: { fontSize: "12px" },
-        message: { fontSize: "11px" },
+        message: { fontSize: "12px" },
+        icon: { alignItems: "flex-start" },
       }}
     >
       点击右上角的"新增配置"按钮来添加数据绑定配置

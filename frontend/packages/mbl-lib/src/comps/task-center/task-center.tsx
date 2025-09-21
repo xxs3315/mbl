@@ -18,11 +18,12 @@ import {
   CheckCircle,
   XCircle,
   Loader,
-  Trash2,
+  Trash,
   RefreshCw,
   FileText,
   Files,
   Download,
+  AlertCircle,
 } from "lucide-react";
 import { StoredTask, TaskStatus, TaskType } from "../../types/task";
 import { useTaskStorage } from "../../hooks/use-task-storage";
@@ -111,24 +112,24 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
     switch (status) {
       case TaskStatus.PENDING:
       case "PENDING":
-        return <Clock size={16} color="#f59e0b" />;
+        return <Clock size={14} color="#f59e0b" />;
       case TaskStatus.PROCESSING:
       case "PROCESSING":
         return (
           <Loader
-            size={16}
+            size={14}
             color="#3b82f6"
             className={css({ animation: "spin" })}
           />
         );
       case TaskStatus.COMPLETED:
       case "COMPLETED":
-        return <CheckCircle size={16} color="#10b981" />;
+        return <CheckCircle size={14} color="#10b981" />;
       case TaskStatus.FAILED:
       case "FAILED":
-        return <XCircle size={16} color="#ef4444" />;
+        return <XCircle size={14} color="#ef4444" />;
       default:
-        return <Clock size={16} />;
+        return <Clock size={14} />;
     }
   };
 
@@ -297,13 +298,13 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
       {/* 头部操作区 */}
       <div
         className={css({
-          padding: "12px",
-          borderBottom: "1px solid",
-          borderBottomColor: "gray.200",
+          paddingBottom: "8px",
         })}
       >
-        <Group justify="space-between" mb="sm">
-          <Title order={4}>任务中心</Title>
+        <Group justify="space-between" align="center" mb="xs">
+          <Title order={4} size="sm">
+            任务列表
+          </Title>
           <Group gap="xs">
             <Tooltip label={isPolling ? "正在自动刷新" : "手动刷新"}>
               <ActionIcon
@@ -313,7 +314,7 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
                 loading={refreshing}
                 color={isPolling ? "blue" : "gray"}
               >
-                <RefreshCw size={14} />
+                <RefreshCw size={12} />
               </ActionIcon>
             </Tooltip>
             {activeTab === "completed" && completedTasks.length > 0 && (
@@ -324,7 +325,7 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
                   onClick={handleClearCompleted}
                   color="red"
                 >
-                  <Trash2 size={14} />
+                  <Trash size={12} />
                 </ActionIcon>
               </Tooltip>
             )}
@@ -332,7 +333,7 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
         </Group>
 
         {/* Tab切换 */}
-        <Group gap="xs">
+        <Group gap="xs" align="center" justify={"center"}>
           <Button
             variant={activeTab === "active" ? "filled" : "subtle"}
             size="xs"
@@ -354,19 +355,27 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
       <MacScrollbar
         className={css({
           flex: 1,
-          padding: "12px",
+          padding: "0",
           height: "100%",
           overflow: "auto",
         })}
       >
         {currentTasks.length === 0 ? (
-          <Alert color="gray" variant="light">
-            <Text size="sm">
-              {activeTab === "active" ? "暂无进行中的任务" : "暂无已完成的任务"}
-            </Text>
+          <Alert
+            icon={<AlertCircle size={12} />}
+            title="暂无任务"
+            variant="light"
+            styles={{
+              root: { padding: "8px" },
+              title: { fontSize: "12px" },
+              message: { fontSize: "12px" },
+              icon: { alignItems: "flex-start" },
+            }}
+          >
+            {activeTab === "active" ? "暂无进行中的任务" : "暂无已完成的任务"}
           </Alert>
         ) : (
-          <Stack gap="sm">
+          <Stack gap="xs">
             {currentTasks.map((task) => {
               // 安全检查，确保任务对象有效
               if (!task || !task.taskId) {
@@ -377,24 +386,24 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
                 <div
                   key={task.taskId}
                   className={css({
-                    padding: "12px",
+                    padding: "8px",
                     border: "1px solid",
                     borderColor: "gray.200",
                     borderRadius: "8px",
                     backgroundColor: "white",
                   })}
                 >
-                  <Group justify="space-between" mb="xs">
+                  <Group justify="space-between" mb="0">
                     <Group gap="xs">
                       {getTaskTypeIcon(task.type)}
-                      <Text size="sm" fw={500}>
+                      <Text size="xs" fw={500}>
                         {getTaskTypeText(task.type)}
                       </Text>
                     </Group>
                     <Group gap="xs">
                       {getStatusIcon(task.status)}
                       <Badge
-                        size="sm"
+                        size="xs"
                         color={getStatusColor(task.status) || "gray"}
                         variant="light"
                       >
@@ -438,7 +447,7 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
                           color="red"
                           onClick={() => handleDeleteTask(task.taskId)}
                         >
-                          <Trash2 size={12} />
+                          <Trash size={12} />
                         </ActionIcon>
                       </Tooltip>
                     </Group>
