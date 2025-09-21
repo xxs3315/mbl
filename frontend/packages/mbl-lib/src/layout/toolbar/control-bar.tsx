@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "../../styled-system/css";
-import { ActionIcon, Popover, Tooltip } from "@mantine/core";
+import { ActionIcon, Popover, Tooltip, Loader } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
 import { Box } from "@xxs3315/mbl-dnd";
 import { toolPanelComps } from "../../comps/tool-panel/data";
@@ -32,6 +32,7 @@ interface ControlBarProps {
   onRedo: () => void;
   onPreview: () => void;
   onPreviewAll: () => void;
+  isPreviewing: boolean;
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
 }
@@ -52,6 +53,7 @@ export const ControlBar = React.memo<ControlBarProps>(
     onRedo,
     onPreview,
     onPreviewAll,
+    isPreviewing,
     plugins,
     enablePluginSystem = false,
   }) => {
@@ -307,6 +309,7 @@ export const ControlBar = React.memo<ControlBarProps>(
                 size="lg"
                 aria-label="undo"
                 onClick={onPreview}
+                disabled={isPreviewing}
                 className={css({
                   backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
                   color: "white",
@@ -319,7 +322,7 @@ export const ControlBar = React.memo<ControlBarProps>(
                   },
                 })}
               >
-                <Eye size={16} />
+                {isPreviewing ? <Loader size={16} /> : <Eye size={16} />}
               </ActionIcon>
             </Tooltip>
             <Tooltip label="预览全部" position="bottom" withArrow>
@@ -328,6 +331,7 @@ export const ControlBar = React.memo<ControlBarProps>(
                 size="lg"
                 aria-label="redo"
                 onClick={onPreviewAll}
+                disabled={isPreviewing}
                 className={css({
                   backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
                   color: "white",
@@ -340,7 +344,7 @@ export const ControlBar = React.memo<ControlBarProps>(
                   },
                 })}
               >
-                <ScanEye size={16} />
+                {isPreviewing ? <Loader size={16} /> : <ScanEye size={16} />}
               </ActionIcon>
             </Tooltip>
           </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { MantineProvider } from "@mantine/core";
@@ -403,6 +403,10 @@ const MixBoxLayoutContent = React.memo<{
       pdfGeneratePath,
     });
 
+    useEffect(() => {
+      console.log("[Preview] isPreviewing: ", isPreviewing);
+    }, [isPreviewing]);
+
     // 使用内容变化监听 hook
     useContentChange(onContentChange);
 
@@ -504,6 +508,7 @@ const MixBoxLayoutContent = React.memo<{
             onRedo={redo}
             onPreview={preview}
             onPreviewAll={previewAll}
+            isPreviewing={isPreviewing}
             plugins={plugins}
             enablePluginSystem={enablePluginSystem}
           />

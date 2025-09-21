@@ -34,3 +34,4 @@ build/
 /data/h2db.mv.db
 /data/h2db.trace.db
 /data/images/**.*
+/data/pdfs/**.*

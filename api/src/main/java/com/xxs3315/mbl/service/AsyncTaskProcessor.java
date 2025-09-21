@@ -1,7 +1,16 @@
 package com.xxs3315.mbl.service;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.xxs3315.mbl.entity.QueueItem;
+
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.xxs3315.mbl.pdf.dtos.GenPdfProps;
+import com.xxs3315.mbl.pdf.services.PdfMakerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +24,8 @@ public class AsyncTaskProcessor {
   private final AtomicInteger processedTasks = new AtomicInteger(0);
   private final AtomicInteger failedTasks = new AtomicInteger(0);
   @Autowired private QueueService queueService;
+  @Autowired private PdfMakerService pdfMakerService;
+  private final Gson gson = new Gson();
 
   @Async("taskExecutor")
   public void processTaskAsync(
@@ -28,12 +39,28 @@ public class AsyncTaskProcessor {
           threadName,
           getProcessingTime(task.getTaskType()));
 
-      // 模拟不同任务类型的处理时间
-      long processingTime = getProcessingTime(task.getTaskType());
-      Thread.sleep(processingTime);
+      // 这里需要实际进行生成
+      // 反序列化参数
+      GenPdfProps props = gson.fromJson(task.getData(), GenPdfProps.class);
+      Type mapType = new TypeToken<Map>() {}.getType();
+      Map requestData = gson.fromJson(props.getData(), mapType);
 
+      if (props.getType().equalsIgnoreCase("single")) {
+        List pageList = (List) requestData.get("pages");
+        Map configMap = (Map) requestData.get("config");
+        int currentPageIndex = ((Double) requestData.get("currentPageIndex")).intValue();
+        Map currentPage = (Map) pageList.get(currentPageIndex);
+        pdfMakerService.create(task.getTaskId(), currentPage, configMap);
+      }
+
+      if (props.getType().equalsIgnoreCase("batch")) {
+        List pageList = (List) requestData.get("pages");
+        Map configMap = (Map) requestData.get("config");
+        pdfMakerService.create(task.getTaskId(), pageList, configMap);
+      }
       // 模拟任务处理结果
       String result = simulateTaskProcessing(task);
+
 
       // 完成任务
       boolean success = queueService.completeTask(task.getTaskId(), result);

@@ -28,13 +28,7 @@ public class PdfController {
       PdfQueueResponse response = new PdfQueueResponse();
       response.setTaskId(item.getTaskId());
       response.setStatus(item.getStatus().toString());
-      return ResponseEntity.ok(Map.of(
-              "success",
-              true,
-              "message",
-              "任务已添加到队列",
-              "data",
-              response));
+      return ResponseEntity.ok(Map.of("success", true, "message", "任务已添加到队列", "data", response));
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity.badRequest()
