@@ -23,6 +23,8 @@ import {
 } from "../editor-utils";
 import { formatJson } from "../json-utils";
 import { notifications } from "@mantine/notifications";
+import { Box as DndBox } from "@xxs3315/mbl-dnd";
+import { ItemTypes } from "@xxs3315/mbl-dnd";
 
 interface ConfigItemProps {
   config: DataBindingConfig;
@@ -227,26 +229,47 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                   label={`${field.name} (${field.type})`}
                   position="top"
                 >
-                  <Group
-                    gap="xs"
-                    style={{
-                      padding: "2px 6px",
-                      backgroundColor: `var(--mantine-color-${field.color}-light)`,
-                      borderRadius: "4px",
-                      border: `1px solid var(--mantine-color-${field.color}-3)`,
-                      cursor: "pointer",
-                      fontSize: "10px",
-                      fontWeight: 500,
+                  <DndBox
+                    name={field.name}
+                    type={
+                      config.shape === "list"
+                        ? ItemTypes.BINDING_LIST_ITEM
+                        : ItemTypes.BINDING_OBJECT_ITEM
+                    }
+                    cat="data-binding-item"
+                    isDropped={false}
+                    bind={field.name}
+                    shape={config.shape}
+                    request={config.request}
+                    value={config.value}
+                    attrs={{
+                      bind: field.name,
+                      shape: config.shape,
+                      request: config.request,
+                      value: config.value,
                     }}
                   >
-                    <GripVertical
-                      size={10}
-                      color={`var(--mantine-color-${field.color}-6)`}
-                    />
-                    <Text size="xs" c={`${field.color}.6`} fw={500}>
-                      {field.name}
-                    </Text>
-                  </Group>
+                    <Group
+                      gap="xs"
+                      style={{
+                        padding: "2px 6px",
+                        backgroundColor: `var(--mantine-color-${field.color}-light)`,
+                        borderRadius: "4px",
+                        border: `1px solid var(--mantine-color-${field.color}-3)`,
+                        cursor: "pointer",
+                        fontSize: "10px",
+                        fontWeight: 500,
+                      }}
+                    >
+                      <GripVertical
+                        size={10}
+                        color={`var(--mantine-color-${field.color}-6)`}
+                      />
+                      <Text size="xs" c={`${field.color}.6`} fw={500}>
+                        {field.name}
+                      </Text>
+                    </Group>
+                  </DndBox>
                 </Tooltip>
               ))}
             </Group>
