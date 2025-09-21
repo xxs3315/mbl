@@ -1,4 +1,4 @@
-import { EditorTheme, THEME_STORAGE_KEY } from "./types";
+import { EditorTheme, getThemeStorageKey } from "./types";
 import { validateJson } from "./json-utils";
 
 /**
@@ -33,8 +33,9 @@ export const validateUrl = (url: string): boolean => {
 /**
  * 获取编辑器主题
  */
-export const getEditorTheme = (): EditorTheme => {
-  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+export const getEditorTheme = (tableId: string): EditorTheme => {
+  const storageKey = getThemeStorageKey(tableId);
+  const savedTheme = localStorage.getItem(storageKey);
   if (
     savedTheme &&
     ["github", "monokai", "tomorrow", "kuroir"].includes(savedTheme)
@@ -47,8 +48,9 @@ export const getEditorTheme = (): EditorTheme => {
 /**
  * 保存编辑器主题
  */
-export const saveEditorTheme = (theme: EditorTheme): void => {
-  localStorage.setItem(THEME_STORAGE_KEY, theme);
+export const saveEditorTheme = (theme: EditorTheme, tableId: string): void => {
+  const storageKey = getThemeStorageKey(tableId);
+  localStorage.setItem(storageKey, theme);
 };
 
 /**

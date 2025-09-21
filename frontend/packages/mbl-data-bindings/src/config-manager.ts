@@ -1,4 +1,4 @@
-import { DataBindingConfig, NewConfigType, STORAGE_KEY } from "./types";
+import { DataBindingConfig, NewConfigType, getStorageKey } from "./types";
 import { formatJson } from "./json-utils";
 
 /**
@@ -38,9 +38,10 @@ export const availableConfigTypes: NewConfigType[] = [
 /**
  * 从localStorage加载配置
  */
-export const loadConfigs = (): DataBindingConfig[] => {
+export const loadConfigs = (tableId: string): DataBindingConfig[] => {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const storageKey = getStorageKey(tableId);
+    const saved = localStorage.getItem(storageKey);
     return saved ? JSON.parse(saved) : [];
   } catch (error) {
     console.warn("Failed to load configs from localStorage:", error);
@@ -51,9 +52,13 @@ export const loadConfigs = (): DataBindingConfig[] => {
 /**
  * 保存配置到localStorage
  */
-export const saveConfigs = (configs: DataBindingConfig[]): void => {
+export const saveConfigs = (
+  configs: DataBindingConfig[],
+  tableId: string,
+): void => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(configs));
+    const storageKey = getStorageKey(tableId);
+    localStorage.setItem(storageKey, JSON.stringify(configs));
   } catch (error) {
     console.warn("Failed to save configs to localStorage:", error);
   }
@@ -80,10 +85,11 @@ export const createConfig = (configType: NewConfigType): DataBindingConfig => {
 export const addConfig = (
   configs: DataBindingConfig[],
   configType: NewConfigType,
+  tableId: string,
 ): DataBindingConfig[] => {
   const newConfig = createConfig(configType);
   const updatedConfigs = [...configs, newConfig];
-  saveConfigs(updatedConfigs);
+  saveConfigs(updatedConfigs, tableId);
   return updatedConfigs;
 };
 
@@ -94,11 +100,12 @@ export const updateConfigValue = (
   configs: DataBindingConfig[],
   id: string,
   value: string,
+  tableId: string,
 ): DataBindingConfig[] => {
   const updatedConfigs = configs.map((config) =>
     config.id === id ? { ...config, value } : config,
   );
-  saveConfigs(updatedConfigs);
+  saveConfigs(updatedConfigs, tableId);
   return updatedConfigs;
 };
 
@@ -108,9 +115,10 @@ export const updateConfigValue = (
 export const deleteConfig = (
   configs: DataBindingConfig[],
   id: string,
+  tableId: string,
 ): DataBindingConfig[] => {
   const updatedConfigs = configs.filter((config) => config.id !== id);
-  saveConfigs(updatedConfigs);
+  saveConfigs(updatedConfigs, tableId);
   return updatedConfigs;
 };
 
@@ -120,13 +128,14 @@ export const deleteConfig = (
 export const formatConfigJson = (
   configs: DataBindingConfig[],
   id: string,
+  tableId: string,
 ): DataBindingConfig[] => {
   const config = configs.find((c) => c.id === id);
   if (!config || config.request !== "data") return configs;
 
   const formatted = formatJson(config.value);
   if (formatted !== config.value) {
-    return updateConfigValue(configs, id, formatted);
+    return updateConfigValue(configs, id, formatted, tableId);
   }
   return configs;
 };

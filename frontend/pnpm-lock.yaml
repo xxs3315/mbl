@@ -194,6 +194,9 @@ importers:
       '@xxs3315/mbl-dnd':
         specifier: workspace:*
         version: link:../mbl-dnd
+      '@xxs3315/mbl-providers':
+        specifier: workspace:*
+        version: link:../mbl-providers
       ace-builds:
         specifier: ^1.43.3
         version: 1.43.3

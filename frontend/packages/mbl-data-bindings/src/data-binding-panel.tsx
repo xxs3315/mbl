@@ -16,16 +16,10 @@ import "ace-builds/src-noconflict/ext-language_tools";
 
 // 导入类型和工具
 import { DataBindingConfig, EditorTheme } from "./types";
-import {
-  availableConfigTypes,
-  loadConfigs,
-  addConfig,
-  updateConfigValue,
-  deleteConfig,
-  formatConfigJson,
-} from "./config-manager";
-import { getEditorTheme, saveEditorTheme } from "./editor-utils";
+import { availableConfigTypes } from "./config-manager";
 import { Header, ConfigItem, EmptyState, DeleteModal } from "./components";
+import { useDataBindingStorage } from "./use-data-binding-storage";
+import { formatJson } from "./json-utils";
 
 const DataBindingPanel: React.FC = () => {
   // 状态管理
@@ -34,25 +28,46 @@ const DataBindingPanel: React.FC = () => {
   const [configToDelete, setConfigToDelete] = useState<string | null>(null);
   const [editorTheme, setEditorTheme] = useState<EditorTheme>("github");
 
+  // 使用数据绑定存储 hook
+  const { loadConfigs, saveConfigs, getEditorTheme, saveEditorTheme } =
+    useDataBindingStorage();
+
   // 从localStorage加载配置
   useEffect(() => {
     setConfigs(loadConfigs());
     setEditorTheme(getEditorTheme());
-  }, []);
+  }, [loadConfigs, getEditorTheme]);
 
   // 添加配置
   const handleAddConfig = (configType: any) => {
-    setConfigs(addConfig(configs, configType));
+    const newConfig = {
+      id: `${configType.id}-${Date.now()}`,
+      name: configType.name,
+      description: configType.description,
+      shape: configType.shape,
+      request: configType.request,
+      value: "",
+      bindings: [],
+    };
+    const updatedConfigs = [...configs, newConfig];
+    setConfigs(updatedConfigs);
+    saveConfigs(updatedConfigs);
   };
 
   // 更新配置值
   const handleUpdateConfigValue = (id: string, value: string) => {
-    setConfigs(updateConfigValue(configs, id, value));
+    const updatedConfigs = configs.map((config) =>
+      config.id === id ? { ...config, value } : config,
+    );
+    setConfigs(updatedConfigs);
+    saveConfigs(updatedConfigs);
   };
 
   // 删除配置
   const handleDeleteConfig = (id: string) => {
-    setConfigs(deleteConfig(configs, id));
+    const updatedConfigs = configs.filter((config) => config.id !== id);
+    setConfigs(updatedConfigs);
+    saveConfigs(updatedConfigs);
     setDeleteModalOpen(false);
     setConfigToDelete(null);
   };
@@ -65,19 +80,24 @@ const DataBindingPanel: React.FC = () => {
 
   // 格式化JSON
   const handleFormatConfigJson = (id: string) => {
-    const updatedConfigs = formatConfigJson(configs, id);
-    setConfigs(updatedConfigs);
-
     const config = configs.find((c) => c.id === id);
-    if (config) {
-      const formatted = config.value;
-      notifications.show({
-        title: "JSON已格式化",
-        message: "JSON数据已成功格式化",
-        color: "green",
-        icon: <Check size={16} />,
-      });
+    if (!config || config.request !== "data") return;
+
+    const formatted = formatJson(config.value);
+    if (formatted !== config.value) {
+      const updatedConfigs = configs.map((c) =>
+        c.id === id ? { ...c, value: formatted } : c,
+      );
+      setConfigs(updatedConfigs);
+      saveConfigs(updatedConfigs);
     }
+
+    notifications.show({
+      title: "JSON已格式化",
+      message: "JSON数据已成功格式化",
+      color: "green",
+      icon: <Check size={16} />,
+    });
   };
 
   // 切换编辑器主题

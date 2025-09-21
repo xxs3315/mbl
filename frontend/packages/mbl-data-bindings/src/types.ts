@@ -35,6 +35,15 @@ export interface FieldIconInfo {
   color: string;
 }
 
-// 存储键常量
-export const STORAGE_KEY = "mbl-data-binding-configs";
-export const THEME_STORAGE_KEY = "mbl-data-binding-editor-theme";
+// 存储键基础常量
+export const STORAGE_KEY_BASE = "mbl-data-binding-configs";
+export const THEME_STORAGE_KEY_BASE = "mbl-data-binding-editor-theme";
+
+// 生成带tableId后缀的存储键
+export const getStorageKey = (tableId: string): string => {
+  return `${STORAGE_KEY_BASE}-${tableId}`;
+};
+
+export const getThemeStorageKey = (tableId: string): string => {
+  return `${THEME_STORAGE_KEY_BASE}-${tableId}`;
+};
