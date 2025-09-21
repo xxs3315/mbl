@@ -62,9 +62,6 @@ importers:
       '@xxs3315/mbl-lib-plugin-table':
         specifier: workspace:*
         version: link:../../packages/mbl-lib-plugin-table
-      ace-builds:
-        specifier: ^1.43.3
-        version: 1.43.3
       axios:
         specifier: ^1.10.0
         version: 1.11.0
@@ -114,9 +111,6 @@ importers:
       '@xxs3315/mbl-lib-plugin-table':
         specifier: workspace:*
         version: link:../../packages/mbl-lib-plugin-table
-      ace-builds:
-        specifier: ^1.43.3
-        version: 1.43.3
       element-plus:
         specifier: ^2.11.2
         version: 2.11.2(vue@3.5.20(typescript@5.9.2))
@@ -200,6 +194,9 @@ importers:
       ace-builds:
         specifier: ^1.43.3
         version: 1.43.3
+      axios:
+        specifier: ^1.10.0
+        version: 1.11.0
       json-schema-generator:
         specifier: ^2.0.6
         version: 2.0.6
@@ -313,9 +310,6 @@ importers:
       '@xxs3315/mbl-utils':
         specifier: workspace:*
         version: link:../mbl-utils
-      ace-builds:
-        specifier: ^1.43.3
-        version: 1.43.3
       array-move:
         specifier: ^2.2.1
         version: 2.2.2

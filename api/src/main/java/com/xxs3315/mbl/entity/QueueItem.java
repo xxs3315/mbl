@@ -17,7 +17,7 @@ public class QueueItem {
   @Column(name = "task_type", nullable = false)
   private String taskType;
 
-  @Column(name = "data", nullable = false)
+  @Column(name = "data", nullable = false, columnDefinition = "TEXT")
   private String data;
 
   @Enumerated(EnumType.STRING)
@@ -33,7 +33,7 @@ public class QueueItem {
   @Column(name = "end_time")
   private LocalDateTime endTime;
 
-  @Column(name = "result", length = 1000)
+  @Column(name = "result", columnDefinition = "TEXT")
   private String result;
 
   @Column(name = "error_message", length = 1000)
@@ -47,7 +47,7 @@ public class QueueItem {
 
   public QueueItem(String taskType, String data) {
     this.taskId =
-        String.valueOf(System.currentTimeMillis())
+        System.currentTimeMillis()
             + "_"
             + java.util.UUID.randomUUID().toString().substring(0, 8);
     this.taskType = taskType;

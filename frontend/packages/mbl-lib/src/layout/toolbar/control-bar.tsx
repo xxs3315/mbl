@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "../../styled-system/css";
-import { ActionIcon, Popover } from "@mantine/core";
+import { ActionIcon, Popover, Tooltip } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
 import { Box } from "@xxs3315/mbl-dnd";
 import { toolPanelComps } from "../../comps/tool-panel/data";
@@ -13,9 +13,9 @@ import {
   PanelRightOpen,
   LayoutDashboard,
   LayoutList,
+  Eye,
+  ScanEye,
 } from "lucide-react";
-import { ControlBarDataSources } from "./control-bar-data-sources";
-import { DataBindingPanel } from "@xxs3315/mbl-data-bindings";
 
 interface ControlBarProps {
   showPageSelector: boolean;
@@ -30,6 +30,8 @@ interface ControlBarProps {
   onToggleAllSidebars: () => void;
   onUndo: () => void;
   onRedo: () => void;
+  onPreview: () => void;
+  onPreviewAll: () => void;
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
 }
@@ -48,6 +50,8 @@ export const ControlBar = React.memo<ControlBarProps>(
     onToggleAllSidebars,
     onUndo,
     onRedo,
+    onPreview,
+    onPreviewAll,
     plugins,
     enablePluginSystem = false,
   }) => {
@@ -271,6 +275,74 @@ export const ControlBar = React.memo<ControlBarProps>(
             >
               <Redo size={16} />
             </ActionIcon>
+          </div>
+
+          {/* 分割短竖线 - 响应式显示 */}
+          <div
+            className={css({
+              width: "1px",
+              height: "12px",
+              backgroundColor: "gray.200",
+              marginX: "4px",
+              flexShrink: "0",
+              display: {
+                base: "none", // 小屏幕隐藏分隔线
+                sm: "block", // 大屏幕显示
+              },
+            })}
+          />
+
+          {/* Preview/Preview All 按钮 - 始终显示 */}
+          <div
+            className={css({
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              flexShrink: "0",
+            })}
+          >
+            <Tooltip label="预览" position="bottom" withArrow>
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                aria-label="undo"
+                onClick={onPreview}
+                className={css({
+                  backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
+                  color: "white",
+                  _hover: {
+                    backgroundColor: showLeftSidebar ? "blue.600" : "gray.500",
+                  },
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  "&:disabled, &[data-disabled]": {
+                    backgroundColor: "transparent !important",
+                  },
+                })}
+              >
+                <Eye size={16} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label="预览全部" position="bottom" withArrow>
+              <ActionIcon
+                variant="subtle"
+                size="lg"
+                aria-label="redo"
+                onClick={onPreviewAll}
+                className={css({
+                  backgroundColor: showLeftSidebar ? "blue.500" : "gray.400",
+                  color: "white",
+                  _hover: {
+                    backgroundColor: showLeftSidebar ? "blue.600" : "gray.500",
+                  },
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  "&:disabled, &[data-disabled]": {
+                    backgroundColor: "transparent !important",
+                  },
+                })}
+              >
+                <ScanEye size={16} />
+              </ActionIcon>
+            </Tooltip>
           </div>
         </div>
 

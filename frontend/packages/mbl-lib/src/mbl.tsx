@@ -45,6 +45,7 @@ import {
   useDpiCalculator,
   useCanvasRenderer,
 } from "./hooks";
+import { usePreview } from "./hooks/use-preview";
 
 // 内部组件，在 MantineProvider 内部使用 useThemeColors
 const MixBoxLayoutContent = React.memo<{
@@ -396,6 +397,12 @@ const MixBoxLayoutContent = React.memo<{
     // 使用撤销重做 hook
     const { undoCount, redoCount, undo, redo } = useUndoRedo();
 
+    // 使用预览 hook
+    const { preview, previewAll, isPreviewing } = usePreview({
+      baseUrl,
+      pdfGeneratePath,
+    });
+
     // 使用内容变化监听 hook
     useContentChange(onContentChange);
 
@@ -495,6 +502,8 @@ const MixBoxLayoutContent = React.memo<{
             }}
             onUndo={undo}
             onRedo={redo}
+            onPreview={preview}
+            onPreviewAll={previewAll}
             plugins={plugins}
             enablePluginSystem={enablePluginSystem}
           />
@@ -631,6 +640,8 @@ export const MixBoxLayout = React.memo<{
                       baseUrl={baseUrl}
                       imageUploadPath={imageUploadPath}
                       imageDownloadPath={imageDownloadPath}
+                      pdfGeneratePath={pdfGeneratePath}
+                      pdfDownloadPath={pdfDownloadPath}
                       plugins={plugins}
                       enablePluginSystem={enablePluginSystem}
                     />

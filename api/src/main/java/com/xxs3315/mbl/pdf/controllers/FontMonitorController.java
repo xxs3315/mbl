@@ -18,7 +18,7 @@ public class FontMonitorController {
   }
 
   /** 获取字体缓存统计信息 */
-//  @Operation(summary = "获取字体缓存统计", description = "查看字体缓存状态和内存使用情况")
+  //  @Operation(summary = "获取字体缓存统计", description = "查看字体缓存状态和内存使用情况")
   @GetMapping("/stats")
   public ResponseEntity<Map<String, Object>> getFontStats() {
     Map<String, Object> stats = fontService.getCacheStats();
@@ -26,7 +26,7 @@ public class FontMonitorController {
   }
 
   /** 清理字体缓存 */
-//  @Operation(summary = "清理字体缓存", description = "清理所有缓存的字体，释放内存")
+  //  @Operation(summary = "清理字体缓存", description = "清理所有缓存的字体，释放内存")
   @DeleteMapping("/cache")
   public ResponseEntity<Map<String, Object>> clearFontCache() {
     fontService.clearCache();
@@ -35,7 +35,7 @@ public class FontMonitorController {
   }
 
   /** 预加载常用字体 */
-//  @Operation(summary = "预加载常用字体", description = "预加载常用字体到缓存中")
+  //  @Operation(summary = "预加载常用字体", description = "预加载常用字体到缓存中")
   @PostMapping("/preload")
   public ResponseEntity<Map<String, Object>> preloadCommonFonts() {
     fontService.preloadCommonFonts();
@@ -44,7 +44,7 @@ public class FontMonitorController {
   }
 
   /** 测试字体加载 */
-//  @Operation(summary = "测试字体加载", description = "测试指定字体的加载情况")
+  //  @Operation(summary = "测试字体加载", description = "测试指定字体的加载情况")
   @PostMapping("/test/{fontName}")
   public ResponseEntity<Map<String, Object>> testFontLoading(@PathVariable String fontName) {
     try {
@@ -67,7 +67,7 @@ public class FontMonitorController {
   }
 
   /** 获取内存使用情况 */
-//  @Operation(summary = "获取内存使用情况", description = "查看当前JVM内存使用情况")
+  //  @Operation(summary = "获取内存使用情况", description = "查看当前JVM内存使用情况")
   @GetMapping("/memory")
   public ResponseEntity<Map<String, Object>> getMemoryInfo() {
     Map<String, Object> stats = fontService.getCacheStats();

@@ -1,6 +1,8 @@
 package com.xxs3315.mbl.config;
 
 import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -36,10 +38,10 @@ public class CorsConfig implements WebMvcConfigurer {
     CorsConfiguration configuration = new CorsConfiguration();
 
     // 允许所有源
-    configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+    configuration.setAllowedOriginPatterns(List.of("*"));
 
     // 允许所有请求头
-    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setAllowedHeaders(List.of("*"));
 
     // 允许所有请求方法
     configuration.setAllowedMethods(

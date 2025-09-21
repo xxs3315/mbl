@@ -28,6 +28,7 @@ const Designer: React.FC = () => {
       locale={currentLocale}
       baseUrl={"http://localhost:8080"}
       imageUploadPath={"/api/images/upload"}
+      pdfGeneratePath={"/api/pdf/generate"}
       plugins={plugins}
       enablePluginSystem={true}
     />
