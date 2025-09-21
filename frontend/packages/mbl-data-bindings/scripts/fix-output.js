@@ -3,8 +3,8 @@ const path = require("path");
 
 /**
  * 修复构建输出目录结构
- * 将 dist/mbl-lib-plugin-table/src/* 移动到 dist/*
- * 将 dist-esm/mbl-lib-plugin-table/src/* 移动到 dist-esm/*
+ * 将 dist/mbl-data-bindings/src/* 移动到 dist/*
+ * 将 dist-esm/mbl-data-bindings/src/* 移动到 dist-esm/*
  */
 
 function moveFiles(sourceDir, targetDir) {
@@ -50,7 +50,7 @@ const distSourceDir = path.join(
   __dirname,
   "..",
   "dist",
-  "mbl-lib-plugin-table",
+  "mbl-data-bindings",
   "src",
 );
 const distTargetDir = path.join(__dirname, "..", "dist");
@@ -58,7 +58,7 @@ const distTargetDir = path.join(__dirname, "..", "dist");
 if (fs.existsSync(distSourceDir)) {
   moveFiles(distSourceDir, distTargetDir);
   // 删除原始目录结构
-  removeDirectory(path.join(__dirname, "..", "dist", "mbl-lib-plugin-table"));
+  removeDirectory(path.join(__dirname, "..", "dist", "mbl-data-bindings"));
 }
 
 // 处理 dist-esm 目录
@@ -66,7 +66,7 @@ const distEsmSourceDir = path.join(
   __dirname,
   "..",
   "dist-esm",
-  "mbl-lib-plugin-table",
+  "mbl-data-bindings",
   "src",
 );
 const distEsmTargetDir = path.join(__dirname, "..", "dist-esm");
@@ -74,19 +74,11 @@ const distEsmTargetDir = path.join(__dirname, "..", "dist-esm");
 if (fs.existsSync(distEsmSourceDir)) {
   moveFiles(distEsmSourceDir, distEsmTargetDir);
   // 删除原始目录结构
-  removeDirectory(
-    path.join(__dirname, "..", "dist-esm", "mbl-lib-plugin-table"),
-  );
+  removeDirectory(path.join(__dirname, "..", "dist-esm", "mbl-data-bindings"));
 }
 
 // 删除 mbl-utils 目录（这些不应该在插件包中）
-removeDirectory(path.join(__dirname, "..", "dist", "mbl-locales"));
-removeDirectory(path.join(__dirname, "..", "dist", "mbl-providers"));
-removeDirectory(path.join(__dirname, "..", "dist", "mbl-themes"));
-removeDirectory(path.join(__dirname, "..", "dist", "mbl-utils"));
-removeDirectory(path.join(__dirname, "..", "dist-esm", "mbl-locales"));
-removeDirectory(path.join(__dirname, "..", "dist-esm", "mbl-providers"));
-removeDirectory(path.join(__dirname, "..", "dist-esm", "mbl-themes"));
-removeDirectory(path.join(__dirname, "..", "dist-esm", "mbl-utils"));
+removeDirectory(path.join(__dirname, "..", "dist", "mbl-dnd"));
+removeDirectory(path.join(__dirname, "..", "dist-esm", "mbl-dnd"));
 
 console.log("Build output structure fixed!");

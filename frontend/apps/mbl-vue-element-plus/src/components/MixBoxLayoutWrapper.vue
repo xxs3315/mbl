@@ -26,6 +26,7 @@ interface Props {
   baseUrl?: string;
   imageUploadPath?: string;
   imageDownloadPath?: string;
+  pdfGeneratePath?: string;
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
 }
@@ -40,6 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
   baseUrl: undefined,
   imageUploadPath: undefined,
   imageDownloadPath: undefined,
+  pdfGeneratePath: undefined,
   plugins: () => [{
     metadata: tablePlugin.metadata,
     plugin: tablePlugin,
@@ -71,6 +73,7 @@ const mixBoxProps = computed(() => ({
   theme: currentTheme.value,
   baseUrl: props.baseUrl || "http://localhost:8080",
   imageUploadPath: props.imageUploadPath || "/api/images/upload",
+  pdfGeneratePath: props.imageUploadPath || "/api/pdf/generate",
   plugins: props.plugins,
   enablePluginSystem: props.enablePluginSystem
 }));

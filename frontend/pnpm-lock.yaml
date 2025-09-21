@@ -191,6 +191,9 @@ importers:
       '@mantine/notifications':
         specifier: ^8.2.5
         version: 8.2.5(@mantine/core@8.2.5(@mantine/hooks@8.2.5(react@19.1.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@mantine/hooks@8.2.5(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@xxs3315/mbl-dnd':
+        specifier: workspace:*
+        version: link:../mbl-dnd
       ace-builds:
         specifier: ^1.43.3
         version: 1.43.3
