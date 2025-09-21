@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { postAxios } from "../utils/axios";
 import { ContentsStoreContext } from "../store/store";
 import { ContentData } from "@xxs3315/mbl-typings";
+import { TaskResponse, TaskType } from "../types/task";
+import { saveTask } from "../utils/task-storage";
 
 interface UsePreviewProps {
   baseUrl?: string;
@@ -50,13 +52,31 @@ export function usePreview({ baseUrl, pdfGeneratePath }: UsePreviewProps = {}) {
     setIsPreviewing(true);
     try {
       const url = `${baseUrl}${pdfGeneratePath}`;
-      await postAxios({
+      const response = (await postAxios({
         url,
         data: {
           data: JSON.stringify(targetContents),
           type: "single",
         },
-      });
+      })) as TaskResponse;
+
+      // 处理响应并保存任务
+      if (response.success) {
+        // 适配不同的响应格式
+        const taskData = response.data || response.task;
+        if (taskData) {
+          saveTask({
+            taskId: taskData.taskId,
+            status: taskData.status,
+            type: TaskType.SINGLE,
+            createdAt: Date.now(),
+            queuePosition:
+              "queuePosition" in taskData ? taskData.queuePosition : null,
+            message: response.message || "任务已创建",
+          });
+          console.log("预览任务已创建:", taskData.taskId);
+        }
+      }
     } catch (error) {
       console.error("Preview error:", error);
     } finally {
@@ -80,13 +100,31 @@ export function usePreview({ baseUrl, pdfGeneratePath }: UsePreviewProps = {}) {
     setIsPreviewing(true);
     try {
       const url = `${baseUrl}${pdfGeneratePath}`;
-      await postAxios({
+      const response = (await postAxios({
         url,
         data: {
           data: JSON.stringify(targetContents),
           type: "batch",
         },
-      });
+      })) as TaskResponse;
+
+      // 处理响应并保存任务
+      if (response.success) {
+        // 适配不同的响应格式
+        const taskData = response.data || response.task;
+        if (taskData) {
+          saveTask({
+            taskId: taskData.taskId,
+            status: taskData.status,
+            type: TaskType.BATCH,
+            createdAt: Date.now(),
+            queuePosition:
+              "queuePosition" in taskData ? taskData.queuePosition : null,
+            message: response.message || "任务已创建",
+          });
+          console.log("批量预览任务已创建:", taskData.taskId);
+        }
+      }
     } catch (error) {
       console.error("Preview all error:", error);
     } finally {

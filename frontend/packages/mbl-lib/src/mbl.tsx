@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { MantineProvider } from "@mantine/core";
-import { theme, themeVariants, type ThemeVariant } from "@xxs3315/mbl-themes";
+import { theme, type ThemeVariant, themeVariants } from "@xxs3315/mbl-themes";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import { ContentData } from "@xxs3315/mbl-typings";
@@ -13,12 +13,12 @@ import {
 } from "./store/store";
 import { defaultContents } from "./store/default-data";
 import {
-  DpiProvider,
-  ThemeProvider,
-  useThemeColorsContext,
   CurrentSelectedIdProvider,
-  useCurrentSelectedId,
+  DpiProvider,
   I18nProvider,
+  ThemeProvider,
+  useCurrentSelectedId,
+  useThemeColorsContext,
 } from "@xxs3315/mbl-providers";
 import { MacScrollbar } from "mac-scrollbar";
 import "mac-scrollbar/dist/mac-scrollbar.css";
@@ -28,22 +28,22 @@ import {
   PAGE_HEADER_ROOT_ID,
 } from "./constants";
 import { css } from "./styled-system/css";
-import { PageSelector, ControlBar, LeftSidebar, RightSidebar } from "./layout";
+import { ControlBar, LeftSidebar, PageSelector, RightSidebar } from "./layout";
 import {
-  useResponsiveLayout,
-  useDragHandlers,
-  usePopoverState,
-  useUndoRedo,
-  useContentChange,
-  useSelectedItem,
-  useRenderFunctions,
+  useCanvasRenderer,
   useCanvasSize,
+  useComponentRenderer,
+  useContentChange,
+  useDpiCalculator,
+  useDragHandlers,
   useInteractionButtons,
   useItemElement,
-  useComponentRenderer,
+  usePopoverState,
+  useRenderFunctions,
+  useResponsiveLayout,
+  useSelectedItem,
   useStableStyles,
-  useDpiCalculator,
-  useCanvasRenderer,
+  useUndoRedo,
 } from "./hooks";
 import { usePreview } from "./hooks/use-preview";
 
@@ -55,6 +55,7 @@ const MixBoxLayoutContent = React.memo<{
   imageDownloadPath?: string;
   pdfGeneratePath?: string;
   pdfDownloadPath?: string;
+  taskStatusPath?: string;
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
 }>(
@@ -65,6 +66,7 @@ const MixBoxLayoutContent = React.memo<{
     imageDownloadPath,
     pdfGeneratePath,
     pdfDownloadPath,
+    taskStatusPath,
     plugins,
     enablePluginSystem = false,
   }) => {
@@ -577,6 +579,8 @@ const MixBoxLayoutContent = React.memo<{
               baseUrl={baseUrl}
               imageUploadPath={imageUploadPath}
               imageDownloadPath={imageDownloadPath}
+              taskStatusPath={taskStatusPath}
+              pdfDownloadPath={pdfDownloadPath}
               plugins={plugins}
               enablePluginSystem={enablePluginSystem}
               onPluginPropsChange={handlePluginPropsChange}
@@ -600,6 +604,7 @@ export const MixBoxLayout = React.memo<{
   imageDownloadPath?: string;
   pdfGeneratePath?: string;
   pdfDownloadPath?: string;
+  taskStatusPath?: string;
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
   locale?: "zh-CN" | "en-US";
@@ -614,6 +619,7 @@ export const MixBoxLayout = React.memo<{
     imageDownloadPath,
     pdfGeneratePath,
     pdfDownloadPath,
+    taskStatusPath,
     plugins,
     enablePluginSystem = false,
     locale = "zh-CN",
@@ -647,6 +653,7 @@ export const MixBoxLayout = React.memo<{
                       imageDownloadPath={imageDownloadPath}
                       pdfGeneratePath={pdfGeneratePath}
                       pdfDownloadPath={pdfDownloadPath}
+                      taskStatusPath={taskStatusPath}
                       plugins={plugins}
                       enablePluginSystem={enablePluginSystem}
                     />

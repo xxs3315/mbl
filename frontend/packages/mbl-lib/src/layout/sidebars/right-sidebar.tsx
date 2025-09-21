@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { css } from "../../styled-system/css";
 import { ActionIcon, Tabs } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
 import { AttributePanelRenderer } from "../../comps/attribute-panel/components/attribute-panel-renderer";
+import { TaskCenter } from "../../comps/task-center/task-center";
 
 interface RightSidebarProps {
   showRightSidebar: boolean;
@@ -16,6 +17,8 @@ interface RightSidebarProps {
   baseUrl?: string;
   imageUploadPath?: string;
   imageDownloadPath?: string;
+  taskStatusPath?: string;
+  pdfDownloadPath?: string;
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
   onPluginPropsChange: (
@@ -35,11 +38,14 @@ export const RightSidebar = React.memo<RightSidebarProps>(
     baseUrl,
     imageUploadPath,
     imageDownloadPath,
+    taskStatusPath,
+    pdfDownloadPath,
     plugins,
     enablePluginSystem,
     onPluginPropsChange,
     onClose,
   }) => {
+    const [activeTab, setActiveTab] = useState<string>("operation-panel");
     return (
       <div
         className={css({
@@ -94,7 +100,8 @@ export const RightSidebar = React.memo<RightSidebarProps>(
             })}
           >
             <Tabs
-              value="operation-panel"
+              value={activeTab}
+              onChange={(value) => setActiveTab(value as string)}
               className={css({
                 flex: "1",
               })}
@@ -114,6 +121,17 @@ export const RightSidebar = React.memo<RightSidebarProps>(
                   })}
                 >
                   操作面板
+                </Tabs.Tab>
+                <Tabs.Tab
+                  value="task-center"
+                  className={css({
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    color: "gray.800",
+                    padding: "8px 16px",
+                  })}
+                >
+                  任务中心
                 </Tabs.Tab>
               </Tabs.List>
             </Tabs>
@@ -145,27 +163,43 @@ export const RightSidebar = React.memo<RightSidebarProps>(
               </svg>
             </ActionIcon>
           </div>
-          <MacScrollbar
+          <div
             className={css({
-              fontSize: "12px",
-              color: "gray.600",
               display: showRightSidebar ? "block" : "none",
               flex: "1",
-              overflow: "auto",
-              padding: "16px",
+              overflow: "hidden",
             })}
           >
-            <AttributePanelRenderer
-              currentSelectedId={currentSelectedId || ""}
-              selectedItemInfo={selectedItemInfo}
-              baseUrl={baseUrl}
-              imageUploadPath={imageUploadPath}
-              imageDownloadPath={imageDownloadPath}
-              plugins={plugins}
-              enablePluginSystem={enablePluginSystem}
-              onPluginPropsChange={onPluginPropsChange}
-            />
-          </MacScrollbar>
+            {activeTab === "operation-panel" && (
+              <MacScrollbar
+                className={css({
+                  fontSize: "12px",
+                  color: "gray.600",
+                  height: "100%",
+                  overflow: "auto",
+                  padding: "16px",
+                })}
+              >
+                <AttributePanelRenderer
+                  currentSelectedId={currentSelectedId || ""}
+                  selectedItemInfo={selectedItemInfo}
+                  baseUrl={baseUrl}
+                  imageUploadPath={imageUploadPath}
+                  imageDownloadPath={imageDownloadPath}
+                  plugins={plugins}
+                  enablePluginSystem={enablePluginSystem}
+                  onPluginPropsChange={onPluginPropsChange}
+                />
+              </MacScrollbar>
+            )}
+            {activeTab === "task-center" && (
+              <TaskCenter
+                baseUrl={baseUrl}
+                taskStatusPath={taskStatusPath}
+                pdfDownloadPath={pdfDownloadPath}
+              />
+            )}
+          </div>
         </div>
       </div>
     );
