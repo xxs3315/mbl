@@ -86,7 +86,7 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
   );
 };
 
-const App: React.FC<AppProps> = ({ baseUrl = "http://localhost:8080" }) => {
+const App: React.FC<AppProps> = ({ baseUrl = "http://localhost:28080" }) => {
   return (
     <Router>
       <LocaleProvider>
