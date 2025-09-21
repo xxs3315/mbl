@@ -3,7 +3,7 @@ import { postAxios } from "../utils/axios";
 import { ContentsStoreContext } from "../store/store";
 import { ContentData } from "@xxs3315/mbl-typings";
 import { TaskResponse, TaskType } from "../types/task";
-import { saveTask } from "../utils/task-storage";
+import { useTaskStorage } from "./use-task-storage";
 
 interface UsePreviewProps {
   baseUrl?: string;
@@ -14,6 +14,9 @@ export function usePreview({ baseUrl, pdfGeneratePath }: UsePreviewProps = {}) {
   // 获取 store 实例
   const store = React.useContext(ContentsStoreContext);
   const [isPreviewing, setIsPreviewing] = useState(false);
+
+  // 使用任务存储 hook
+  const { saveTask } = useTaskStorage();
 
   const updatedContents = () => {
     if (!store) {

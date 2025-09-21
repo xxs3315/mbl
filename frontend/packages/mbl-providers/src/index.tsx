@@ -28,15 +28,24 @@ export {
   type I18nProviderProps,
 } from "./providers/i18n-provider";
 
+export {
+  TableIdProvider,
+  useTableId,
+  type TableIdProviderProps,
+  type TableIdProviderState,
+} from "./providers/table-id-provider";
+
 // 默认导出
 import { CurrentSelectedIdProvider } from "./providers/current-selected-id-provider";
 import { ThemeProvider } from "./providers/theme-provider";
 import { DpiProvider } from "./providers/dpi-provider";
 import { I18nProvider } from "./providers/i18n-provider";
+import { TableIdProvider } from "./providers/table-id-provider";
 
 export default {
   CurrentSelectedIdProvider,
   ThemeProvider,
   DpiProvider,
   I18nProvider,
+  TableIdProvider,
 };

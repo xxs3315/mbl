@@ -1,6 +1,11 @@
 import { StoredTask, TaskStatus, TaskType } from "../types/task";
 
-const TASK_STORAGE_KEY = "mbl-tasks";
+const TASK_STORAGE_KEY_BASE = "mbl-tasks";
+
+// 生成带tableId后缀的存储键
+function getTaskStorageKey(tableId: string): string {
+  return `${TASK_STORAGE_KEY_BASE}-${tableId}`;
+}
 
 /**
  * 验证任务数据是否有效
@@ -28,9 +33,10 @@ function isValidTask(task: any): task is StoredTask {
 /**
  * 获取所有存储的任务
  */
-export function getStoredTasks(): StoredTask[] {
+export function getStoredTasks(tableId: string): StoredTask[] {
   try {
-    const stored = localStorage.getItem(TASK_STORAGE_KEY);
+    const storageKey = getTaskStorageKey(tableId);
+    const stored = localStorage.getItem(storageKey);
     if (!stored) return [];
 
     const parsed = JSON.parse(stored);
@@ -47,9 +53,9 @@ export function getStoredTasks(): StoredTask[] {
 /**
  * 保存任务到localStorage
  */
-export function saveTask(task: StoredTask): void {
+export function saveTask(task: StoredTask, tableId: string): void {
   try {
-    const tasks = getStoredTasks();
+    const tasks = getStoredTasks(tableId);
     const existingIndex = tasks.findIndex((t) => t.taskId === task.taskId);
 
     if (existingIndex >= 0) {
@@ -63,7 +69,8 @@ export function saveTask(task: StoredTask): void {
     // 按创建时间倒序排列（最新的在前）
     tasks.sort((a, b) => b.createdAt - a.createdAt);
 
-    localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks));
+    const storageKey = getTaskStorageKey(tableId);
+    localStorage.setItem(storageKey, JSON.stringify(tasks));
   } catch (error) {
     console.error("保存任务失败:", error);
   }
@@ -75,10 +82,11 @@ export function saveTask(task: StoredTask): void {
 export function updateTaskStatus(
   taskId: string,
   status: TaskStatus,
+  tableId: string,
   queuePosition?: number | null,
 ): void {
   try {
-    const tasks = getStoredTasks();
+    const tasks = getStoredTasks(tableId);
     const taskIndex = tasks.findIndex((t) => t.taskId === taskId);
 
     if (taskIndex >= 0) {
@@ -86,7 +94,8 @@ export function updateTaskStatus(
       if (queuePosition !== undefined) {
         tasks[taskIndex].queuePosition = queuePosition;
       }
-      localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks));
+      const storageKey = getTaskStorageKey(tableId);
+      localStorage.setItem(storageKey, JSON.stringify(tasks));
     }
   } catch (error) {
     console.error("更新任务状态失败:", error);
@@ -96,11 +105,12 @@ export function updateTaskStatus(
 /**
  * 删除任务
  */
-export function removeTask(taskId: string): void {
+export function removeTask(taskId: string, tableId: string): void {
   try {
-    const tasks = getStoredTasks();
+    const tasks = getStoredTasks(tableId);
     const filteredTasks = tasks.filter((t) => t.taskId !== taskId);
-    localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(filteredTasks));
+    const storageKey = getTaskStorageKey(tableId);
+    localStorage.setItem(storageKey, JSON.stringify(filteredTasks));
   } catch (error) {
     console.error("删除任务失败:", error);
   }
@@ -109,9 +119,10 @@ export function removeTask(taskId: string): void {
 /**
  * 清空所有任务
  */
-export function clearAllTasks(): void {
+export function clearAllTasks(tableId: string): void {
   try {
-    localStorage.removeItem(TASK_STORAGE_KEY);
+    const storageKey = getTaskStorageKey(tableId);
+    localStorage.removeItem(storageKey);
   } catch (error) {
     console.error("清空任务失败:", error);
   }
@@ -120,8 +131,8 @@ export function clearAllTasks(): void {
 /**
  * 获取进行中的任务（PENDING 或 PROCESSING）
  */
-export function getActiveTasks(): StoredTask[] {
-  const tasks = getStoredTasks();
+export function getActiveTasks(tableId: string): StoredTask[] {
+  const tasks = getStoredTasks(tableId);
   return tasks.filter(
     (task) =>
       task.status === TaskStatus.PENDING ||
@@ -132,8 +143,8 @@ export function getActiveTasks(): StoredTask[] {
 /**
  * 获取已完成的任务（COMPLETED 或 FAILED）
  */
-export function getCompletedTasks(): StoredTask[] {
-  const tasks = getStoredTasks();
+export function getCompletedTasks(tableId: string): StoredTask[] {
+  const tasks = getStoredTasks(tableId);
   return tasks.filter(
     (task) =>
       task.status === TaskStatus.COMPLETED || task.status === TaskStatus.FAILED,

@@ -25,13 +25,7 @@ import {
   Download,
 } from "lucide-react";
 import { StoredTask, TaskStatus, TaskType } from "../../types/task";
-import {
-  getStoredTasks,
-  removeTask,
-  clearAllTasks,
-  getActiveTasks,
-  getCompletedTasks,
-} from "../../utils/task-storage";
+import { useTaskStorage } from "../../hooks/use-task-storage";
 import { useTaskPolling } from "../../hooks/use-task-polling";
 
 interface TaskCenterProps {
@@ -48,6 +42,15 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
   const [tasks, setTasks] = useState<StoredTask[]>([]);
   const [activeTab, setActiveTab] = useState<"active" | "completed">("active");
   const [refreshing, setRefreshing] = useState(false);
+
+  // 使用任务存储 hook
+  const {
+    getStoredTasks,
+    removeTask,
+    clearAllTasks,
+    getActiveTasks,
+    getCompletedTasks,
+  } = useTaskStorage();
 
   // 使用任务轮询hook
   const { refreshTasks, isPolling, startPolling } = useTaskPolling({

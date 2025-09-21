@@ -19,6 +19,7 @@ import {
   ThemeProvider,
   useCurrentSelectedId,
   useThemeColorsContext,
+  TableIdProvider,
 } from "@xxs3315/mbl-providers";
 import { MacScrollbar } from "mac-scrollbar";
 import "mac-scrollbar/dist/mac-scrollbar.css";
@@ -641,27 +642,29 @@ export const MixBoxLayout = React.memo<{
     return (
       <MantineProvider theme={dynamicTheme}>
         <I18nProvider defaultLocale={locale}>
-          <ContentsStoreContext.Provider value={store}>
-            <DpiProvider>
-              <ThemeProvider>
-                <CurrentSelectedIdProvider>
-                  <DndProvider backend={HTML5Backend}>
-                    <MixBoxLayoutContent
-                      onContentChange={onContentChange}
-                      baseUrl={baseUrl}
-                      imageUploadPath={imageUploadPath}
-                      imageDownloadPath={imageDownloadPath}
-                      pdfGeneratePath={pdfGeneratePath}
-                      pdfDownloadPath={pdfDownloadPath}
-                      taskStatusPath={taskStatusPath}
-                      plugins={plugins}
-                      enablePluginSystem={enablePluginSystem}
-                    />
-                  </DndProvider>
-                </CurrentSelectedIdProvider>
-              </ThemeProvider>
-            </DpiProvider>
-          </ContentsStoreContext.Provider>
+          <TableIdProvider tableId={id}>
+            <ContentsStoreContext.Provider value={store}>
+              <DpiProvider>
+                <ThemeProvider>
+                  <CurrentSelectedIdProvider>
+                    <DndProvider backend={HTML5Backend}>
+                      <MixBoxLayoutContent
+                        onContentChange={onContentChange}
+                        baseUrl={baseUrl}
+                        imageUploadPath={imageUploadPath}
+                        imageDownloadPath={imageDownloadPath}
+                        pdfGeneratePath={pdfGeneratePath}
+                        pdfDownloadPath={pdfDownloadPath}
+                        taskStatusPath={taskStatusPath}
+                        plugins={plugins}
+                        enablePluginSystem={enablePluginSystem}
+                      />
+                    </DndProvider>
+                  </CurrentSelectedIdProvider>
+                </ThemeProvider>
+              </DpiProvider>
+            </ContentsStoreContext.Provider>
+          </TableIdProvider>
         </I18nProvider>
       </MantineProvider>
     );

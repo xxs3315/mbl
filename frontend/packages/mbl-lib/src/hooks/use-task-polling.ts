@@ -1,10 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import { getAxios } from "../utils/axios";
-import {
-  getActiveTasks,
-  updateTaskStatus,
-  getStoredTasks,
-} from "../utils/task-storage";
+import { useTaskStorage } from "./use-task-storage";
 import { TaskStatus, TaskResponse } from "../types/task";
 
 interface UseTaskPollingProps {
@@ -22,6 +18,9 @@ export function useTaskPolling({
 }: UseTaskPollingProps = {}) {
   const intervalRef = useRef<number | null>(null);
   const isPollingRef = useRef(false);
+
+  // 使用任务存储 hook
+  const { getActiveTasks, updateTaskStatus } = useTaskStorage();
 
   // 查询单个任务状态
   const checkTaskStatus = useCallback(
