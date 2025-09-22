@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Paper, Stack } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { Check } from "lucide-react";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 // 导入Ace Editor相关
 import AceEditor from "react-ace";
@@ -16,12 +17,14 @@ import "ace-builds/src-noconflict/ext-language_tools";
 
 // 导入类型和工具
 import { DataBindingConfig, EditorTheme } from "./types";
-import { availableConfigTypes } from "./config-manager";
+import { getAvailableConfigTypes } from "./config-manager";
 import { Header, ConfigItem, EmptyState, DeleteModal } from "./components";
 import { useDataBindingStorage } from "./use-data-binding-storage";
 import { formatJson } from "./json-utils";
 
 const DataBindingPanel: React.FC = () => {
+  const { t } = useI18n();
+
   // 状态管理
   const [configs, setConfigs] = useState<DataBindingConfig[]>([]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -93,8 +96,10 @@ const DataBindingPanel: React.FC = () => {
     }
 
     notifications.show({
-      title: "JSON已格式化",
-      message: "JSON数据已成功格式化",
+      title: t("attributePanel.dataBinding.notifications.jsonFormatted"),
+      message: t(
+        "attributePanel.dataBinding.notifications.jsonFormattedMessage",
+      ),
       color: "green",
       icon: <Check size={16} />,
     });
@@ -105,8 +110,8 @@ const DataBindingPanel: React.FC = () => {
     setEditorTheme(theme);
     saveEditorTheme(theme);
     notifications.show({
-      title: "主题已切换",
-      message: `编辑器主题已切换为 ${theme}`,
+      title: t("attributePanel.dataBinding.notifications.themeChanged"),
+      message: `${t("attributePanel.dataBinding.notifications.themeChangedMessage")} ${theme}`,
       color: "blue",
       icon: <Check size={16} />,
     });
@@ -127,7 +132,7 @@ const DataBindingPanel: React.FC = () => {
         <Box style={{ flexShrink: 0 }}>
           <Header
             editorTheme={editorTheme}
-            availableConfigTypes={availableConfigTypes}
+            availableConfigTypes={getAvailableConfigTypes(t)}
             onThemeChange={handleChangeEditorTheme}
             onAddConfig={handleAddConfig}
           />

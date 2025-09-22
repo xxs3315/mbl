@@ -2,7 +2,43 @@ import { DataBindingConfig, NewConfigType, getStorageKey } from "./types";
 import { formatJson } from "./json-utils";
 
 /**
- * 可用的配置类型
+ * 获取国际化的配置类型
+ */
+export const getAvailableConfigTypes = (
+  t: (key: string) => string,
+): NewConfigType[] => [
+  {
+    id: "static-list",
+    name: t("attributePanel.dataBinding.configTypes.staticList"),
+    description: t("attributePanel.dataBinding.configTypes.staticListDesc"),
+    shape: "list",
+    request: "data",
+  },
+  {
+    id: "static-object",
+    name: t("attributePanel.dataBinding.configTypes.staticObject"),
+    description: t("attributePanel.dataBinding.configTypes.staticObjectDesc"),
+    shape: "object",
+    request: "data",
+  },
+  {
+    id: "remote-list",
+    name: t("attributePanel.dataBinding.configTypes.remoteList"),
+    description: t("attributePanel.dataBinding.configTypes.remoteListDesc"),
+    shape: "list",
+    request: "url",
+  },
+  {
+    id: "remote-object",
+    name: t("attributePanel.dataBinding.configTypes.remoteObject"),
+    description: t("attributePanel.dataBinding.configTypes.remoteObjectDesc"),
+    shape: "object",
+    request: "url",
+  },
+];
+
+/**
+ * 可用的配置类型（已废弃，请使用 getAvailableConfigTypes）
  */
 export const availableConfigTypes: NewConfigType[] = [
   {

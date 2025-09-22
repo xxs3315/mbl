@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import { Plus, ChevronDown, Palette } from "lucide-react";
 import { EditorTheme, NewConfigType } from "../types";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 interface HeaderProps {
   editorTheme: EditorTheme;
@@ -25,20 +26,27 @@ export const Header: React.FC<HeaderProps> = ({
   onThemeChange,
   onAddConfig,
 }) => {
+  const { t } = useI18n();
   return (
     <Flex justify="space-between" align="center" mb="xs">
       <Title order={4} size="sm">
-        数据绑定配置
+        {t("attributePanel.dataBinding.title")}
       </Title>
       <Group gap="xs">
         <Menu shadow="md" width={160} withinPortal={false}>
           <Menu.Target>
-            <ActionIcon size="sm" variant="subtle" title="编辑器主题">
+            <ActionIcon
+              size="sm"
+              variant="subtle"
+              title={t("attributePanel.dataBinding.header.editorTheme")}
+            >
               <Palette size={12} />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Label>编辑器主题</Menu.Label>
+            <Menu.Label>
+              {t("attributePanel.dataBinding.header.editorTheme")}
+            </Menu.Label>
             <Menu.Item
               onClick={() => onThemeChange("github")}
               style={{
@@ -65,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({
                   GitHub
                 </Text>
                 <Text size="xs" c="dimmed">
-                  明亮主题
+                  {t("attributePanel.dataBinding.header.lightTheme")}
                 </Text>
               </Stack>
             </Menu.Item>
@@ -95,7 +103,7 @@ export const Header: React.FC<HeaderProps> = ({
                   Monokai
                 </Text>
                 <Text size="xs" c="dimmed">
-                  暗色主题
+                  {t("attributePanel.dataBinding.header.darkTheme")}
                 </Text>
               </Stack>
             </Menu.Item>
@@ -125,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
                   Tomorrow
                 </Text>
                 <Text size="xs" c="dimmed">
-                  经典主题
+                  {t("attributePanel.dataBinding.header.classicTheme")}
                 </Text>
               </Stack>
             </Menu.Item>
@@ -155,7 +163,7 @@ export const Header: React.FC<HeaderProps> = ({
                   Kuroir
                 </Text>
                 <Text size="xs" c="dimmed">
-                  简洁主题
+                  {t("attributePanel.dataBinding.header.simpleTheme")}
                 </Text>
               </Stack>
             </Menu.Item>
@@ -163,12 +171,18 @@ export const Header: React.FC<HeaderProps> = ({
         </Menu>
         <Menu shadow="md" width={200} withinPortal={false}>
           <Menu.Target>
-            <ActionIcon size="sm" variant="subtle" title="新增配置">
+            <ActionIcon
+              size="sm"
+              variant="subtle"
+              title={t("attributePanel.dataBinding.header.addConfig")}
+            >
               <Plus size={12} />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Label>新增配置</Menu.Label>
+            <Menu.Label>
+              {t("attributePanel.dataBinding.header.addConfig")}
+            </Menu.Label>
             {availableConfigTypes.map((configType) => (
               <Menu.Item
                 key={configType.id}

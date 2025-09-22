@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Stack, Text, Group, Button } from "@mantine/core";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 interface DeleteModalProps {
   opened: boolean;
@@ -12,25 +13,28 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
   onClose,
   onConfirm,
 }) => {
+  const { t } = useI18n();
   return (
     <Modal
       opened={opened}
       onClose={onClose}
-      title="确认删除"
+      title={t("attributePanel.dataBinding.deleteModal.title")}
       centered
       size="sm"
     >
       <Stack gap="xs">
-        <Text size="sm">确定要删除这个数据绑定配置吗？</Text>
+        <Text size="sm">
+          {t("attributePanel.dataBinding.deleteModal.message")}
+        </Text>
         <Text size="xs" c="dimmed">
-          此操作无法撤销，删除后配置将永久丢失。
+          {t("attributePanel.dataBinding.deleteModal.warning")}
         </Text>
         <Group justify="flex-end" gap="xs">
           <Button size="xs" variant="light" onClick={onClose}>
-            取消
+            {t("attributePanel.dataBinding.deleteModal.cancel")}
           </Button>
           <Button size="xs" color="red" onClick={onConfirm}>
-            确认删除
+            {t("attributePanel.dataBinding.deleteModal.confirmDelete")}
           </Button>
         </Group>
       </Stack>

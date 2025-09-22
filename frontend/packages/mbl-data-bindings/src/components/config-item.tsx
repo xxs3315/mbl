@@ -25,6 +25,7 @@ import { formatJson } from "../json-utils";
 import { notifications } from "@mantine/notifications";
 import { Box as DndBox } from "@xxs3315/mbl-dnd";
 import { ItemTypes } from "@xxs3315/mbl-dnd";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 interface ConfigItemProps {
   config: DataBindingConfig;
@@ -41,6 +42,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
   onDelete,
   onFormat,
 }) => {
+  const { t } = useI18n();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalValue, setModalValue] = useState(config.value);
   const editorRef = useRef<any>(null);
@@ -74,22 +76,26 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
       const formatted = formatJson(modalValue);
       if (formatted === modalValue) {
         notifications.show({
-          title: "提示",
-          message: "JSON已经是格式化状态",
+          title: t("attributePanel.dataBinding.notifications.tip"),
+          message: t(
+            "attributePanel.dataBinding.notifications.jsonAlreadyFormatted",
+          ),
           color: "blue",
         });
       } else {
         setModalValue(formatted);
         notifications.show({
-          title: "成功",
-          message: "JSON格式化完成",
+          title: t("attributePanel.dataBinding.notifications.success"),
+          message: t(
+            "attributePanel.dataBinding.notifications.jsonFormatComplete",
+          ),
           color: "green",
         });
       }
     } catch (error) {
       notifications.show({
-        title: "错误",
-        message: "JSON格式错误，无法格式化",
+        title: t("attributePanel.dataBinding.notifications.error"),
+        message: t("attributePanel.dataBinding.notifications.jsonFormatError"),
         color: "red",
       });
     }
@@ -136,14 +142,18 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                 color={config.shape === "list" ? "blue" : "green"}
                 variant="light"
               >
-                {config.shape === "list" ? "数组" : "对象"}
+                {config.shape === "list"
+                  ? t("attributePanel.dataBinding.configItem.array")
+                  : t("attributePanel.dataBinding.configItem.object")}
               </Badge>
               <Badge
                 size="xs"
                 color={config.request === "url" ? "orange" : "purple"}
                 variant="light"
               >
-                {config.request === "url" ? "远程" : "静态"}
+                {config.request === "url"
+                  ? t("attributePanel.dataBinding.configItem.remote")
+                  : t("attributePanel.dataBinding.configItem.static")}
               </Badge>
             </Group>
             <Text size="xs" c="dimmed" mb="xs">
@@ -162,10 +172,14 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
 
         <Group justify="space-between" align="center" mb="0">
           <Text size="xs" fw={500}>
-            {config.request === "url" ? "URL地址" : "JSON数据"}
+            {config.request === "url"
+              ? t("attributePanel.dataBinding.configItem.urlAddress")
+              : t("attributePanel.dataBinding.configItem.jsonData")}
           </Text>
           <Group gap="xs">
-            <Tooltip label="大窗口编辑">
+            <Tooltip
+              label={t("attributePanel.dataBinding.configItem.largeWindowEdit")}
+            >
               <ActionIcon
                 size="sm"
                 variant="subtle"
@@ -176,7 +190,9 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
               </ActionIcon>
             </Tooltip>
             {config.request === "data" && (
-              <Tooltip label="格式化JSON">
+              <Tooltip
+                label={t("attributePanel.dataBinding.configItem.formatJson")}
+              >
                 <ActionIcon
                   size="sm"
                   variant="subtle"
@@ -206,8 +222,8 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
             onChange={(value) => onUpdateValue(config.id, value)}
             placeholder={
               config.request === "url"
-                ? "请输入API地址，如：https://api.example.com/data"
-                : "请输入JSON数据"
+                ? t("attributePanel.dataBinding.configItem.urlPlaceholder")
+                : t("attributePanel.dataBinding.configItem.jsonPlaceholder")
             }
             width="100%"
             height={config.request === "data" ? "100px" : "60px"}
@@ -227,7 +243,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
         {config.request === "data" && fields.length > 0 && (
           <Box>
             <Text size="xs" fw={500} mb="0" mt="xs">
-              可供绑定的字段:
+              {t("attributePanel.dataBinding.configItem.availableFields")}
             </Text>
             <Group gap="xs">
               {fields.map((field) => (
@@ -288,7 +304,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
       <Modal
         opened={modalOpen}
         onClose={handleCancelModal}
-        title={`编辑 ${config.name}`}
+        title={`${t("attributePanel.dataBinding.configItem.edit")} ${config.name}`}
         size="xl"
         centered
         styles={{
@@ -332,8 +348,8 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
               onChange={setModalValue}
               placeholder={
                 config.request === "url"
-                  ? "请输入API地址，如：https://api.example.com/data"
-                  : "请输入JSON数据"
+                  ? t("attributePanel.dataBinding.configItem.urlPlaceholder")
+                  : t("attributePanel.dataBinding.configItem.jsonPlaceholder")
               }
               editorProps={{ $blockScrolling: true }}
               setOptions={{
@@ -359,7 +375,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
           {/* 按钮组 */}
           <Group justify="flex-end" gap="sm">
             <Button variant="subtle" onClick={handleCancelModal} size="sm">
-              取消
+              {t("attributePanel.dataBinding.configItem.cancel")}
             </Button>
             {config.request === "data" && (
               <Button
@@ -369,11 +385,11 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                 size="sm"
                 leftSection={<Code size={14} />}
               >
-                格式化JSON
+                {t("attributePanel.dataBinding.configItem.formatJson")}
               </Button>
             )}
             <Button onClick={handleSaveModal} size="sm">
-              确定
+              {t("attributePanel.dataBinding.configItem.confirm")}
             </Button>
           </Group>
         </Stack>

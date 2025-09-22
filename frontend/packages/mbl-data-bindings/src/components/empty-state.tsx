@@ -1,12 +1,15 @@
 import React from "react";
 import { Alert } from "@mantine/core";
 import { AlertCircle } from "lucide-react";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 export const EmptyState: React.FC = () => {
+  const { t } = useI18n();
+
   return (
     <Alert
       icon={<AlertCircle size={12} />}
-      title="暂无配置"
+      title={t("attributePanel.dataBinding.emptyState.title")}
       variant="light"
       styles={{
         root: { padding: "8px" },
@@ -15,7 +18,7 @@ export const EmptyState: React.FC = () => {
         icon: { alignItems: "flex-start" },
       }}
     >
-      点击右上角的"新增配置"按钮来添加数据绑定配置
+      {t("attributePanel.dataBinding.emptyState.message")}
     </Alert>
   );
 };

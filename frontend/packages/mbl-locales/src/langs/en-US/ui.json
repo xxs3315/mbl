@@ -36,6 +36,66 @@
       "size": "Size",
       "unit": "Unit",
       "selectValue": "Select Value"
+    },
+    "dataBinding": {
+      "title": "Data Binding Configuration",
+      "notifications": {
+        "jsonFormatted": "JSON Formatted",
+        "jsonFormattedMessage": "JSON data has been successfully formatted",
+        "themeChanged": "Theme Changed",
+        "themeChangedMessage": "Editor theme has been changed to",
+        "tip": "Tip",
+        "jsonAlreadyFormatted": "JSON is already formatted",
+        "success": "Success",
+        "jsonFormatComplete": "JSON formatting completed",
+        "error": "Error",
+        "jsonFormatError": "JSON format error, unable to format"
+      },
+      "configTypes": {
+        "staticList": "Static Array Data",
+        "staticListDesc": "Local JSON array data, such as user lists, product lists, etc.",
+        "staticObject": "Static Object Data",
+        "staticObjectDesc": "Local JSON object data, such as user information, configuration information, etc.",
+        "remoteList": "Remote Array Data",
+        "remoteListDesc": "Array data obtained from API, such as lists returned by REST API",
+        "remoteObject": "Remote Object Data",
+        "remoteObjectDesc": "Object data obtained from API, such as single resource returned by REST API"
+      },
+      "header": {
+        "editorTheme": "Editor Theme",
+        "addConfig": "Add Configuration",
+        "lightTheme": "Light Theme",
+        "darkTheme": "Dark Theme",
+        "classicTheme": "Classic Theme",
+        "simpleTheme": "Simple Theme"
+      },
+      "configItem": {
+        "array": "Array",
+        "object": "Object",
+        "remote": "Remote",
+        "static": "Static",
+        "urlAddress": "URL Address",
+        "jsonData": "JSON Data",
+        "largeWindowEdit": "Large Window Edit",
+        "formatJson": "Format JSON",
+        "urlPlaceholder": "Please enter API address, e.g.: https://api.example.com/data",
+        "jsonPlaceholder": "Please enter JSON data",
+        "availableFields": "Available Fields:",
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+      },
+      "deleteModal": {
+        "title": "Confirm Delete",
+        "message": "Are you sure you want to delete this data binding configuration?",
+        "warning": "This operation cannot be undone, the configuration will be permanently lost after deletion.",
+        "cancel": "Cancel",
+        "confirmDelete": "Confirm Delete"
+      },
+      "emptyState": {
+        "title": "No Configuration",
+        "message": "Click the \"Add Configuration\" button in the upper right corner to add data binding configuration"
+      }
     }
   }
 }
