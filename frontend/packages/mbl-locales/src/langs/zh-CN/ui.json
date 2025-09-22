@@ -24,6 +24,18 @@
       "leftAlign": "左对齐",
       "centerAlign": "居中",
       "rightAlign": "右对齐"
+    },
+    "table": {
+      "title": "表格属性",
+      "columnDistribution": "列分布设置",
+      "topPadding": "上内边距",
+      "rightPadding": "右内边距",
+      "bottomPadding": "下内边距",
+      "leftPadding": "左内边距",
+      "columnLabel": "列",
+      "size": "大小",
+      "unit": "单位",
+      "selectValue": "选择值"
     }
   }
 }

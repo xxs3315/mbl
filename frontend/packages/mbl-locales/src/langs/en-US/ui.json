@@ -24,6 +24,18 @@
       "leftAlign": "Left Align",
       "centerAlign": "Center",
       "rightAlign": "Right Align"
+    },
+    "table": {
+      "title": "Table Properties",
+      "columnDistribution": "Column Distribution Settings",
+      "topPadding": "Top Padding",
+      "rightPadding": "Right Padding",
+      "bottomPadding": "Bottom Padding",
+      "leftPadding": "Left Padding",
+      "columnLabel": "Column",
+      "size": "Size",
+      "unit": "Unit",
+      "selectValue": "Select Value"
     }
   }
 }

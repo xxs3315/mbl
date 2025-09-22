@@ -10,6 +10,7 @@ import {
   Select,
   Divider,
 } from "@mantine/core";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 interface AttrPanelProps {
   props: {
@@ -40,6 +41,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
   props,
   onPropsChange,
 }) => {
+  const { t } = useI18n();
   const handlePaddingChange = (
     field: "pTop" | "pRight" | "pBottom" | "pLeft",
     value: number,
@@ -110,7 +112,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
     <Stack gap={0} style={{ padding: 0 }}>
       {/* 表格属性标题 */}
       <Title order={4} style={{ marginBottom: 0 }}>
-        表格属性
+        {t("attributePanel.table.title")}
       </Title>
 
       {/* 分隔线 */}
@@ -120,7 +122,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
       <Grid gutter="xs">
         <Grid.Col span={6}>
           <NumberInput
-            label="上内边距"
+            label={t("attributePanel.table.topPadding")}
             placeholder="0"
             value={props.attrs.pTop}
             onChange={(value) =>
@@ -133,7 +135,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="右内边距"
+            label={t("attributePanel.table.rightPadding")}
             placeholder="0"
             value={props.attrs.pRight}
             onChange={(value) =>
@@ -146,7 +148,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="下内边距"
+            label={t("attributePanel.table.bottomPadding")}
             placeholder="0"
             value={props.attrs.pBottom}
             onChange={(value) =>
@@ -159,7 +161,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="左内边距"
+            label={t("attributePanel.table.leftPadding")}
             placeholder="0"
             value={props.attrs.pLeft}
             onChange={(value) =>
@@ -177,7 +179,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
 
       {/* 列分布编辑 */}
       <Title order={4} style={{ marginBottom: 0 }}>
-        列分布设置
+        {t("attributePanel.table.columnDistribution")}
       </Title>
 
       {/* 分隔线 */}
@@ -197,8 +199,8 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
                 <Grid.Col span={8}>
                   <Text size="sm" fw={500} mb={2} mt={2}>
                     {column.value && column.value.trim() !== ""
-                      ? `列: ${column.value}`
-                      : `列: ${index + 1}`}
+                      ? `${t("attributePanel.table.columnLabel")}: ${column.value}`
+                      : `${t("attributePanel.table.columnLabel")}: ${index + 1}`}
                   </Text>
                 </Grid.Col>
                 <Grid.Col span={4}>
@@ -228,7 +230,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
             <Grid.Col span={8}>
               <NumberInput
                 disabled={column.wildStar}
-                label="大小"
+                label={t("attributePanel.table.size")}
                 size="xs"
                 value={column.flexValue || 100}
                 onChange={(value) => {
@@ -243,8 +245,8 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
                 disabled={column.wildStar}
                 allowDeselect={false}
                 size="xs"
-                label="单位"
-                placeholder="选择值"
+                label={t("attributePanel.table.unit")}
+                placeholder={t("attributePanel.table.selectValue")}
                 data={[
                   { value: "%", label: "%" },
                   { value: "px", label: "pt" },

@@ -194,6 +194,9 @@ importers:
       '@xxs3315/mbl-dnd':
         specifier: workspace:*
         version: link:../mbl-dnd
+      '@xxs3315/mbl-locales':
+        specifier: workspace:*
+        version: link:../mbl-locales
       '@xxs3315/mbl-providers':
         specifier: workspace:*
         version: link:../mbl-providers
@@ -221,6 +224,9 @@ importers:
       react-dom:
         specifier: ~19.1.0
         version: 19.1.0(react@19.1.0)
+      react-i18next:
+        specifier: ^15.7.0
+        version: 15.7.3(i18next@25.5.2(typescript@5.9.2))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.2)
     devDependencies:
       '@types/json-schema-generator':
         specifier: ^2.0.3
@@ -408,6 +414,9 @@ importers:
       '@xxs3315/mbl-dnd':
         specifier: workspace:*
         version: link:../mbl-dnd
+      '@xxs3315/mbl-locales':
+        specifier: workspace:*
+        version: link:../mbl-locales
       '@xxs3315/mbl-providers':
         specifier: workspace:*
         version: link:../mbl-providers
@@ -420,6 +429,9 @@ importers:
       react-dom:
         specifier: ~19.1.0
         version: 19.1.0(react@19.1.0)
+      react-i18next:
+        specifier: ^15.7.0
+        version: 15.7.3(i18next@25.5.2(typescript@5.9.2))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.2)
     devDependencies:
       '@types/react':
         specifier: ~19.1.0
