@@ -2,8 +2,10 @@ import React from "react";
 import { FC, memo } from "react";
 import { Divider, NumberInput, Title, Grid } from "@mantine/core";
 import { useContentsStoreContext } from "../../store/store";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 export const PageFooterRoot: FC = memo(function PageFooterRoot() {
+  const { t } = useI18n();
   // 使用细粒度订阅，只订阅需要的状态
   const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
   const pages = useContentsStoreContext((s) => s.pages);
@@ -19,12 +21,16 @@ export const PageFooterRoot: FC = memo(function PageFooterRoot() {
 
   return (
     <>
-      <Title order={4}>页面页脚设置</Title>
+      <Title order={4}>
+        {t("attributePanel.mblLib.attributePanel.pageFooter.title")}
+      </Title>
       <Divider my="xs" />
       <Grid gutter="xs" mt="xs">
         <Grid.Col span={6}>
           <NumberInput
-            label="页面页脚左边距"
+            label={t(
+              "attributePanel.mblLib.attributePanel.pageFooter.leftMargin",
+            )}
             size="xs"
             value={currentPageFooterMLeft}
             onChange={(value) => {
@@ -41,7 +47,9 @@ export const PageFooterRoot: FC = memo(function PageFooterRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="页面页脚右边距"
+            label={t(
+              "attributePanel.mblLib.attributePanel.pageFooter.rightMargin",
+            )}
             size="xs"
             value={currentPageFooterMRight}
             onChange={(value) => {
@@ -58,7 +66,9 @@ export const PageFooterRoot: FC = memo(function PageFooterRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="页面页脚上边距"
+            label={t(
+              "attributePanel.mblLib.attributePanel.pageFooter.topMargin",
+            )}
             size="xs"
             value={currentPageFooterMTop}
             onChange={(value) => {
@@ -75,7 +85,9 @@ export const PageFooterRoot: FC = memo(function PageFooterRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="页面页脚下边距"
+            label={t(
+              "attributePanel.mblLib.attributePanel.pageFooter.bottomMargin",
+            )}
             size="xs"
             value={currentPageFooterMBottom}
             onChange={(value) => {

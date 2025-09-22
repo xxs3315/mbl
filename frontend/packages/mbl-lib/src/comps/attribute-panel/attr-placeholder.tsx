@@ -1,6 +1,6 @@
 import React, { FC, memo } from "react";
 import { useContentsStoreContext } from "../../store/store";
-import { useCurrentSelectedId } from "@xxs3315/mbl-providers";
+import { useCurrentSelectedId, useI18n } from "@xxs3315/mbl-providers";
 import { useSelectedItem } from "../../hooks/use-selected-item";
 import {
   Divider,
@@ -17,6 +17,7 @@ import { updateSelectedItemPropDirect } from "../../utils/content-updaters";
 import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
 
 export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
+  const { t } = useI18n();
   const { currentSelectedId } = useCurrentSelectedId();
   const { item: currentSelectedItem, position: currentSelectedItemPosition } =
     useSelectedItem();
@@ -51,14 +52,16 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
 
   return (
     <>
-      <Title order={4}>占位属性</Title>
+      <Title order={4}>
+        {t("attributePanel.mblLib.attributePanel.placeholder.title")}
+      </Title>
       <Divider my="xs" />
 
       <Grid gutter="xs" mt="xs">
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="宽度"
+            label={t("attributePanel.mblLib.common.width")}
             size="xs"
             value={currentSelectedItem?.width ?? 0}
             onChange={(value) => {
@@ -82,7 +85,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="高度"
+            label={t("attributePanel.mblLib.common.height")}
             size="xs"
             value={currentSelectedItem?.height ?? 0}
             onChange={(value) => {
@@ -109,7 +112,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="左内边距"
+            label={t("attributePanel.mblLib.common.leftPadding")}
             size="xs"
             value={currentSelectedItem?.pLeft ?? 0}
             onChange={(value) => {
@@ -133,7 +136,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="右内边距"
+            label={t("attributePanel.mblLib.common.rightPadding")}
             size="xs"
             value={currentSelectedItem?.pRight ?? 0}
             onChange={(value) => {
@@ -157,7 +160,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="上内边距"
+            label={t("attributePanel.mblLib.common.topPadding")}
             size="xs"
             value={currentSelectedItem?.pTop ?? 0}
             onChange={(value) => {
@@ -181,7 +184,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="下内边距"
+            label={t("attributePanel.mblLib.common.bottomPadding")}
             size="xs"
             value={currentSelectedItem?.pBottom ?? 0}
             onChange={(value) => {
@@ -205,7 +208,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
       </Grid>
 
       <ColorInput
-        label="背景颜色"
+        label={t("attributePanel.mblLib.common.backgroundColor")}
         mt="xs"
         size="xs"
         format="hex"
@@ -247,7 +250,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
 
       <div>
         <Text size="xs" fw={500} mb={2} mt="xs">
-          水平对齐
+          {t("attributePanel.mblLib.common.horizontalAlign")}
         </Text>
         <Stack align="center">
           <SegmentedControl
@@ -277,7 +280,9 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>左对齐</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.mblLib.common.leftAlign")}
+                    </VisuallyHidden>
                   </>
                 ),
               },
@@ -291,7 +296,9 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>居中</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.mblLib.common.centerAlign")}
+                    </VisuallyHidden>
                   </>
                 ),
               },
@@ -305,7 +312,9 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>右对齐</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.mblLib.common.rightAlign")}
+                    </VisuallyHidden>
                   </>
                 ),
               },

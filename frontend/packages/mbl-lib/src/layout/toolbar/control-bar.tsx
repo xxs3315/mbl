@@ -16,6 +16,7 @@ import {
   Eye,
   ScanEye,
 } from "lucide-react";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 interface ControlBarProps {
   showPageSelector: boolean;
@@ -57,6 +58,8 @@ export const ControlBar = React.memo<ControlBarProps>(
     plugins,
     enablePluginSystem = false,
   }) => {
+    const { t } = useI18n();
+
     return (
       <div
         className={css({
@@ -303,7 +306,11 @@ export const ControlBar = React.memo<ControlBarProps>(
               flexShrink: "0",
             })}
           >
-            <Tooltip label="预览" position="bottom" withArrow>
+            <Tooltip
+              label={t("attributePanel.mblLib.controlBar.preview")}
+              position="bottom"
+              withArrow
+            >
               <ActionIcon
                 variant="subtle"
                 size="lg"
@@ -325,7 +332,11 @@ export const ControlBar = React.memo<ControlBarProps>(
                 {isPreviewing ? <Loader size={16} /> : <Eye size={16} />}
               </ActionIcon>
             </Tooltip>
-            <Tooltip label="预览全部" position="bottom" withArrow>
+            <Tooltip
+              label={t("attributePanel.mblLib.controlBar.previewAll")}
+              position="bottom"
+              withArrow
+            >
               <ActionIcon
                 variant="subtle"
                 size="lg"

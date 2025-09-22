@@ -23,8 +23,14 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       value={locale}
       onChange={handleLanguageChange}
       data={[
-        { label: "中文", value: "zh-CN" },
-        { label: "English", value: "en-US" },
+        {
+          label: t("attributePanel.mblLib.languageSwitcher.chinese"),
+          value: "zh-CN",
+        },
+        {
+          label: t("attributePanel.mblLib.languageSwitcher.english"),
+          value: "en-US",
+        },
       ]}
       size={size}
       className={className}

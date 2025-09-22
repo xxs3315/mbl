@@ -3,6 +3,7 @@ import { Box } from "@xxs3315/mbl-dnd";
 import { toolPanelComps } from "./data";
 import React from "react";
 import { css } from "../../styled-system/css";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 interface ToolPanelCompProp {
   id: string;
@@ -83,6 +84,8 @@ function AccordionDataBindingLabel({
 }
 
 const ToolPanel = () => {
+  const { t } = useI18n();
+
   const controlItems = toolPanelComps.map((panel, index) => {
     return (
       <Accordion.Item value={panel.id} key={panel.id}>
@@ -124,8 +127,12 @@ const ToolPanel = () => {
   return (
     <Tabs defaultValue="components">
       <Tabs.List>
-        <Tabs.Tab value="components">{"组件"}</Tabs.Tab>
-        <Tabs.Tab value="data-binding">{"数据"}</Tabs.Tab>
+        <Tabs.Tab value="components">
+          {t("attributePanel.mblLib.toolPanel.components")}
+        </Tabs.Tab>
+        <Tabs.Tab value="data-binding">
+          {t("attributePanel.mblLib.toolPanel.data")}
+        </Tabs.Tab>
         {/* <Tabs.Tab value="theme">{"theme.settings"}</Tabs.Tab> */}
       </Tabs.List>
       <Tabs.Panel value="components">{controlsTab()}</Tabs.Panel>

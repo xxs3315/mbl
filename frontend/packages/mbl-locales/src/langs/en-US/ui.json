@@ -96,6 +96,149 @@
         "title": "No Configuration",
         "message": "Click the \"Add Configuration\" button in the upper right corner to add data binding configuration"
       }
+    },
+    "mblLib": {
+      "common": {
+        "notAvailable": "------ n/a ------",
+        "column": "Column",
+        "size": "Size",
+        "unit": "Unit",
+        "selectValue": "Select Value",
+        "width": "Width",
+        "height": "Height",
+        "leftPadding": "Left Padding",
+        "rightPadding": "Right Padding",
+        "topPadding": "Top Padding",
+        "bottomPadding": "Bottom Padding",
+        "backgroundColor": "Background Color",
+        "horizontalAlign": "Horizontal Alignment",
+        "leftAlign": "Left Align",
+        "centerAlign": "Center",
+        "rightAlign": "Right Align",
+        "top": "Top",
+        "middle": "Middle",
+        "bottom": "Bottom",
+        "portrait": "Portrait",
+        "landscape": "Landscape",
+        "page": "Page",
+        "currentPage": "Current Page",
+        "pageHeader": "Page Header",
+        "pageBody": "Page Body",
+        "pageFooter": "Page Footer"
+      },
+      "attributePanel": {
+        "hbox": {
+          "title": "Horizontal Container Properties",
+          "verticalAlign": "Vertical Alignment"
+        },
+        "image": {
+          "title": "Image Properties",
+          "preview": "Image Preview",
+          "upload": "Upload Image",
+          "originalWidth": "Original Width",
+          "originalHeight": "Original Height",
+          "hyperlink": "Hyperlink",
+          "hyperlinkAddress": "Hyperlink Address",
+          "hyperlinkPlaceholder": "Please enter hyperlink address",
+          "imageWidth": "Image Width",
+          "imageHeight": "Image Height"
+        },
+        "placeholder": {
+          "title": "Placeholder Properties"
+        },
+        "pageBody": {
+          "title": "Page Body Settings",
+          "leftMargin": "Page Body Left Margin",
+          "rightMargin": "Page Body Right Margin",
+          "topMargin": "Page Body Top Margin",
+          "bottomMargin": "Page Body Bottom Margin"
+        },
+        "pageFooter": {
+          "title": "Page Footer Settings",
+          "leftMargin": "Page Footer Left Margin",
+          "rightMargin": "Page Footer Right Margin",
+          "topMargin": "Page Footer Top Margin",
+          "bottomMargin": "Page Footer Bottom Margin"
+        },
+        "pageHeader": {
+          "title": "Page Header Settings",
+          "leftMargin": "Page Header Left Margin",
+          "rightMargin": "Page Header Right Margin",
+          "topMargin": "Page Header Top Margin",
+          "bottomMargin": "Page Header Bottom Margin"
+        },
+        "pageRoot": {
+          "title": "Page Root Settings",
+          "pageName": "Page Name",
+          "pageNamePlaceholder": "Please enter page name",
+          "pageType": "Page Type",
+          "pageTypePlaceholder": "Please select page type",
+          "pageOrientation": "Page Orientation",
+          "pageOrientationPlaceholder": "Please select page orientation"
+        }
+      },
+      "languageSwitcher": {
+        "chinese": "中文",
+        "english": "English"
+      },
+      "taskCenter": {
+        "title": "Task List",
+        "active": "Active",
+        "completed": "Completed",
+        "status": {
+          "pending": "Pending",
+          "processing": "Processing",
+          "completed": "Completed",
+          "failed": "Failed",
+          "unknown": "Unknown"
+        },
+        "type": {
+          "singlePreview": "Single Page Preview",
+          "batchPreview": "Batch Preview"
+        },
+        "time": {
+          "justNow": "Just now",
+          "minutesAgo": "minutes ago",
+          "hoursAgo": "hours ago"
+        },
+        "emptyState": {
+          "title": "No Tasks",
+          "noActiveTasks": "No active tasks",
+          "noCompletedTasks": "No completed tasks"
+        },
+        "labels": {
+          "taskId": "Task ID",
+          "queuePosition": "Queue Position"
+        },
+        "actions": {
+          "downloadPdf": "Download PDF",
+          "deleteTask": "Delete Task",
+          "autoRefreshing": "Auto Refreshing",
+          "manualRefresh": "Manual Refresh",
+          "clearCompleted": "Clear Completed"
+        }
+      },
+      "toolPanel": {
+        "components": "Components",
+        "data": "Data"
+      },
+      "sidebars": {
+        "leftSidebar": {
+          "pageInfo": "Page Info",
+          "dataBinding": "Data Binding"
+        },
+        "pageSelector": {
+          "title": "Page List"
+        },
+        "rightSidebar": {
+          "attributeEdit": "Attribute Edit",
+          "taskCenter": "Task Center"
+        }
+      },
+      "controlBar": {
+        "preview": "Preview",
+        "previewAll": "Preview All"
+      }
     }
   }
 }

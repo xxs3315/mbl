@@ -4,6 +4,7 @@ import { ActionIcon, Tabs } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
 import { PageStructureTree } from "../tree/page-structure-tree";
 import { DataBindingPanel } from "@xxs3315/mbl-data-bindings";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 interface LeftSidebarProps {
   showLeftSidebar: boolean;
@@ -29,6 +30,7 @@ export const LeftSidebar = React.memo<LeftSidebarProps>(
     onItemClick,
     onClose,
   }) => {
+    const { t } = useI18n();
     const [activeTab, setActiveTab] = useState<string>("page-info");
     return (
       <div
@@ -105,7 +107,7 @@ export const LeftSidebar = React.memo<LeftSidebarProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  页面信息
+                  {t("attributePanel.mblLib.sidebars.leftSidebar.pageInfo")}
                 </Tabs.Tab>
                 <Tabs.Tab
                   value="data-binding"
@@ -116,7 +118,7 @@ export const LeftSidebar = React.memo<LeftSidebarProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  数据绑定
+                  {t("attributePanel.mblLib.sidebars.leftSidebar.dataBinding")}
                 </Tabs.Tab>
               </Tabs.List>
             </Tabs>

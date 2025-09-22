@@ -2,8 +2,10 @@ import { FC, memo } from "react";
 import { useContentsStoreContext } from "../../store/store";
 import { Divider, NumberInput, Title, Grid } from "@mantine/core";
 import React from "react";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 export const PageBodyRoot: FC = memo(function PageBodyRoot() {
+  const { t } = useI18n();
   // 使用细粒度订阅，只订阅需要的状态
   const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
   const pages = useContentsStoreContext((s) => s.pages);
@@ -19,13 +21,17 @@ export const PageBodyRoot: FC = memo(function PageBodyRoot() {
 
   return (
     <>
-      <Title order={4}>页面主体设置</Title>
+      <Title order={4}>
+        {t("attributePanel.mblLib.attributePanel.pageBody.title")}
+      </Title>
       <Divider my="xs" />
 
       <Grid gutter="xs" mt="xs">
         <Grid.Col span={6}>
           <NumberInput
-            label="页面主体左边距"
+            label={t(
+              "attributePanel.mblLib.attributePanel.pageBody.leftMargin",
+            )}
             size="xs"
             value={currentPageBodyMLeft}
             onChange={(value) => {
@@ -42,7 +48,9 @@ export const PageBodyRoot: FC = memo(function PageBodyRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="页面主体右边距"
+            label={t(
+              "attributePanel.mblLib.attributePanel.pageBody.rightMargin",
+            )}
             size="xs"
             value={currentPageBodyMRight}
             onChange={(value) => {
@@ -59,7 +67,7 @@ export const PageBodyRoot: FC = memo(function PageBodyRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="页面主体上边距"
+            label={t("attributePanel.mblLib.attributePanel.pageBody.topMargin")}
             size="xs"
             value={currentPageBodyMTop}
             onChange={(value) => {
@@ -76,7 +84,9 @@ export const PageBodyRoot: FC = memo(function PageBodyRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="页面主体下边距"
+            label={t(
+              "attributePanel.mblLib.attributePanel.pageBody.bottomMargin",
+            )}
             size="xs"
             value={currentPageBodyMBottom}
             onChange={(value) => {

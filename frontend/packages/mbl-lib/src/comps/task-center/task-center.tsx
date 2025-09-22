@@ -28,6 +28,7 @@ import {
 import { StoredTask, TaskStatus, TaskType } from "../../types/task";
 import { useTaskStorage } from "../../hooks/use-task-storage";
 import { useTaskPolling } from "../../hooks/use-task-polling";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 interface TaskCenterProps {
   baseUrl?: string;
@@ -40,6 +41,7 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
   taskStatusPath = "/api/queue/status",
   pdfDownloadPath = "/api/pdf/download",
 }) => {
+  const { t } = useI18n();
   const [tasks, setTasks] = useState<StoredTask[]>([]);
   const [activeTab, setActiveTab] = useState<"active" | "completed">("active");
   const [refreshing, setRefreshing] = useState(false);
@@ -135,23 +137,24 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
 
   // 获取状态文本
   const getStatusText = (status: TaskStatus | undefined | string) => {
-    if (!status || typeof status !== "string") return "未知";
+    if (!status || typeof status !== "string")
+      return t("attributePanel.mblLib.taskCenter.status.unknown");
 
     switch (status) {
       case TaskStatus.PENDING:
       case "PENDING":
-        return "等待中";
+        return t("attributePanel.mblLib.taskCenter.status.pending");
       case TaskStatus.PROCESSING:
       case "PROCESSING":
-        return "处理中";
+        return t("attributePanel.mblLib.taskCenter.status.processing");
       case TaskStatus.COMPLETED:
       case "COMPLETED":
-        return "已完成";
+        return t("attributePanel.mblLib.taskCenter.status.completed");
       case TaskStatus.FAILED:
       case "FAILED":
-        return "失败";
+        return t("attributePanel.mblLib.taskCenter.status.failed");
       default:
-        return "未知";
+        return t("attributePanel.mblLib.taskCenter.status.unknown");
     }
   };
 
@@ -194,10 +197,11 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
 
   // 获取任务类型文本
   const getTaskTypeText = (type: TaskType | undefined | string) => {
-    if (!type || typeof type !== "string") return "未知类型";
+    if (!type || typeof type !== "string")
+      return t("attributePanel.mblLib.taskCenter.type.unknown");
     return type === TaskType.SINGLE || type === "single"
-      ? "单页预览"
-      : "批量预览";
+      ? t("attributePanel.mblLib.taskCenter.type.singlePreview")
+      : t("attributePanel.mblLib.taskCenter.type.batchPreview");
   };
 
   // 格式化时间
@@ -208,13 +212,13 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
 
     if (diff < 60000) {
       // 1分钟内
-      return "刚刚";
+      return t("attributePanel.mblLib.taskCenter.time.justNow");
     } else if (diff < 3600000) {
       // 1小时内
-      return `${Math.floor(diff / 60000)}分钟前`;
+      return `${Math.floor(diff / 60000)}${t("attributePanel.mblLib.taskCenter.time.minutesAgo")}`;
     } else if (diff < 86400000) {
       // 1天内
-      return `${Math.floor(diff / 3600000)}小时前`;
+      return `${Math.floor(diff / 3600000)}${t("attributePanel.mblLib.taskCenter.time.hoursAgo")}`;
     } else {
       return date.toLocaleDateString();
     }
@@ -303,10 +307,16 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
       >
         <Group justify="space-between" align="center" mb="xs">
           <Title order={4} size="sm">
-            任务列表
+            {t("attributePanel.mblLib.taskCenter.title")}
           </Title>
           <Group gap="xs">
-            <Tooltip label={isPolling ? "正在自动刷新" : "手动刷新"}>
+            <Tooltip
+              label={
+                isPolling
+                  ? t("attributePanel.mblLib.taskCenter.actions.autoRefreshing")
+                  : t("attributePanel.mblLib.taskCenter.actions.manualRefresh")
+              }
+            >
               <ActionIcon
                 variant="subtle"
                 size="sm"
@@ -318,7 +328,11 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
               </ActionIcon>
             </Tooltip>
             {activeTab === "completed" && completedTasks.length > 0 && (
-              <Tooltip label="清空已完成">
+              <Tooltip
+                label={t(
+                  "attributePanel.mblLib.taskCenter.actions.clearCompleted",
+                )}
+              >
                 <ActionIcon
                   variant="subtle"
                   size="sm"
@@ -339,14 +353,16 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
             size="xs"
             onClick={() => setActiveTab("active")}
           >
-            进行中 ({activeTasks.length})
+            {t("attributePanel.mblLib.taskCenter.active")} ({activeTasks.length}
+            )
           </Button>
           <Button
             variant={activeTab === "completed" ? "filled" : "subtle"}
             size="xs"
             onClick={() => setActiveTab("completed")}
           >
-            已完成 ({completedTasks.length})
+            {t("attributePanel.mblLib.taskCenter.completed")} (
+            {completedTasks.length})
           </Button>
         </Group>
       </div>
@@ -363,7 +379,7 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
         {currentTasks.length === 0 ? (
           <Alert
             icon={<AlertCircle size={12} />}
-            title="暂无任务"
+            title={t("attributePanel.mblLib.taskCenter.emptyState.title")}
             variant="light"
             styles={{
               root: { padding: "8px" },
@@ -372,7 +388,11 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
               icon: { alignItems: "flex-start" },
             }}
           >
-            {activeTab === "active" ? "暂无进行中的任务" : "暂无已完成的任务"}
+            {activeTab === "active"
+              ? t("attributePanel.mblLib.taskCenter.emptyState.noActiveTasks")
+              : t(
+                  "attributePanel.mblLib.taskCenter.emptyState.noCompletedTasks",
+                )}
           </Alert>
         ) : (
           <Stack gap="xs">
@@ -413,13 +433,17 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
                   </Group>
 
                   <Text size="xs" mb="xs">
-                    任务ID: {task.taskId}
+                    {t("attributePanel.mblLib.taskCenter.labels.taskId")}:{" "}
+                    {task.taskId}
                   </Text>
 
                   {task.queuePosition !== null &&
                     task.queuePosition !== undefined && (
                       <Text size="xs" mb="xs">
-                        队列位置: {task.queuePosition}
+                        {t(
+                          "attributePanel.mblLib.taskCenter.labels.queuePosition",
+                        )}
+                        : {task.queuePosition}
                       </Text>
                     )}
 
@@ -429,7 +453,11 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
                       {/* 只有已完成的任务才显示下载按钮 */}
                       {(task.status === TaskStatus.COMPLETED ||
                         task.status === "COMPLETED") && (
-                        <Tooltip label="下载PDF">
+                        <Tooltip
+                          label={t(
+                            "attributePanel.mblLib.taskCenter.actions.downloadPdf",
+                          )}
+                        >
                           <ActionIcon
                             variant="subtle"
                             size="sm"
@@ -440,7 +468,11 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
                           </ActionIcon>
                         </Tooltip>
                       )}
-                      <Tooltip label="删除任务">
+                      <Tooltip
+                        label={t(
+                          "attributePanel.mblLib.taskCenter.actions.deleteTask",
+                        )}
+                      >
                         <ActionIcon
                           variant="subtle"
                           size="sm"

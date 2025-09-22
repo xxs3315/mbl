@@ -2,7 +2,7 @@ import React from "react";
 import { css } from "../../styled-system/css";
 import { ActionIcon, Tabs } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
-import { useThemeColorsContext } from "@xxs3315/mbl-providers";
+import { useThemeColorsContext, useI18n } from "@xxs3315/mbl-providers";
 
 interface PageSelectorProps {
   showPageSelector: boolean;
@@ -22,6 +22,7 @@ export const PageSelector = React.memo<PageSelectorProps>(
     onClose,
     onPageSelect,
   }) => {
+    const { t } = useI18n();
     const colors = useThemeColorsContext();
 
     return (
@@ -97,7 +98,7 @@ export const PageSelector = React.memo<PageSelectorProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  页面列表
+                  {t("attributePanel.mblLib.sidebars.pageSelector.title")}
                 </Tabs.Tab>
               </Tabs.List>
             </Tabs>
@@ -181,7 +182,8 @@ export const PageSelector = React.memo<PageSelectorProps>(
                       marginBottom: "4px",
                     })}
                   >
-                    {page.name || `页面 ${index + 1}`}
+                    {page.name ||
+                      `${t("attributePanel.mblLib.common.page")} ${index + 1}`}
                   </div>
                   <div
                     className={css({
@@ -189,8 +191,10 @@ export const PageSelector = React.memo<PageSelectorProps>(
                       color: "gray.500",
                     })}
                   >
-                    {page.orientation === "portrait" ? "纵向" : "横向"} ·{" "}
-                    {page.rectangle}
+                    {page.orientation === "portrait"
+                      ? t("attributePanel.mblLib.common.portrait")
+                      : t("attributePanel.mblLib.common.landscape")}{" "}
+                    · {page.rectangle}
                   </div>
                 </div>
               ))}

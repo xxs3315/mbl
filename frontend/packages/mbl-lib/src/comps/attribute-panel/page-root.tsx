@@ -4,8 +4,10 @@ import { Divider, Select, Title } from "@mantine/core";
 import { useContentsStoreContext } from "../../store/store";
 import type { PageRectangle, PageOrientation } from "@xxs3315/mbl-typings";
 import { DebouncedTextarea } from "../../utils/debounced-textarea";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 export const PageRoot: FC = memo(function PageRoot() {
+  const { t } = useI18n();
   // 使用细粒度订阅，只订阅需要的状态
   const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
   const pages = useContentsStoreContext((s) => s.pages);
@@ -24,13 +26,17 @@ export const PageRoot: FC = memo(function PageRoot() {
 
   return (
     <>
-      <Title order={4}>页面根设置</Title>
+      <Title order={4}>
+        {t("attributePanel.mblLib.attributePanel.pageRoot.title")}
+      </Title>
       <Divider my="xs" />
       <DebouncedTextarea
         size="xs"
         radius="xs"
-        label="页面名称"
-        placeholder="请输入页面名称"
+        label={t("attributePanel.mblLib.attributePanel.pageRoot.pageName")}
+        placeholder={t(
+          "attributePanel.mblLib.attributePanel.pageRoot.pageNamePlaceholder",
+        )}
         autosize
         minRows={2}
         maxRows={6}
@@ -46,8 +52,10 @@ export const PageRoot: FC = memo(function PageRoot() {
       <Select
         mt="xs"
         size="xs"
-        label="页面类型"
-        placeholder="请选择页面类型"
+        label={t("attributePanel.mblLib.attributePanel.pageRoot.pageType")}
+        placeholder={t(
+          "attributePanel.mblLib.attributePanel.pageRoot.pageTypePlaceholder",
+        )}
         allowDeselect={false}
         data={[
           { value: "LETTER", label: "LETTER" },
@@ -71,12 +79,22 @@ export const PageRoot: FC = memo(function PageRoot() {
       <Select
         mt="xs"
         size="xs"
-        label="页面方向"
-        placeholder="请选择页面方向"
+        label={t(
+          "attributePanel.mblLib.attributePanel.pageRoot.pageOrientation",
+        )}
+        placeholder={t(
+          "attributePanel.mblLib.attributePanel.pageRoot.pageOrientationPlaceholder",
+        )}
         allowDeselect={false}
         data={[
-          { value: "portrait", label: "纵向" },
-          { value: "landscape", label: "横向" },
+          {
+            value: "portrait",
+            label: t("attributePanel.mblLib.common.portrait"),
+          },
+          {
+            value: "landscape",
+            label: t("attributePanel.mblLib.common.landscape"),
+          },
         ]}
         value={currentPageOrientation}
         onChange={(value) => {

@@ -14,11 +14,12 @@ import {
 } from "lucide-react";
 import { useSelectedItem } from "../../hooks/use-selected-item";
 import { useContentsStoreContext } from "../../store/store";
-import { useCurrentSelectedId } from "@xxs3315/mbl-providers";
+import { useCurrentSelectedId, useI18n } from "@xxs3315/mbl-providers";
 import { updateSelectedItemPropDirect } from "../../utils/content-updaters";
 import { AttrHboxCol } from "./attr-hbox-col";
 
 export const AttrHbox: FC = memo(function AttrHbox() {
+  const { t } = useI18n();
   const { item: currentSelectedItem, position: currentSelectedItemPosition } =
     useSelectedItem();
   // 使用细粒度订阅，只订阅需要的状态
@@ -56,7 +57,9 @@ export const AttrHbox: FC = memo(function AttrHbox() {
 
   return (
     <>
-      <Title order={4}>水平容器属性</Title>
+      <Title order={4}>
+        {t("attributePanel.mblLib.attributePanel.hbox.title")}
+      </Title>
       <Divider my="xs" />
 
       {/* 渲染子列 */}
@@ -67,7 +70,7 @@ export const AttrHbox: FC = memo(function AttrHbox() {
       {/* 垂直对齐设置 */}
       <div>
         <Text size="xs" fw={500} mb={2} mt={4}>
-          垂直对齐
+          {t("attributePanel.mblLib.attributePanel.hbox.verticalAlign")}
         </Text>
         <Stack align="center">
           <SegmentedControl
@@ -96,7 +99,9 @@ export const AttrHbox: FC = memo(function AttrHbox() {
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>顶部</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.mblLib.common.top")}
+                    </VisuallyHidden>
                   </>
                 ),
               },
@@ -110,7 +115,9 @@ export const AttrHbox: FC = memo(function AttrHbox() {
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>中间</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.mblLib.common.middle")}
+                    </VisuallyHidden>
                   </>
                 ),
               },
@@ -124,7 +131,9 @@ export const AttrHbox: FC = memo(function AttrHbox() {
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>底部</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.mblLib.common.bottom")}
+                    </VisuallyHidden>
                   </>
                 ),
               },

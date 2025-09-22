@@ -1,5 +1,5 @@
 import { FC, memo } from "react";
-import { useCurrentSelectedId } from "@xxs3315/mbl-providers";
+import { useCurrentSelectedId, useI18n } from "@xxs3315/mbl-providers";
 import { useSelectedItem } from "../../hooks/use-selected-item";
 import {
   Divider,
@@ -57,6 +57,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
   imageUploadPath,
   imageDownloadPath,
 }) {
+  const { t } = useI18n();
   const { currentSelectedId, setCurrentSelectedId } = useCurrentSelectedId();
   const { item: currentSelectedItem, position: currentSelectedItemPosition } =
     useSelectedItem();
@@ -309,7 +310,9 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
 
   return (
     <>
-      <Title order={4}>图片属性</Title>
+      <Title order={4}>
+        {t("attributePanel.mblLib.attributePanel.image.title")}
+      </Title>
       <Divider my="xs" />
 
       <Group justify="center">
@@ -335,7 +338,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
               fontSize: "12px",
             }}
           >
-            图片预览
+            {t("attributePanel.mblLib.attributePanel.image.preview")}
           </div>
         )}
       </Group>
@@ -347,7 +350,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         >
           {(props) => (
             <Button size="compact-xs" {...props}>
-              上传图片
+              {t("attributePanel.mblLib.attributePanel.image.upload")}
             </Button>
           )}
         </FileButton>
@@ -357,7 +360,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <Stack align="center" gap={0}>
             <Text size="xs" fw={200} mb={2} mt={4}>
-              原始宽度
+              {t("attributePanel.mblLib.attributePanel.image.originalWidth")}
             </Text>
             <Text size="xs" fw={300} mb={2} mt={4}>
               {currentSelectedItem?.origWidth || "n/a"}
@@ -367,7 +370,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <Stack align="center" gap={0}>
             <Text size="xs" fw={200} mb={2} mt={4}>
-              原始高度
+              {t("attributePanel.mblLib.attributePanel.image.originalHeight")}
             </Text>
             <Text size="xs" fw={300} mb={2} mt={4}>
               {currentSelectedItem?.origHeight || "n/a"}
@@ -381,7 +384,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
           <Checkbox
             size="xs"
             fw={500}
-            label="超链接"
+            label={t("attributePanel.mblLib.attributePanel.image.hyperlink")}
             checked={currentSelectedItem?.isHyperlink ?? false}
             onChange={(event) => {
               updateImageProperty("isHyperlink", event.currentTarget.checked);
@@ -396,8 +399,12 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
             <DebouncedTextarea
               size="xs"
               radius="xs"
-              label="超链接地址"
-              placeholder="请输入超链接地址"
+              label={t(
+                "attributePanel.mblLib.attributePanel.image.hyperlinkAddress",
+              )}
+              placeholder={t(
+                "attributePanel.mblLib.attributePanel.image.hyperlinkPlaceholder",
+              )}
               autosize
               minRows={2}
               maxRows={20}
@@ -413,7 +420,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
       )}
 
       <NumberInput
-        label="图片宽度"
+        label={t("attributePanel.mblLib.attributePanel.image.imageWidth")}
         size="xs"
         value={currentSelectedItem?.width}
         onChange={(value) => updateImageProperty("width", Number(value))}
@@ -422,7 +429,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
       />
 
       <NumberInput
-        label="图片高度"
+        label={t("attributePanel.mblLib.attributePanel.image.imageHeight")}
         size="xs"
         value={currentSelectedItem?.height}
         onChange={(value) => updateImageProperty("height", Number(value))}
@@ -434,7 +441,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="左内边距"
+            label={t("attributePanel.mblLib.common.leftPadding")}
             size="xs"
             value={currentSelectedItem?.pLeft ?? 0}
             onChange={(value) =>
@@ -445,7 +452,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="右内边距"
+            label={t("attributePanel.mblLib.common.rightPadding")}
             size="xs"
             value={currentSelectedItem?.pRight ?? 0}
             onChange={(value) =>
@@ -456,7 +463,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="上内边距"
+            label={t("attributePanel.mblLib.common.topPadding")}
             size="xs"
             value={currentSelectedItem?.pTop ?? 0}
             onChange={(value) =>
@@ -467,7 +474,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label="下内边距"
+            label={t("attributePanel.mblLib.common.bottomPadding")}
             size="xs"
             value={currentSelectedItem?.pBottom ?? 0}
             onChange={(value) =>
@@ -479,7 +486,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
 
       <div>
         <Text size="xs" fw={500} mb={2} mt="xs">
-          水平对齐
+          {t("attributePanel.mblLib.common.horizontalAlign")}
         </Text>
         <Stack align="center">
           <SegmentedControl
@@ -496,7 +503,9 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>左对齐</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.mblLib.common.leftAlign")}
+                    </VisuallyHidden>
                   </>
                 ),
               },
@@ -510,7 +519,9 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>居中</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.mblLib.common.centerAlign")}
+                    </VisuallyHidden>
                   </>
                 ),
               },
@@ -524,7 +535,9 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
                         height: "16px",
                       }}
                     />
-                    <VisuallyHidden>右对齐</VisuallyHidden>
+                    <VisuallyHidden>
+                      {t("attributePanel.mblLib.common.rightAlign")}
+                    </VisuallyHidden>
                   </>
                 ),
               },

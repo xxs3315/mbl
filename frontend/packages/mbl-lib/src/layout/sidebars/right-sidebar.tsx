@@ -4,6 +4,7 @@ import { ActionIcon, Tabs } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
 import { AttributePanelRenderer } from "../../comps/attribute-panel/components/attribute-panel-renderer";
 import { TaskCenter } from "../../comps/task-center/task-center";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 interface RightSidebarProps {
   showRightSidebar: boolean;
@@ -45,6 +46,7 @@ export const RightSidebar = React.memo<RightSidebarProps>(
     onPluginPropsChange,
     onClose,
   }) => {
+    const { t } = useI18n();
     const [activeTab, setActiveTab] = useState<string>("operation-panel");
     return (
       <div
@@ -120,7 +122,9 @@ export const RightSidebar = React.memo<RightSidebarProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  属性编辑
+                  {t(
+                    "attributePanel.mblLib.sidebars.rightSidebar.attributeEdit",
+                  )}
                 </Tabs.Tab>
                 <Tabs.Tab
                   value="task-center"
@@ -131,7 +135,7 @@ export const RightSidebar = React.memo<RightSidebarProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  任务中心
+                  {t("attributePanel.mblLib.sidebars.rightSidebar.taskCenter")}
                 </Tabs.Tab>
               </Tabs.List>
             </Tabs>
