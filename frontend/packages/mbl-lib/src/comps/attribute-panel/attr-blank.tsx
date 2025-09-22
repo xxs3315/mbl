@@ -9,7 +9,7 @@ export const AttrBlank: FC = memo(function AttrBlank() {
     <>
       <Stack align="center">
         <Text size="xs" fw={500} mb={2} mt={4}>
-          {t("attributePanel.mblLib.common.notAvailable")}
+          {t("notAvailable", { ns: "common" })}
         </Text>
       </Stack>
     </>

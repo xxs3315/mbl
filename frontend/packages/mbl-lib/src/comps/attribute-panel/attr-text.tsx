@@ -66,13 +66,13 @@ export const AttrText: FC = memo(function AttrText() {
 
   return (
     <>
-      <Title order={4}>{t("attributePanel.text.title")}</Title>
+      <Title order={4}>{t("text.title", { ns: "attributePanel" })}</Title>
       <Divider my="xs" />
 
       <Checkbox
         size="xs"
         fw={500}
-        label={t("attributePanel.text.bold")}
+        label={t("text.bold", { ns: "attributePanel" })}
         checked={currentSelectedItem?.bold ?? false}
         onChange={(event) => {
           if (!currentSelectedId || !currentSelectedItemPosition) return;
@@ -94,7 +94,9 @@ export const AttrText: FC = memo(function AttrText() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.text.leftPadding")}
+            label={t("text.leftPadding", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentSelectedItem?.pLeft ?? 0}
             onChange={(value) => {
@@ -118,7 +120,9 @@ export const AttrText: FC = memo(function AttrText() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.text.rightPadding")}
+            label={t("text.rightPadding", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentSelectedItem?.pRight ?? 0}
             onChange={(value) => {
@@ -142,7 +146,9 @@ export const AttrText: FC = memo(function AttrText() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.text.topPadding")}
+            label={t("text.topPadding", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentSelectedItem?.pTop ?? 0}
             onChange={(value) => {
@@ -166,7 +172,9 @@ export const AttrText: FC = memo(function AttrText() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.text.bottomPadding")}
+            label={t("text.bottomPadding", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentSelectedItem?.pBottom ?? 0}
             onChange={(value) => {
@@ -190,7 +198,7 @@ export const AttrText: FC = memo(function AttrText() {
       </Grid>
 
       <NumberInput
-        label={t("attributePanel.text.fontSize")}
+        label={t("text.fontSize", { ns: "attributePanel" })}
         mt="xs"
         size="xs"
         value={currentSelectedItem?.fontSize || defaultPageRootFontSize}
@@ -214,7 +222,7 @@ export const AttrText: FC = memo(function AttrText() {
       />
 
       <ColorInput
-        label={t("attributePanel.text.fontColor")}
+        label={t("text.fontColor", { ns: "attributePanel" })}
         mt="xs"
         size="xs"
         format="hex"
@@ -253,7 +261,9 @@ export const AttrText: FC = memo(function AttrText() {
       />
 
       <ColorInput
-        label={t("attributePanel.text.backgroundColor")}
+        label={t("text.backgroundColor", {
+          ns: "attributePanel",
+        })}
         mt="xs"
         size="xs"
         format="hex"
@@ -295,7 +305,7 @@ export const AttrText: FC = memo(function AttrText() {
 
       <div>
         <Text size="xs" fw={500} mb={2} mt="xs">
-          {t("attributePanel.text.horizontalAlign")}
+          {t("text.horizontalAlign", { ns: "attributePanel" })}
         </Text>
         <Stack align="center">
           <SegmentedControl
@@ -326,7 +336,9 @@ export const AttrText: FC = memo(function AttrText() {
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.text.leftAlign")}
+                      {t("text.leftAlign", {
+                        ns: "attributePanel",
+                      })}
                     </VisuallyHidden>
                   </>
                 ),
@@ -342,7 +354,9 @@ export const AttrText: FC = memo(function AttrText() {
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.text.centerAlign")}
+                      {t("text.centerAlign", {
+                        ns: "attributePanel",
+                      })}
                     </VisuallyHidden>
                   </>
                 ),
@@ -358,7 +372,9 @@ export const AttrText: FC = memo(function AttrText() {
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.text.rightAlign")}
+                      {t("text.rightAlign", {
+                        ns: "attributePanel",
+                      })}
                     </VisuallyHidden>
                   </>
                 ),

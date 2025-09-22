@@ -128,10 +128,10 @@ const ToolPanel = () => {
     <Tabs defaultValue="components">
       <Tabs.List>
         <Tabs.Tab value="components">
-          {t("attributePanel.mblLib.toolPanel.components")}
+          {t("toolPanel.components", { ns: "layout" })}
         </Tabs.Tab>
         <Tabs.Tab value="data-binding">
-          {t("attributePanel.mblLib.toolPanel.data")}
+          {t("toolPanel.data", { ns: "layout" })}
         </Tabs.Tab>
         {/* <Tabs.Tab value="theme">{"theme.settings"}</Tabs.Tab> */}
       </Tabs.List>

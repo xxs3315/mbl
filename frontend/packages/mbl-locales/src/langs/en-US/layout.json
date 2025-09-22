@@ -1,0 +1,27 @@
+{
+  "languageSwitcher": {
+    "chinese": "中文",
+    "english": "English"
+  },
+  "toolPanel": {
+    "components": "Components",
+    "data": "Data"
+  },
+  "sidebars": {
+    "leftSidebar": {
+      "pageInfo": "Page Info",
+      "dataBinding": "Data Binding"
+    },
+    "pageSelector": {
+      "title": "Page List"
+    },
+    "rightSidebar": {
+      "attributeEdit": "Attribute Edit",
+      "taskCenter": "Task Center"
+    }
+  },
+  "controlBar": {
+    "preview": "Preview",
+    "previewAll": "Preview All"
+  }
+}

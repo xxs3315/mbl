@@ -96,10 +96,8 @@ const DataBindingPanel: React.FC = () => {
     }
 
     notifications.show({
-      title: t("attributePanel.dataBinding.notifications.jsonFormatted"),
-      message: t(
-        "attributePanel.dataBinding.notifications.jsonFormattedMessage",
-      ),
+      title: t("notifications.jsonFormatted", { ns: "dataBinding" }),
+      message: t("notifications.jsonFormattedMessage", { ns: "dataBinding" }),
       color: "green",
       icon: <Check size={16} />,
     });
@@ -110,8 +108,8 @@ const DataBindingPanel: React.FC = () => {
     setEditorTheme(theme);
     saveEditorTheme(theme);
     notifications.show({
-      title: t("attributePanel.dataBinding.notifications.themeChanged"),
-      message: `${t("attributePanel.dataBinding.notifications.themeChangedMessage")} ${theme}`,
+      title: t("notifications.themeChanged", { ns: "dataBinding" }),
+      message: `${t("notifications.themeChangedMessage", { ns: "dataBinding" })} ${theme}`,
       color: "blue",
       icon: <Check size={16} />,
     });

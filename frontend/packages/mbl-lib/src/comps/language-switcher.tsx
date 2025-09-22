@@ -12,7 +12,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   size = "xs",
   className,
 }) => {
-  const { locale, setLocale } = useI18n();
+  const { locale, setLocale, t } = useI18n();
 
   const handleLanguageChange = (value: string) => {
     setLocale(value as SupportedLocale);
@@ -24,11 +24,11 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       onChange={handleLanguageChange}
       data={[
         {
-          label: t("attributePanel.mblLib.languageSwitcher.chinese"),
+          label: t("languageSwitcher.chinese", { ns: "layout" }),
           value: "zh-CN",
         },
         {
-          label: t("attributePanel.mblLib.languageSwitcher.english"),
+          label: t("languageSwitcher.english", { ns: "layout" }),
           value: "en-US",
         },
       ]}

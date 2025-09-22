@@ -307,7 +307,7 @@ export const ControlBar = React.memo<ControlBarProps>(
             })}
           >
             <Tooltip
-              label={t("attributePanel.mblLib.controlBar.preview")}
+              label={t("controlBar.preview", { ns: "layout" })}
               position="bottom"
               withArrow
             >
@@ -333,7 +333,7 @@ export const ControlBar = React.memo<ControlBarProps>(
               </ActionIcon>
             </Tooltip>
             <Tooltip
-              label={t("attributePanel.mblLib.controlBar.previewAll")}
+              label={t("controlBar.previewAll", { ns: "layout" })}
               position="bottom"
               withArrow
             >

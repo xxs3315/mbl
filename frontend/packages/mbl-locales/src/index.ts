@@ -1,7 +1,15 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import zhCN from "./langs/zh-CN/ui.json";
-import enUS from "./langs/en-US/ui.json";
+import zhCNCommon from "./langs/zh-CN/common.json";
+import zhCNAttributePanel from "./langs/zh-CN/attribute-panel.json";
+import zhCNDataBinding from "./langs/zh-CN/data-binding.json";
+import zhCNTaskCenter from "./langs/zh-CN/task-center.json";
+import zhCNLayout from "./langs/zh-CN/layout.json";
+import enUSCommon from "./langs/en-US/common.json";
+import enUSAttributePanel from "./langs/en-US/attribute-panel.json";
+import enUSDataBinding from "./langs/en-US/data-binding.json";
+import enUSTaskCenter from "./langs/en-US/task-center.json";
+import enUSLayout from "./langs/en-US/layout.json";
 
 // 支持的语言类型
 export type SupportedLocale = "zh-CN" | "en-US";
@@ -9,10 +17,18 @@ export type SupportedLocale = "zh-CN" | "en-US";
 // 语言资源
 export const resources = {
   "zh-CN": {
-    ui: zhCN,
+    common: zhCNCommon,
+    attributePanel: zhCNAttributePanel,
+    dataBinding: zhCNDataBinding,
+    taskCenter: zhCNTaskCenter,
+    layout: zhCNLayout,
   },
   "en-US": {
-    ui: enUS,
+    common: enUSCommon,
+    attributePanel: enUSAttributePanel,
+    dataBinding: enUSDataBinding,
+    taskCenter: enUSTaskCenter,
+    layout: enUSLayout,
   },
 } as const;
 
@@ -44,8 +60,8 @@ export const initI18n = (locale: SupportedLocale = defaultLocale) => {
       lng: locale,
       fallbackLng: defaultLocale,
       resources,
-      defaultNS: "ui",
-      ns: ["ui"],
+      defaultNS: "common",
+      ns: ["common", "attributePanel", "dataBinding", "taskCenter", "layout"],
       interpolation: {
         escapeValue: false,
       },
@@ -61,4 +77,8 @@ export const initI18n = (locale: SupportedLocale = defaultLocale) => {
 export { i18n };
 
 // 导出语言资源类型
-export type UIResource = typeof zhCN;
+export type CommonResource = typeof zhCNCommon;
+export type AttributePanelResource = typeof zhCNAttributePanel;
+export type DataBindingResource = typeof zhCNDataBinding;
+export type TaskCenterResource = typeof zhCNTaskCenter;
+export type LayoutResource = typeof zhCNLayout;

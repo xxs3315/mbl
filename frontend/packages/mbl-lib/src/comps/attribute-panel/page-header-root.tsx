@@ -2,8 +2,10 @@ import React from "react";
 import { FC, memo } from "react";
 import { Divider, NumberInput, Title, Grid } from "@mantine/core";
 import { useContentsStoreContext } from "../../store/store";
+import { useI18n } from "@xxs3315/mbl-providers";
 
 export const PageHeaderRoot: FC = memo(function PageHeaderRoot() {
+  const { t } = useI18n();
   // 使用细粒度订阅，只订阅需要的状态
   const currentPageIndex = useContentsStoreContext((s) => s.currentPageIndex);
   const pages = useContentsStoreContext((s) => s.pages);
@@ -20,12 +22,14 @@ export const PageHeaderRoot: FC = memo(function PageHeaderRoot() {
 
   return (
     <>
-      <Title order={4}>页面页眉设置</Title>
+      <Title order={4}>{t("pageHeader.title", { ns: "attributePanel" })}</Title>
       <Divider my="xs" />
       <Grid gutter="xs" mt="xs">
         <Grid.Col span={6}>
           <NumberInput
-            label="页面页眉左边距"
+            label={t("pageHeader.leftMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageHeaderMLeft}
             onChange={(value) => {
@@ -42,7 +46,9 @@ export const PageHeaderRoot: FC = memo(function PageHeaderRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="页面页眉右边距"
+            label={t("pageHeader.rightMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageHeaderMRight}
             onChange={(value) => {
@@ -59,7 +65,9 @@ export const PageHeaderRoot: FC = memo(function PageHeaderRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="页面页眉上边距"
+            label={t("pageHeader.topMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageHeaderMTop}
             onChange={(value) => {
@@ -76,7 +84,9 @@ export const PageHeaderRoot: FC = memo(function PageHeaderRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label="页面页眉下边距"
+            label={t("pageHeader.bottomMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageHeaderMBottom}
             onChange={(value) => {

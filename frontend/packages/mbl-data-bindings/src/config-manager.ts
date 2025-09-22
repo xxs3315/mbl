@@ -5,67 +5,33 @@ import { formatJson } from "./json-utils";
  * 获取国际化的配置类型
  */
 export const getAvailableConfigTypes = (
-  t: (key: string) => string,
+  t: (key: string, options?: any) => string,
 ): NewConfigType[] => [
   {
     id: "static-list",
-    name: t("attributePanel.dataBinding.configTypes.staticList"),
-    description: t("attributePanel.dataBinding.configTypes.staticListDesc"),
+    name: t("configTypes.staticList", { ns: "dataBinding" }),
+    description: t("configTypes.staticListDesc", { ns: "dataBinding" }),
     shape: "list",
     request: "data",
   },
   {
     id: "static-object",
-    name: t("attributePanel.dataBinding.configTypes.staticObject"),
-    description: t("attributePanel.dataBinding.configTypes.staticObjectDesc"),
+    name: t("configTypes.staticObject", { ns: "dataBinding" }),
+    description: t("configTypes.staticObjectDesc", { ns: "dataBinding" }),
     shape: "object",
     request: "data",
   },
   {
     id: "remote-list",
-    name: t("attributePanel.dataBinding.configTypes.remoteList"),
-    description: t("attributePanel.dataBinding.configTypes.remoteListDesc"),
+    name: t("configTypes.remoteList", { ns: "dataBinding" }),
+    description: t("configTypes.remoteListDesc", { ns: "dataBinding" }),
     shape: "list",
     request: "url",
   },
   {
     id: "remote-object",
-    name: t("attributePanel.dataBinding.configTypes.remoteObject"),
-    description: t("attributePanel.dataBinding.configTypes.remoteObjectDesc"),
-    shape: "object",
-    request: "url",
-  },
-];
-
-/**
- * 可用的配置类型（已废弃，请使用 getAvailableConfigTypes）
- */
-export const availableConfigTypes: NewConfigType[] = [
-  {
-    id: "static-list",
-    name: "静态数组数据",
-    description: "本地JSON数组数据，如用户列表、商品列表等",
-    shape: "list",
-    request: "data",
-  },
-  {
-    id: "static-object",
-    name: "静态对象数据",
-    description: "本地JSON对象数据，如用户信息、配置信息等",
-    shape: "object",
-    request: "data",
-  },
-  {
-    id: "remote-list",
-    name: "远程数组数据",
-    description: "从API获取的数组数据，如REST API返回的列表",
-    shape: "list",
-    request: "url",
-  },
-  {
-    id: "remote-object",
-    name: "远程对象数据",
-    description: "从API获取的对象数据，如REST API返回的单个资源",
+    name: t("configTypes.remoteObject", { ns: "dataBinding" }),
+    description: t("configTypes.remoteObjectDesc", { ns: "dataBinding" }),
     shape: "object",
     request: "url",
   },

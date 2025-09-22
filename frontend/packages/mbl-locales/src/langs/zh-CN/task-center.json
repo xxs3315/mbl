@@ -1,0 +1,37 @@
+{
+  "title": "任务列表",
+  "active": "进行中",
+  "completed": "已完成",
+  "status": {
+    "pending": "等待中",
+    "processing": "处理中",
+    "completed": "已完成",
+    "failed": "失败",
+    "unknown": "未知"
+  },
+  "type": {
+    "singlePreview": "单页预览",
+    "batchPreview": "批量预览"
+  },
+  "time": {
+    "justNow": "刚刚",
+    "minutesAgo": "分钟前",
+    "hoursAgo": "小时前"
+  },
+  "emptyState": {
+    "title": "暂无任务",
+    "noActiveTasks": "暂无进行中的任务",
+    "noCompletedTasks": "暂无已完成的任务"
+  },
+  "labels": {
+    "taskId": "任务ID",
+    "queuePosition": "队列位置"
+  },
+  "actions": {
+    "downloadPdf": "下载PDF",
+    "deleteTask": "删除任务",
+    "autoRefreshing": "正在自动刷新",
+    "manualRefresh": "手动刷新",
+    "clearCompleted": "清空已完成"
+  }
+}

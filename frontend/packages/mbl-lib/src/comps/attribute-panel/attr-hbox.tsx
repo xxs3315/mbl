@@ -57,9 +57,7 @@ export const AttrHbox: FC = memo(function AttrHbox() {
 
   return (
     <>
-      <Title order={4}>
-        {t("attributePanel.mblLib.attributePanel.hbox.title")}
-      </Title>
+      <Title order={4}>{t("hbox.title", { ns: "attributePanel" })}</Title>
       <Divider my="xs" />
 
       {/* 渲染子列 */}
@@ -70,7 +68,7 @@ export const AttrHbox: FC = memo(function AttrHbox() {
       {/* 垂直对齐设置 */}
       <div>
         <Text size="xs" fw={500} mb={2} mt={4}>
-          {t("attributePanel.mblLib.attributePanel.hbox.verticalAlign")}
+          {t("hbox.verticalAlign", { ns: "attributePanel" })}
         </Text>
         <Stack align="center">
           <SegmentedControl
@@ -100,7 +98,7 @@ export const AttrHbox: FC = memo(function AttrHbox() {
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.mblLib.common.top")}
+                      {t("top", { ns: "common" })}
                     </VisuallyHidden>
                   </>
                 ),
@@ -116,7 +114,7 @@ export const AttrHbox: FC = memo(function AttrHbox() {
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.mblLib.common.middle")}
+                      {t("middle", { ns: "common" })}
                     </VisuallyHidden>
                   </>
                 ),
@@ -132,7 +130,7 @@ export const AttrHbox: FC = memo(function AttrHbox() {
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.mblLib.common.bottom")}
+                      {t("bottom", { ns: "common" })}
                     </VisuallyHidden>
                   </>
                 ),

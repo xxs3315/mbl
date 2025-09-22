@@ -21,17 +21,15 @@ export const PageBodyRoot: FC = memo(function PageBodyRoot() {
 
   return (
     <>
-      <Title order={4}>
-        {t("attributePanel.mblLib.attributePanel.pageBody.title")}
-      </Title>
+      <Title order={4}>{t("pageBody.title", { ns: "attributePanel" })}</Title>
       <Divider my="xs" />
 
       <Grid gutter="xs" mt="xs">
         <Grid.Col span={6}>
           <NumberInput
-            label={t(
-              "attributePanel.mblLib.attributePanel.pageBody.leftMargin",
-            )}
+            label={t("pageBody.leftMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageBodyMLeft}
             onChange={(value) => {
@@ -48,9 +46,9 @@ export const PageBodyRoot: FC = memo(function PageBodyRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label={t(
-              "attributePanel.mblLib.attributePanel.pageBody.rightMargin",
-            )}
+            label={t("pageBody.rightMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageBodyMRight}
             onChange={(value) => {
@@ -67,7 +65,9 @@ export const PageBodyRoot: FC = memo(function PageBodyRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label={t("attributePanel.mblLib.attributePanel.pageBody.topMargin")}
+            label={t("pageBody.topMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageBodyMTop}
             onChange={(value) => {
@@ -84,9 +84,9 @@ export const PageBodyRoot: FC = memo(function PageBodyRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label={t(
-              "attributePanel.mblLib.attributePanel.pageBody.bottomMargin",
-            )}
+            label={t("pageBody.bottomMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageBodyMBottom}
             onChange={(value) => {

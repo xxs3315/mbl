@@ -310,9 +310,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
 
   return (
     <>
-      <Title order={4}>
-        {t("attributePanel.mblLib.attributePanel.image.title")}
-      </Title>
+      <Title order={4}>{t("image.title", { ns: "attributePanel" })}</Title>
       <Divider my="xs" />
 
       <Group justify="center">
@@ -338,7 +336,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
               fontSize: "12px",
             }}
           >
-            {t("attributePanel.mblLib.attributePanel.image.preview")}
+            {t("image.preview", { ns: "attributePanel" })}
           </div>
         )}
       </Group>
@@ -350,7 +348,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         >
           {(props) => (
             <Button size="compact-xs" {...props}>
-              {t("attributePanel.mblLib.attributePanel.image.upload")}
+              {t("image.upload", { ns: "attributePanel" })}
             </Button>
           )}
         </FileButton>
@@ -360,7 +358,9 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <Stack align="center" gap={0}>
             <Text size="xs" fw={200} mb={2} mt={4}>
-              {t("attributePanel.mblLib.attributePanel.image.originalWidth")}
+              {t("image.originalWidth", {
+                ns: "attributePanel",
+              })}
             </Text>
             <Text size="xs" fw={300} mb={2} mt={4}>
               {currentSelectedItem?.origWidth || "n/a"}
@@ -370,7 +370,9 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <Stack align="center" gap={0}>
             <Text size="xs" fw={200} mb={2} mt={4}>
-              {t("attributePanel.mblLib.attributePanel.image.originalHeight")}
+              {t("image.originalHeight", {
+                ns: "attributePanel",
+              })}
             </Text>
             <Text size="xs" fw={300} mb={2} mt={4}>
               {currentSelectedItem?.origHeight || "n/a"}
@@ -384,7 +386,9 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
           <Checkbox
             size="xs"
             fw={500}
-            label={t("attributePanel.mblLib.attributePanel.image.hyperlink")}
+            label={t("image.hyperlink", {
+              ns: "attributePanel",
+            })}
             checked={currentSelectedItem?.isHyperlink ?? false}
             onChange={(event) => {
               updateImageProperty("isHyperlink", event.currentTarget.checked);
@@ -399,12 +403,12 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
             <DebouncedTextarea
               size="xs"
               radius="xs"
-              label={t(
-                "attributePanel.mblLib.attributePanel.image.hyperlinkAddress",
-              )}
-              placeholder={t(
-                "attributePanel.mblLib.attributePanel.image.hyperlinkPlaceholder",
-              )}
+              label={t("image.hyperlinkAddress", {
+                ns: "attributePanel",
+              })}
+              placeholder={t("image.hyperlinkPlaceholder", {
+                ns: "attributePanel",
+              })}
               autosize
               minRows={2}
               maxRows={20}
@@ -420,7 +424,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
       )}
 
       <NumberInput
-        label={t("attributePanel.mblLib.attributePanel.image.imageWidth")}
+        label={t("image.imageWidth", { ns: "attributePanel" })}
         size="xs"
         value={currentSelectedItem?.width}
         onChange={(value) => updateImageProperty("width", Number(value))}
@@ -429,7 +433,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
       />
 
       <NumberInput
-        label={t("attributePanel.mblLib.attributePanel.image.imageHeight")}
+        label={t("image.imageHeight", { ns: "attributePanel" })}
         size="xs"
         value={currentSelectedItem?.height}
         onChange={(value) => updateImageProperty("height", Number(value))}
@@ -441,7 +445,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.mblLib.common.leftPadding")}
+            label={t("leftPadding", { ns: "common" })}
             size="xs"
             value={currentSelectedItem?.pLeft ?? 0}
             onChange={(value) =>
@@ -452,7 +456,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.mblLib.common.rightPadding")}
+            label={t("rightPadding", { ns: "common" })}
             size="xs"
             value={currentSelectedItem?.pRight ?? 0}
             onChange={(value) =>
@@ -463,7 +467,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.mblLib.common.topPadding")}
+            label={t("topPadding", { ns: "common" })}
             size="xs"
             value={currentSelectedItem?.pTop ?? 0}
             onChange={(value) =>
@@ -474,7 +478,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.mblLib.common.bottomPadding")}
+            label={t("bottomPadding", { ns: "common" })}
             size="xs"
             value={currentSelectedItem?.pBottom ?? 0}
             onChange={(value) =>
@@ -486,7 +490,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
 
       <div>
         <Text size="xs" fw={500} mb={2} mt="xs">
-          {t("attributePanel.mblLib.common.horizontalAlign")}
+          {t("horizontalAlign", { ns: "common" })}
         </Text>
         <Stack align="center">
           <SegmentedControl
@@ -504,7 +508,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.mblLib.common.leftAlign")}
+                      {t("leftAlign", { ns: "common" })}
                     </VisuallyHidden>
                   </>
                 ),
@@ -520,7 +524,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.mblLib.common.centerAlign")}
+                      {t("centerAlign", { ns: "common" })}
                     </VisuallyHidden>
                   </>
                 ),
@@ -536,7 +540,7 @@ export const AttrImage: FC<ImageUploadConfig> = memo(function AttrImage({
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.mblLib.common.rightAlign")}
+                      {t("rightAlign", { ns: "common" })}
                     </VisuallyHidden>
                   </>
                 ),

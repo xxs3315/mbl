@@ -98,7 +98,7 @@ export const PageSelector = React.memo<PageSelectorProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  {t("attributePanel.mblLib.sidebars.pageSelector.title")}
+                  {t("sidebars.pageSelector.title", { ns: "layout" })}
                 </Tabs.Tab>
               </Tabs.List>
             </Tabs>
@@ -182,8 +182,7 @@ export const PageSelector = React.memo<PageSelectorProps>(
                       marginBottom: "4px",
                     })}
                   >
-                    {page.name ||
-                      `${t("attributePanel.mblLib.common.page")} ${index + 1}`}
+                    {page.name || `${t("page", { ns: "common" })} ${index + 1}`}
                   </div>
                   <div
                     className={css({
@@ -192,8 +191,12 @@ export const PageSelector = React.memo<PageSelectorProps>(
                     })}
                   >
                     {page.orientation === "portrait"
-                      ? t("attributePanel.mblLib.common.portrait")
-                      : t("attributePanel.mblLib.common.landscape")}{" "}
+                      ? t("portrait", {
+                          ns: "common",
+                        })
+                      : t("landscape", {
+                          ns: "common",
+                        })}{" "}
                     · {page.rectangle}
                   </div>
                 </div>

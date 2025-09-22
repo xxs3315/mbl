@@ -1,0 +1,78 @@
+{
+  "text": {
+    "title": "Text Properties",
+    "bold": "Bold",
+    "leftPadding": "Left Padding",
+    "rightPadding": "Right Padding",
+    "topPadding": "Top Padding",
+    "bottomPadding": "Bottom Padding",
+    "fontSize": "Font Size",
+    "fontColor": "Font Color",
+    "backgroundColor": "Background Color",
+    "horizontalAlign": "Horizontal Alignment",
+    "leftAlign": "Left Align",
+    "centerAlign": "Center",
+    "rightAlign": "Right Align"
+  },
+  "table": {
+    "title": "Table Properties",
+    "columnDistribution": "Column Distribution Settings",
+    "topPadding": "Top Padding",
+    "rightPadding": "Right Padding",
+    "bottomPadding": "Bottom Padding",
+    "leftPadding": "Left Padding",
+    "columnLabel": "Column",
+    "size": "Size",
+    "unit": "Unit",
+    "selectValue": "Select Value"
+  },
+  "hbox": {
+    "title": "Horizontal Container Properties",
+    "verticalAlign": "Vertical Alignment"
+  },
+  "image": {
+    "title": "Image Properties",
+    "preview": "Image Preview",
+    "upload": "Upload Image",
+    "originalWidth": "Original Width",
+    "originalHeight": "Original Height",
+    "hyperlink": "Hyperlink",
+    "hyperlinkAddress": "Hyperlink Address",
+    "hyperlinkPlaceholder": "Please enter hyperlink address",
+    "imageWidth": "Image Width",
+    "imageHeight": "Image Height"
+  },
+  "placeholder": {
+    "title": "Placeholder Properties"
+  },
+  "pageBody": {
+    "title": "Page Body Settings",
+    "leftMargin": "Page Body Left Margin",
+    "rightMargin": "Page Body Right Margin",
+    "topMargin": "Page Body Top Margin",
+    "bottomMargin": "Page Body Bottom Margin"
+  },
+  "pageFooter": {
+    "title": "Page Footer Settings",
+    "leftMargin": "Page Footer Left Margin",
+    "rightMargin": "Page Footer Right Margin",
+    "topMargin": "Page Footer Top Margin",
+    "bottomMargin": "Page Footer Bottom Margin"
+  },
+  "pageHeader": {
+    "title": "Page Header Settings",
+    "leftMargin": "Page Header Left Margin",
+    "rightMargin": "Page Header Right Margin",
+    "topMargin": "Page Header Top Margin",
+    "bottomMargin": "Page Header Bottom Margin"
+  },
+  "pageRoot": {
+    "title": "Page Root Settings",
+    "pageName": "Page Name",
+    "pageNamePlaceholder": "Please enter page name",
+    "pageType": "Page Type",
+    "pageTypePlaceholder": "Please select page type",
+    "pageOrientation": "Page Orientation",
+    "pageOrientationPlaceholder": "Please select page orientation"
+  }
+}

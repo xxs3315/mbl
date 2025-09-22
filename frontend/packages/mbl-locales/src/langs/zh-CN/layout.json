@@ -1,0 +1,27 @@
+{
+  "languageSwitcher": {
+    "chinese": "中文",
+    "english": "English"
+  },
+  "toolPanel": {
+    "components": "组件",
+    "data": "数据"
+  },
+  "sidebars": {
+    "leftSidebar": {
+      "pageInfo": "页面信息",
+      "dataBinding": "数据绑定"
+    },
+    "pageSelector": {
+      "title": "页面列表"
+    },
+    "rightSidebar": {
+      "attributeEdit": "属性编辑",
+      "taskCenter": "任务中心"
+    }
+  },
+  "controlBar": {
+    "preview": "预览",
+    "previewAll": "预览全部"
+  }
+}

@@ -26,17 +26,15 @@ export const PageRoot: FC = memo(function PageRoot() {
 
   return (
     <>
-      <Title order={4}>
-        {t("attributePanel.mblLib.attributePanel.pageRoot.title")}
-      </Title>
+      <Title order={4}>{t("pageRoot.title", { ns: "attributePanel" })}</Title>
       <Divider my="xs" />
       <DebouncedTextarea
         size="xs"
         radius="xs"
-        label={t("attributePanel.mblLib.attributePanel.pageRoot.pageName")}
-        placeholder={t(
-          "attributePanel.mblLib.attributePanel.pageRoot.pageNamePlaceholder",
-        )}
+        label={t("pageRoot.pageName", { ns: "attributePanel" })}
+        placeholder={t("pageRoot.pageNamePlaceholder", {
+          ns: "attributePanel",
+        })}
         autosize
         minRows={2}
         maxRows={6}
@@ -52,10 +50,10 @@ export const PageRoot: FC = memo(function PageRoot() {
       <Select
         mt="xs"
         size="xs"
-        label={t("attributePanel.mblLib.attributePanel.pageRoot.pageType")}
-        placeholder={t(
-          "attributePanel.mblLib.attributePanel.pageRoot.pageTypePlaceholder",
-        )}
+        label={t("pageRoot.pageType", { ns: "attributePanel" })}
+        placeholder={t("pageRoot.pageTypePlaceholder", {
+          ns: "attributePanel",
+        })}
         allowDeselect={false}
         data={[
           { value: "LETTER", label: "LETTER" },
@@ -79,21 +77,21 @@ export const PageRoot: FC = memo(function PageRoot() {
       <Select
         mt="xs"
         size="xs"
-        label={t(
-          "attributePanel.mblLib.attributePanel.pageRoot.pageOrientation",
-        )}
-        placeholder={t(
-          "attributePanel.mblLib.attributePanel.pageRoot.pageOrientationPlaceholder",
-        )}
+        label={t("pageRoot.pageOrientation", {
+          ns: "attributePanel",
+        })}
+        placeholder={t("pageRoot.pageOrientationPlaceholder", {
+          ns: "attributePanel",
+        })}
         allowDeselect={false}
         data={[
           {
             value: "portrait",
-            label: t("attributePanel.mblLib.common.portrait"),
+            label: t("portrait", { ns: "common" }),
           },
           {
             value: "landscape",
-            label: t("attributePanel.mblLib.common.landscape"),
+            label: t("landscape", { ns: "common" }),
           },
         ]}
         value={currentPageOrientation}

@@ -53,7 +53,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
   return (
     <>
       <Title order={4}>
-        {t("attributePanel.mblLib.attributePanel.placeholder.title")}
+        {t("placeholder.title", { ns: "attributePanel" })}
       </Title>
       <Divider my="xs" />
 
@@ -61,7 +61,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.mblLib.common.width")}
+            label={t("width", { ns: "common" })}
             size="xs"
             value={currentSelectedItem?.width ?? 0}
             onChange={(value) => {
@@ -85,7 +85,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.mblLib.common.height")}
+            label={t("height", { ns: "common" })}
             size="xs"
             value={currentSelectedItem?.height ?? 0}
             onChange={(value) => {
@@ -112,7 +112,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.mblLib.common.leftPadding")}
+            label={t("leftPadding", { ns: "common" })}
             size="xs"
             value={currentSelectedItem?.pLeft ?? 0}
             onChange={(value) => {
@@ -136,7 +136,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.mblLib.common.rightPadding")}
+            label={t("rightPadding", { ns: "common" })}
             size="xs"
             value={currentSelectedItem?.pRight ?? 0}
             onChange={(value) => {
@@ -160,7 +160,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.mblLib.common.topPadding")}
+            label={t("topPadding", { ns: "common" })}
             size="xs"
             value={currentSelectedItem?.pTop ?? 0}
             onChange={(value) => {
@@ -184,7 +184,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
         <Grid.Col span={6}>
           <NumberInput
             min={0}
-            label={t("attributePanel.mblLib.common.bottomPadding")}
+            label={t("bottomPadding", { ns: "common" })}
             size="xs"
             value={currentSelectedItem?.pBottom ?? 0}
             onChange={(value) => {
@@ -208,7 +208,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
       </Grid>
 
       <ColorInput
-        label={t("attributePanel.mblLib.common.backgroundColor")}
+        label={t("backgroundColor", { ns: "common" })}
         mt="xs"
         size="xs"
         format="hex"
@@ -250,7 +250,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
 
       <div>
         <Text size="xs" fw={500} mb={2} mt="xs">
-          {t("attributePanel.mblLib.common.horizontalAlign")}
+          {t("horizontalAlign", { ns: "common" })}
         </Text>
         <Stack align="center">
           <SegmentedControl
@@ -281,7 +281,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.mblLib.common.leftAlign")}
+                      {t("leftAlign", { ns: "common" })}
                     </VisuallyHidden>
                   </>
                 ),
@@ -297,7 +297,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.mblLib.common.centerAlign")}
+                      {t("centerAlign", { ns: "common" })}
                     </VisuallyHidden>
                   </>
                 ),
@@ -313,7 +313,7 @@ export const AttrPlaceholder: FC = memo(function AttrPlaceholder() {
                       }}
                     />
                     <VisuallyHidden>
-                      {t("attributePanel.mblLib.common.rightAlign")}
+                      {t("rightAlign", { ns: "common" })}
                     </VisuallyHidden>
                   </>
                 ),

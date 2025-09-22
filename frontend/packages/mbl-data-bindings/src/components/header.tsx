@@ -30,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <Flex justify="space-between" align="center" mb="xs">
       <Title order={4} size="sm">
-        {t("attributePanel.dataBinding.title")}
+        {t("title", { ns: "dataBinding" })}
       </Title>
       <Group gap="xs">
         <Menu shadow="md" width={160} withinPortal={false}>
@@ -38,14 +38,14 @@ export const Header: React.FC<HeaderProps> = ({
             <ActionIcon
               size="sm"
               variant="subtle"
-              title={t("attributePanel.dataBinding.header.editorTheme")}
+              title={t("header.editorTheme", { ns: "dataBinding" })}
             >
               <Palette size={12} />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Label>
-              {t("attributePanel.dataBinding.header.editorTheme")}
+              {t("header.editorTheme", { ns: "dataBinding" })}
             </Menu.Label>
             <Menu.Item
               onClick={() => onThemeChange("github")}
@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({
                   GitHub
                 </Text>
                 <Text size="xs" c="dimmed">
-                  {t("attributePanel.dataBinding.header.lightTheme")}
+                  {t("header.lightTheme", { ns: "dataBinding" })}
                 </Text>
               </Stack>
             </Menu.Item>
@@ -103,7 +103,7 @@ export const Header: React.FC<HeaderProps> = ({
                   Monokai
                 </Text>
                 <Text size="xs" c="dimmed">
-                  {t("attributePanel.dataBinding.header.darkTheme")}
+                  {t("header.darkTheme", { ns: "dataBinding" })}
                 </Text>
               </Stack>
             </Menu.Item>
@@ -133,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
                   Tomorrow
                 </Text>
                 <Text size="xs" c="dimmed">
-                  {t("attributePanel.dataBinding.header.classicTheme")}
+                  {t("header.classicTheme", { ns: "dataBinding" })}
                 </Text>
               </Stack>
             </Menu.Item>
@@ -163,7 +163,7 @@ export const Header: React.FC<HeaderProps> = ({
                   Kuroir
                 </Text>
                 <Text size="xs" c="dimmed">
-                  {t("attributePanel.dataBinding.header.simpleTheme")}
+                  {t("header.simpleTheme", { ns: "dataBinding" })}
                 </Text>
               </Stack>
             </Menu.Item>
@@ -174,14 +174,14 @@ export const Header: React.FC<HeaderProps> = ({
             <ActionIcon
               size="sm"
               variant="subtle"
-              title={t("attributePanel.dataBinding.header.addConfig")}
+              title={t("header.addConfig", { ns: "dataBinding" })}
             >
               <Plus size={12} />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Label>
-              {t("attributePanel.dataBinding.header.addConfig")}
+              {t("header.addConfig", { ns: "dataBinding" })}
             </Menu.Label>
             {availableConfigTypes.map((configType) => (
               <Menu.Item

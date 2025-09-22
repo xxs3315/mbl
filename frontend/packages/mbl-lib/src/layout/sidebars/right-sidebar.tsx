@@ -122,9 +122,9 @@ export const RightSidebar = React.memo<RightSidebarProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  {t(
-                    "attributePanel.mblLib.sidebars.rightSidebar.attributeEdit",
-                  )}
+                  {t("sidebars.rightSidebar.attributeEdit", {
+                    ns: "layout",
+                  })}
                 </Tabs.Tab>
                 <Tabs.Tab
                   value="task-center"
@@ -135,7 +135,9 @@ export const RightSidebar = React.memo<RightSidebarProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  {t("attributePanel.mblLib.sidebars.rightSidebar.taskCenter")}
+                  {t("sidebars.rightSidebar.taskCenter", {
+                    ns: "layout",
+                  })}
                 </Tabs.Tab>
               </Tabs.List>
             </Tabs>

@@ -76,26 +76,24 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
       const formatted = formatJson(modalValue);
       if (formatted === modalValue) {
         notifications.show({
-          title: t("attributePanel.dataBinding.notifications.tip"),
-          message: t(
-            "attributePanel.dataBinding.notifications.jsonAlreadyFormatted",
-          ),
+          title: t("notifications.tip", { ns: "dataBinding" }),
+          message: t("notifications.jsonAlreadyFormatted", {
+            ns: "dataBinding",
+          }),
           color: "blue",
         });
       } else {
         setModalValue(formatted);
         notifications.show({
-          title: t("attributePanel.dataBinding.notifications.success"),
-          message: t(
-            "attributePanel.dataBinding.notifications.jsonFormatComplete",
-          ),
+          title: t("notifications.success", { ns: "dataBinding" }),
+          message: t("notifications.jsonFormatComplete", { ns: "dataBinding" }),
           color: "green",
         });
       }
     } catch (error) {
       notifications.show({
-        title: t("attributePanel.dataBinding.notifications.error"),
-        message: t("attributePanel.dataBinding.notifications.jsonFormatError"),
+        title: t("notifications.error", { ns: "dataBinding" }),
+        message: t("notifications.jsonFormatError", { ns: "dataBinding" }),
         color: "red",
       });
     }
@@ -143,8 +141,8 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                 variant="light"
               >
                 {config.shape === "list"
-                  ? t("attributePanel.dataBinding.configItem.array")
-                  : t("attributePanel.dataBinding.configItem.object")}
+                  ? t("configItem.array", { ns: "dataBinding" })
+                  : t("configItem.object", { ns: "dataBinding" })}
               </Badge>
               <Badge
                 size="xs"
@@ -152,8 +150,8 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                 variant="light"
               >
                 {config.request === "url"
-                  ? t("attributePanel.dataBinding.configItem.remote")
-                  : t("attributePanel.dataBinding.configItem.static")}
+                  ? t("configItem.remote", { ns: "dataBinding" })
+                  : t("configItem.static", { ns: "dataBinding" })}
               </Badge>
             </Group>
             <Text size="xs" c="dimmed" mb="xs">
@@ -173,12 +171,12 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
         <Group justify="space-between" align="center" mb="0">
           <Text size="xs" fw={500}>
             {config.request === "url"
-              ? t("attributePanel.dataBinding.configItem.urlAddress")
-              : t("attributePanel.dataBinding.configItem.jsonData")}
+              ? t("configItem.urlAddress", { ns: "dataBinding" })
+              : t("configItem.jsonData", { ns: "dataBinding" })}
           </Text>
           <Group gap="xs">
             <Tooltip
-              label={t("attributePanel.dataBinding.configItem.largeWindowEdit")}
+              label={t("configItem.largeWindowEdit", { ns: "dataBinding" })}
             >
               <ActionIcon
                 size="sm"
@@ -191,7 +189,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
             </Tooltip>
             {config.request === "data" && (
               <Tooltip
-                label={t("attributePanel.dataBinding.configItem.formatJson")}
+                label={t("configItem.formatJson", { ns: "dataBinding" })}
               >
                 <ActionIcon
                   size="sm"
@@ -222,8 +220,8 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
             onChange={(value) => onUpdateValue(config.id, value)}
             placeholder={
               config.request === "url"
-                ? t("attributePanel.dataBinding.configItem.urlPlaceholder")
-                : t("attributePanel.dataBinding.configItem.jsonPlaceholder")
+                ? t("configItem.urlPlaceholder", { ns: "dataBinding" })
+                : t("configItem.jsonPlaceholder", { ns: "dataBinding" })
             }
             width="100%"
             height={config.request === "data" ? "100px" : "60px"}
@@ -243,7 +241,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
         {config.request === "data" && fields.length > 0 && (
           <Box>
             <Text size="xs" fw={500} mb="0" mt="xs">
-              {t("attributePanel.dataBinding.configItem.availableFields")}
+              {t("configItem.availableFields", { ns: "dataBinding" })}
             </Text>
             <Group gap="xs">
               {fields.map((field) => (
@@ -304,7 +302,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
       <Modal
         opened={modalOpen}
         onClose={handleCancelModal}
-        title={`${t("attributePanel.dataBinding.configItem.edit")} ${config.name}`}
+        title={`${t("configItem.edit", { ns: "dataBinding" })} ${config.name}`}
         size="xl"
         centered
         styles={{
@@ -348,8 +346,8 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
               onChange={setModalValue}
               placeholder={
                 config.request === "url"
-                  ? t("attributePanel.dataBinding.configItem.urlPlaceholder")
-                  : t("attributePanel.dataBinding.configItem.jsonPlaceholder")
+                  ? t("configItem.urlPlaceholder", { ns: "dataBinding" })
+                  : t("configItem.jsonPlaceholder", { ns: "dataBinding" })
               }
               editorProps={{ $blockScrolling: true }}
               setOptions={{
@@ -375,7 +373,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
           {/* 按钮组 */}
           <Group justify="flex-end" gap="sm">
             <Button variant="subtle" onClick={handleCancelModal} size="sm">
-              {t("attributePanel.dataBinding.configItem.cancel")}
+              {t("configItem.cancel", { ns: "dataBinding" })}
             </Button>
             {config.request === "data" && (
               <Button
@@ -385,11 +383,11 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                 size="sm"
                 leftSection={<Code size={14} />}
               >
-                {t("attributePanel.dataBinding.configItem.formatJson")}
+                {t("configItem.formatJson", { ns: "dataBinding" })}
               </Button>
             )}
             <Button onClick={handleSaveModal} size="sm">
-              {t("attributePanel.dataBinding.configItem.confirm")}
+              {t("configItem.confirm", { ns: "dataBinding" })}
             </Button>
           </Group>
         </Stack>

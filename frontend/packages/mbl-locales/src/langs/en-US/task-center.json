@@ -1,0 +1,37 @@
+{
+  "title": "Task List",
+  "active": "Active",
+  "completed": "Completed",
+  "status": {
+    "pending": "Pending",
+    "processing": "Processing",
+    "completed": "Completed",
+    "failed": "Failed",
+    "unknown": "Unknown"
+  },
+  "type": {
+    "singlePreview": "Single Page Preview",
+    "batchPreview": "Batch Preview"
+  },
+  "time": {
+    "justNow": "Just now",
+    "minutesAgo": "minutes ago",
+    "hoursAgo": "hours ago"
+  },
+  "emptyState": {
+    "title": "No Tasks",
+    "noActiveTasks": "No active tasks",
+    "noCompletedTasks": "No completed tasks"
+  },
+  "labels": {
+    "taskId": "Task ID",
+    "queuePosition": "Queue Position"
+  },
+  "actions": {
+    "downloadPdf": "Download PDF",
+    "deleteTask": "Delete Task",
+    "autoRefreshing": "Auto Refreshing",
+    "manualRefresh": "Manual Refresh",
+    "clearCompleted": "Clear Completed"
+  }
+}

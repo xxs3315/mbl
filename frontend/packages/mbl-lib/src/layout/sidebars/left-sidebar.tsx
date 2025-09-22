@@ -107,7 +107,7 @@ export const LeftSidebar = React.memo<LeftSidebarProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  {t("attributePanel.mblLib.sidebars.leftSidebar.pageInfo")}
+                  {t("sidebars.leftSidebar.pageInfo", { ns: "layout" })}
                 </Tabs.Tab>
                 <Tabs.Tab
                   value="data-binding"
@@ -118,7 +118,9 @@ export const LeftSidebar = React.memo<LeftSidebarProps>(
                     padding: "8px 16px",
                   })}
                 >
-                  {t("attributePanel.mblLib.sidebars.leftSidebar.dataBinding")}
+                  {t("sidebars.leftSidebar.dataBinding", {
+                    ns: "layout",
+                  })}
                 </Tabs.Tab>
               </Tabs.List>
             </Tabs>

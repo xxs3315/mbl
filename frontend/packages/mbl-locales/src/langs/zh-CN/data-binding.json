@@ -1,0 +1,60 @@
+{
+  "title": "数据绑定配置",
+  "notifications": {
+    "jsonFormatted": "JSON已格式化",
+    "jsonFormattedMessage": "JSON数据已成功格式化",
+    "themeChanged": "主题已切换",
+    "themeChangedMessage": "编辑器主题已切换为",
+    "tip": "提示",
+    "jsonAlreadyFormatted": "JSON已经是格式化状态",
+    "success": "成功",
+    "jsonFormatComplete": "JSON格式化完成",
+    "error": "错误",
+    "jsonFormatError": "JSON格式错误，无法格式化"
+  },
+  "configTypes": {
+    "staticList": "静态数组数据",
+    "staticListDesc": "本地JSON数组数据，如用户列表、商品列表等",
+    "staticObject": "静态对象数据",
+    "staticObjectDesc": "本地JSON对象数据，如用户信息、配置信息等",
+    "remoteList": "远程数组数据",
+    "remoteListDesc": "从API获取的数组数据，如REST API返回的列表",
+    "remoteObject": "远程对象数据",
+    "remoteObjectDesc": "从API获取的对象数据，如REST API返回的单个资源"
+  },
+  "header": {
+    "editorTheme": "编辑器主题",
+    "addConfig": "新增配置",
+    "lightTheme": "明亮主题",
+    "darkTheme": "暗色主题",
+    "classicTheme": "经典主题",
+    "simpleTheme": "简洁主题"
+  },
+  "configItem": {
+    "array": "数组",
+    "object": "对象",
+    "remote": "远程",
+    "static": "静态",
+    "urlAddress": "URL地址",
+    "jsonData": "JSON数据",
+    "largeWindowEdit": "大窗口编辑",
+    "formatJson": "格式化JSON",
+    "urlPlaceholder": "请输入API地址，如：https://api.example.com/data",
+    "jsonPlaceholder": "请输入JSON数据",
+    "availableFields": "可供绑定的字段:",
+    "edit": "编辑",
+    "cancel": "取消",
+    "confirm": "确定"
+  },
+  "deleteModal": {
+    "title": "确认删除",
+    "message": "确定要删除这个数据绑定配置吗？",
+    "warning": "此操作无法撤销，删除后配置将永久丢失。",
+    "cancel": "取消",
+    "confirmDelete": "确认删除"
+  },
+  "emptyState": {
+    "title": "暂无配置",
+    "message": "点击右上角的\"新增配置\"按钮来添加数据绑定配置"
+  }
+}

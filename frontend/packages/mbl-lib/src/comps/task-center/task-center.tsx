@@ -138,23 +138,23 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
   // 获取状态文本
   const getStatusText = (status: TaskStatus | undefined | string) => {
     if (!status || typeof status !== "string")
-      return t("attributePanel.mblLib.taskCenter.status.unknown");
+      return t("status.unknown", { ns: "taskCenter" });
 
     switch (status) {
       case TaskStatus.PENDING:
       case "PENDING":
-        return t("attributePanel.mblLib.taskCenter.status.pending");
+        return t("status.pending", { ns: "taskCenter" });
       case TaskStatus.PROCESSING:
       case "PROCESSING":
-        return t("attributePanel.mblLib.taskCenter.status.processing");
+        return t("status.processing", { ns: "taskCenter" });
       case TaskStatus.COMPLETED:
       case "COMPLETED":
-        return t("attributePanel.mblLib.taskCenter.status.completed");
+        return t("status.completed", { ns: "taskCenter" });
       case TaskStatus.FAILED:
       case "FAILED":
-        return t("attributePanel.mblLib.taskCenter.status.failed");
+        return t("status.failed", { ns: "taskCenter" });
       default:
-        return t("attributePanel.mblLib.taskCenter.status.unknown");
+        return t("status.unknown", { ns: "taskCenter" });
     }
   };
 
@@ -198,10 +198,10 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
   // 获取任务类型文本
   const getTaskTypeText = (type: TaskType | undefined | string) => {
     if (!type || typeof type !== "string")
-      return t("attributePanel.mblLib.taskCenter.type.unknown");
+      return t("type.unknown", { ns: "taskCenter" });
     return type === TaskType.SINGLE || type === "single"
-      ? t("attributePanel.mblLib.taskCenter.type.singlePreview")
-      : t("attributePanel.mblLib.taskCenter.type.batchPreview");
+      ? t("type.singlePreview", { ns: "taskCenter" })
+      : t("type.batchPreview", { ns: "taskCenter" });
   };
 
   // 格式化时间
@@ -212,13 +212,13 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
 
     if (diff < 60000) {
       // 1分钟内
-      return t("attributePanel.mblLib.taskCenter.time.justNow");
+      return t("time.justNow", { ns: "taskCenter" });
     } else if (diff < 3600000) {
       // 1小时内
-      return `${Math.floor(diff / 60000)}${t("attributePanel.mblLib.taskCenter.time.minutesAgo")}`;
+      return `${Math.floor(diff / 60000)}${t("time.minutesAgo", { ns: "taskCenter" })}`;
     } else if (diff < 86400000) {
       // 1天内
-      return `${Math.floor(diff / 3600000)}${t("attributePanel.mblLib.taskCenter.time.hoursAgo")}`;
+      return `${Math.floor(diff / 3600000)}${t("time.hoursAgo", { ns: "taskCenter" })}`;
     } else {
       return date.toLocaleDateString();
     }
@@ -307,14 +307,14 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
       >
         <Group justify="space-between" align="center" mb="xs">
           <Title order={4} size="sm">
-            {t("attributePanel.mblLib.taskCenter.title")}
+            {t("title", { ns: "taskCenter" })}
           </Title>
           <Group gap="xs">
             <Tooltip
               label={
                 isPolling
-                  ? t("attributePanel.mblLib.taskCenter.actions.autoRefreshing")
-                  : t("attributePanel.mblLib.taskCenter.actions.manualRefresh")
+                  ? t("actions.autoRefreshing", { ns: "taskCenter" })
+                  : t("actions.manualRefresh", { ns: "taskCenter" })
               }
             >
               <ActionIcon
@@ -329,9 +329,9 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
             </Tooltip>
             {activeTab === "completed" && completedTasks.length > 0 && (
               <Tooltip
-                label={t(
-                  "attributePanel.mblLib.taskCenter.actions.clearCompleted",
-                )}
+                label={t("actions.clearCompleted", {
+                  ns: "taskCenter",
+                })}
               >
                 <ActionIcon
                   variant="subtle"
@@ -353,16 +353,14 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
             size="xs"
             onClick={() => setActiveTab("active")}
           >
-            {t("attributePanel.mblLib.taskCenter.active")} ({activeTasks.length}
-            )
+            {t("active", { ns: "taskCenter" })} ({activeTasks.length})
           </Button>
           <Button
             variant={activeTab === "completed" ? "filled" : "subtle"}
             size="xs"
             onClick={() => setActiveTab("completed")}
           >
-            {t("attributePanel.mblLib.taskCenter.completed")} (
-            {completedTasks.length})
+            {t("completed", { ns: "taskCenter" })} ({completedTasks.length})
           </Button>
         </Group>
       </div>
@@ -379,7 +377,7 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
         {currentTasks.length === 0 ? (
           <Alert
             icon={<AlertCircle size={12} />}
-            title={t("attributePanel.mblLib.taskCenter.emptyState.title")}
+            title={t("emptyState.title", { ns: "taskCenter" })}
             variant="light"
             styles={{
               root: { padding: "8px" },
@@ -389,10 +387,10 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
             }}
           >
             {activeTab === "active"
-              ? t("attributePanel.mblLib.taskCenter.emptyState.noActiveTasks")
-              : t(
-                  "attributePanel.mblLib.taskCenter.emptyState.noCompletedTasks",
-                )}
+              ? t("emptyState.noActiveTasks", { ns: "taskCenter" })
+              : t("emptyState.noCompletedTasks", {
+                  ns: "taskCenter",
+                })}
           </Alert>
         ) : (
           <Stack gap="xs">
@@ -433,16 +431,15 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
                   </Group>
 
                   <Text size="xs" mb="xs">
-                    {t("attributePanel.mblLib.taskCenter.labels.taskId")}:{" "}
-                    {task.taskId}
+                    {t("labels.taskId", { ns: "taskCenter" })}: {task.taskId}
                   </Text>
 
                   {task.queuePosition !== null &&
                     task.queuePosition !== undefined && (
                       <Text size="xs" mb="xs">
-                        {t(
-                          "attributePanel.mblLib.taskCenter.labels.queuePosition",
-                        )}
+                        {t("labels.queuePosition", {
+                          ns: "taskCenter",
+                        })}
                         : {task.queuePosition}
                       </Text>
                     )}
@@ -454,9 +451,9 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
                       {(task.status === TaskStatus.COMPLETED ||
                         task.status === "COMPLETED") && (
                         <Tooltip
-                          label={t(
-                            "attributePanel.mblLib.taskCenter.actions.downloadPdf",
-                          )}
+                          label={t("actions.downloadPdf", {
+                            ns: "taskCenter",
+                          })}
                         >
                           <ActionIcon
                             variant="subtle"
@@ -469,9 +466,9 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
                         </Tooltip>
                       )}
                       <Tooltip
-                        label={t(
-                          "attributePanel.mblLib.taskCenter.actions.deleteTask",
-                        )}
+                        label={t("actions.deleteTask", {
+                          ns: "taskCenter",
+                        })}
                       >
                         <ActionIcon
                           variant="subtle"

@@ -1,0 +1,78 @@
+{
+  "text": {
+    "title": "文本属性",
+    "bold": "粗体",
+    "leftPadding": "左内边距",
+    "rightPadding": "右内边距",
+    "topPadding": "上内边距",
+    "bottomPadding": "下内边距",
+    "fontSize": "字体大小",
+    "fontColor": "文字颜色",
+    "backgroundColor": "背景颜色",
+    "horizontalAlign": "水平对齐",
+    "leftAlign": "左对齐",
+    "centerAlign": "居中",
+    "rightAlign": "右对齐"
+  },
+  "table": {
+    "title": "表格属性",
+    "columnDistribution": "列分布设置",
+    "topPadding": "上内边距",
+    "rightPadding": "右内边距",
+    "bottomPadding": "下内边距",
+    "leftPadding": "左内边距",
+    "columnLabel": "列",
+    "size": "大小",
+    "unit": "单位",
+    "selectValue": "选择值"
+  },
+  "hbox": {
+    "title": "水平容器属性",
+    "verticalAlign": "垂直对齐"
+  },
+  "image": {
+    "title": "图片属性",
+    "preview": "图片预览",
+    "upload": "上传图片",
+    "originalWidth": "原始宽度",
+    "originalHeight": "原始高度",
+    "hyperlink": "超链接",
+    "hyperlinkAddress": "超链接地址",
+    "hyperlinkPlaceholder": "请输入超链接地址",
+    "imageWidth": "图片宽度",
+    "imageHeight": "图片高度"
+  },
+  "placeholder": {
+    "title": "占位属性"
+  },
+  "pageBody": {
+    "title": "页面主体设置",
+    "leftMargin": "页面主体左边距",
+    "rightMargin": "页面主体右边距",
+    "topMargin": "页面主体上边距",
+    "bottomMargin": "页面主体下边距"
+  },
+  "pageFooter": {
+    "title": "页面页脚设置",
+    "leftMargin": "页面页脚左边距",
+    "rightMargin": "页面页脚右边距",
+    "topMargin": "页面页脚上边距",
+    "bottomMargin": "页面页脚下边距"
+  },
+  "pageHeader": {
+    "title": "页面页眉设置",
+    "leftMargin": "页面页眉左边距",
+    "rightMargin": "页面页眉右边距",
+    "topMargin": "页面页眉上边距",
+    "bottomMargin": "页面页眉下边距"
+  },
+  "pageRoot": {
+    "title": "页面根设置",
+    "pageName": "页面名称",
+    "pageNamePlaceholder": "请输入页面名称",
+    "pageType": "页面类型",
+    "pageTypePlaceholder": "请选择页面类型",
+    "pageOrientation": "页面方向",
+    "pageOrientationPlaceholder": "请选择页面方向"
+  }
+}

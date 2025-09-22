@@ -21,16 +21,14 @@ export const PageFooterRoot: FC = memo(function PageFooterRoot() {
 
   return (
     <>
-      <Title order={4}>
-        {t("attributePanel.mblLib.attributePanel.pageFooter.title")}
-      </Title>
+      <Title order={4}>{t("pageFooter.title", { ns: "attributePanel" })}</Title>
       <Divider my="xs" />
       <Grid gutter="xs" mt="xs">
         <Grid.Col span={6}>
           <NumberInput
-            label={t(
-              "attributePanel.mblLib.attributePanel.pageFooter.leftMargin",
-            )}
+            label={t("pageFooter.leftMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageFooterMLeft}
             onChange={(value) => {
@@ -47,9 +45,9 @@ export const PageFooterRoot: FC = memo(function PageFooterRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label={t(
-              "attributePanel.mblLib.attributePanel.pageFooter.rightMargin",
-            )}
+            label={t("pageFooter.rightMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageFooterMRight}
             onChange={(value) => {
@@ -66,9 +64,9 @@ export const PageFooterRoot: FC = memo(function PageFooterRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label={t(
-              "attributePanel.mblLib.attributePanel.pageFooter.topMargin",
-            )}
+            label={t("pageFooter.topMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageFooterMTop}
             onChange={(value) => {
@@ -85,9 +83,9 @@ export const PageFooterRoot: FC = memo(function PageFooterRoot() {
         </Grid.Col>
         <Grid.Col span={6}>
           <NumberInput
-            label={t(
-              "attributePanel.mblLib.attributePanel.pageFooter.bottomMargin",
-            )}
+            label={t("pageFooter.bottomMargin", {
+              ns: "attributePanel",
+            })}
             size="xs"
             value={currentPageFooterMBottom}
             onChange={(value) => {

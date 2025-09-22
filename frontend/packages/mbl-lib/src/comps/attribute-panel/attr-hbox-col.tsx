@@ -90,7 +90,7 @@ export const AttrHboxCol: FC<AttrHboxColProps> = memo(function AttrHboxCol({
           >
             <Grid.Col span={8}>
               <Text size="sm" fw={500} mb={2} mt={2}>
-                {t("attributePanel.mblLib.common.column")} {index + 1}
+                {t("column", { ns: "common" })} {index + 1}
               </Text>
             </Grid.Col>
             <Grid.Col span={4}>
@@ -125,7 +125,7 @@ export const AttrHboxCol: FC<AttrHboxColProps> = memo(function AttrHboxCol({
         <Grid.Col span={8}>
           <NumberInput
             disabled={selectedItem.wildStar}
-            label={t("attributePanel.mblLib.common.size")}
+            label={t("size", { ns: "common" })}
             size="xs"
             value={selectedItem.flexValue || 100}
             onChange={(value) => {
@@ -140,8 +140,8 @@ export const AttrHboxCol: FC<AttrHboxColProps> = memo(function AttrHboxCol({
             disabled={selectedItem.wildStar}
             allowDeselect={false}
             size="xs"
-            label={t("attributePanel.mblLib.common.unit")}
-            placeholder={t("attributePanel.mblLib.common.selectValue")}
+            label={t("unit", { ns: "common" })}
+            placeholder={t("selectValue", { ns: "common" })}
             data={[
               { value: "%", label: "%" },
               { value: "px", label: "pt" },
