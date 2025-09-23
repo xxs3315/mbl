@@ -618,6 +618,9 @@ export const TableComponent: React.FC<TableComponentProps> = ({
           >
             {bindingContainer.children.map(
               (bindingColumnId: string, columnIndex: number) => {
+                const bindingColumnData =
+                  bindingColumnsMap.get(bindingColumnId);
+                if (!bindingColumnData) return null;
                 // 从 bindingColumnId 中提取对应的 columnId（去掉 "-column-binding" 后缀）
                 const columnId = bindingColumnId.replace("-column-binding", "");
                 const columnData: PageItem = contentMap.get(columnId) as any;
@@ -653,6 +656,7 @@ export const TableComponent: React.FC<TableComponentProps> = ({
                     >
                       <TextComponent
                         props={{
+                          ...bindingColumnData,
                           id: bindingColumnId,
                           value:
                             (bindingColumnsMap.get(bindingColumnId) as any)

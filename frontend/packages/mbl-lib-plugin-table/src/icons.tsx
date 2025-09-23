@@ -75,3 +75,27 @@ export const ViewIcon = () => (
     <circle cx="12" cy="12" r="3" />
   </svg>
 );
+
+export const AlignLeftIcon = () => (
+  <svg {...SVG_PROPS} width="16" height="16">
+    <line x1="21" x2="3" y1="6" y2="6" />
+    <line x1="15" x2="3" y1="12" y2="12" />
+    <line x1="17" x2="3" y1="18" y2="18" />
+  </svg>
+);
+
+export const AlignCenterIcon = () => (
+  <svg {...SVG_PROPS} width="16" height="16">
+    <line x1="21" x2="3" y1="6" y2="6" />
+    <line x1="17" x2="7" y1="12" y2="12" />
+    <line x1="19" x2="5" y1="18" y2="18" />
+  </svg>
+);
+
+export const AlignRightIcon = () => (
+  <svg {...SVG_PROPS} width="16" height="16">
+    <line x1="21" x2="3" y1="6" y2="6" />
+    <line x1="21" x2="9" y1="12" y2="12" />
+    <line x1="21" x2="5" y1="18" y2="18" />
+  </svg>
+);

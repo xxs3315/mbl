@@ -26,6 +26,7 @@ import {
   getEditorProps,
 } from "./editor-utils";
 import { ViewIcon } from "./icons";
+import { AttrColumn } from "./attr-column";
 
 interface AttrPanelProps {
   props: {
@@ -111,11 +112,53 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
     }
   };
 
-  // 获取表格的列数据
+  const handleBindingColumnChange = (
+    columnId: string,
+    field: string,
+    value: any,
+  ) => {
+    if (onPropsChange) {
+      const newBindingColumns = props.attrs.bindingColumns.map(
+        ([id, columnData]: [string, any]) => {
+          if (id === columnId) {
+            return [id, { ...columnData, [field]: value }];
+          }
+          return [id, columnData];
+        },
+      );
+
+      console.log(newBindingColumns);
+
+      const newProps = {
+        ...props,
+        attrs: {
+          ...props.attrs,
+          bindingColumns: newBindingColumns,
+        },
+      };
+      onPropsChange(newProps);
+    }
+  };
+
   const columnsMap = React.useMemo(
     () => new Map(props.attrs.columns),
     [props.attrs.columns],
   );
+
+  const bindingColumnsMap = React.useMemo(
+    () => new Map(props.attrs.bindingColumns || []),
+    [props.attrs.bindingColumns],
+  );
+
+  const selectedColumnData = React.useMemo(() => {
+    if (!currentSubSelectedId) return null;
+
+    if (currentSubSelectedId.endsWith("-column-binding")) {
+      return bindingColumnsMap.get(currentSubSelectedId);
+    } else {
+      return columnsMap.get(currentSubSelectedId);
+    }
+  }, [currentSubSelectedId, columnsMap, bindingColumnsMap]);
 
   const tableRoot = React.useMemo(
     () => columnsMap.get("table-root") as any,
@@ -141,15 +184,12 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
 
   return (
     <Stack gap={0} style={{ padding: 0 }}>
-      {/* 表格属性标题 */}
       <Title order={4} style={{ marginBottom: 0 }}>
         {t("table.title", { ns: "attributePanel" })}
       </Title>
 
-      {/* 分隔线 */}
       <Divider my="xs" />
 
-      {/* 内边距设置 */}
       <Grid gutter="xs">
         <Grid.Col span={6}>
           <NumberInput
@@ -205,18 +245,14 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
         </Grid.Col>
       </Grid>
 
-      {/* 分隔线 */}
       <Divider my="xs" />
 
-      {/* 列分布编辑 */}
       <Title order={4} style={{ marginBottom: 0 }}>
         {t("table.columnDistribution", { ns: "attributePanel" })}
       </Title>
 
-      {/* 分隔线 */}
       <Divider my="xs" />
 
-      {/* 渲染每一列的编辑控件 */}
       {tableColumns.map((column: any, index: number) => (
         <React.Fragment key={column.id}>
           <Grid gutter="xs">
@@ -297,15 +333,12 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
         </React.Fragment>
       ))}
 
-      {/* 分隔线 */}
       <Divider my="xs" />
 
-      {/* 表格绑定信息 */}
       <Title order={4} style={{ marginBottom: 0 }}>
         表格绑定信息
       </Title>
 
-      {/* 分隔线 */}
       <Divider my="xs" />
 
       <Stack gap="0" mt={2} mb={2}>
@@ -376,18 +409,17 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
         })}
       </Stack>
 
-      {currentSubSelectedId && currentSubSelectedId !== "" && (
+      {selectedColumnData && (
         <>
-          {/* 分隔线 */}
           <Divider my="xs" />
-
-          {/* 列分布编辑 */}
-          <Title order={4} style={{ marginBottom: 0 }}>
-            {currentSubSelectedId}
-          </Title>
-
-          {/* 分隔线 */}
-          <Divider my="xs" />
+          <AttrColumn
+            selectedColumn={selectedColumnData}
+            onColumnChange={
+              currentSubSelectedId.endsWith("-column-binding")
+                ? handleBindingColumnChange
+                : handleColumnChange
+            }
+          />
         </>
       )}
 

@@ -9,7 +9,7 @@ export const EmptyState: React.FC = () => {
   return (
     <Alert
       icon={<AlertCircle size={12} />}
-      title={t("attributePanel.dataBinding.emptyState.title")}
+      title={t("emptyState.title", { ns: "dataBinding" })}
       variant="light"
       styles={{
         root: { padding: "8px" },
@@ -18,7 +18,7 @@ export const EmptyState: React.FC = () => {
         icon: { alignItems: "flex-start" },
       }}
     >
-      {t("attributePanel.dataBinding.emptyState.message")}
+      {t("emptyState.message", { ns: "dataBinding" })}
     </Alert>
   );
 };

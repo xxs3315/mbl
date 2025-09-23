@@ -18,23 +18,21 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
     <Modal
       opened={opened}
       onClose={onClose}
-      title={t("attributePanel.dataBinding.deleteModal.title")}
+      title={t("deleteModal.title", { ns: "dataBinding" })}
       centered
       size="sm"
     >
       <Stack gap="xs">
-        <Text size="sm">
-          {t("attributePanel.dataBinding.deleteModal.message")}
-        </Text>
+        <Text size="sm">{t("deleteModal.message", { ns: "dataBinding" })}</Text>
         <Text size="xs" c="dimmed">
-          {t("attributePanel.dataBinding.deleteModal.warning")}
+          {t("deleteModal.warning", { ns: "dataBinding" })}
         </Text>
         <Group justify="flex-end" gap="xs">
           <Button size="xs" variant="light" onClick={onClose}>
-            {t("attributePanel.dataBinding.deleteModal.cancel")}
+            {t("deleteModal.cancel", { ns: "dataBinding" })}
           </Button>
           <Button size="xs" color="red" onClick={onConfirm}>
-            {t("attributePanel.dataBinding.deleteModal.confirmDelete")}
+            {t("deleteModal.confirmDelete", { ns: "dataBinding" })}
           </Button>
         </Group>
       </Stack>
