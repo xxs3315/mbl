@@ -11,7 +11,7 @@ import {
   Modal,
   Button,
 } from "@mantine/core";
-import { Trash, Code, GripVertical, Edit3 } from "lucide-react";
+import { Trash, Code, GripVertical, Edit3, Send } from "lucide-react";
 import AceEditor from "react-ace";
 import { DataBindingConfig } from "../types";
 import { parseJsonStructure } from "../field-parser";
@@ -48,24 +48,79 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
   const editorRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const [fetchedFields, setFetchedFields] = useState<
+    ReturnType<typeof parseJsonStructure>
+  >([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [modalFetchedFields, setModalFetchedFields] = useState<
+    ReturnType<typeof parseJsonStructure>
+  >([]);
+  const [isFetchingModal, setIsFetchingModal] = useState(false);
+
   const validationError = getInputValidation(config.value, config.request);
-  const fields =
+  const staticFields =
     config.request === "data" ? parseJsonStructure(config.value) : [];
+  const displayFields =
+    config.request === "data" ? staticFields : fetchedFields;
   const editorConfig = getEditorConfig(config.request);
+
+  const handleFetchUrl = async (
+    url: string,
+    setFields: (fields: ReturnType<typeof parseJsonStructure>) => void,
+    setIsFetchingState: (isFetching: boolean) => void,
+  ) => {
+    if (!url) {
+      notifications.show({
+        title: "Error",
+        message: "URL cannot be empty.",
+        color: "red",
+      });
+      return;
+    }
+    setIsFetchingState(true);
+    setFields([]);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Request failed with status: ${response.status}`);
+      }
+      const data = await response.json();
+      const fields = parseJsonStructure(JSON.stringify(data));
+      setFields(fields);
+      notifications.show({
+        title: "Success",
+        message: "Data fetched and fields extracted successfully.",
+        color: "green",
+      });
+    } catch (error: any) {
+      notifications.show({
+        title: "Error",
+        message:
+          error.message ||
+          "Failed to fetch or parse data. Please check the URL and data format.",
+        color: "red",
+      });
+    } finally {
+      setIsFetchingState(false);
+    }
+  };
 
   const handleOpenModal = () => {
     setModalValue(config.value);
+    setModalFetchedFields([]);
     setModalOpen(true);
   };
 
   const handleSaveModal = () => {
     onUpdateValue(config.id, modalValue);
     setModalOpen(false);
+    setModalFetchedFields([]);
   };
 
   const handleCancelModal = () => {
     setModalValue(config.value);
     setModalOpen(false);
+    setModalFetchedFields([]);
   };
 
   // Modal中的格式化JSON功能
@@ -204,31 +259,55 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
           </Group>
         </Group>
 
-        <Box
-          mb="0"
-          style={{
-            border: validationError ? "1px solid #fa5252" : "1px solid #e9ecef",
-            borderRadius: "4px",
-            overflow: "hidden",
-            backgroundColor: "#fff",
-          }}
-        >
-          <AceEditor
-            mode={config.request === "data" ? "json" : "text"}
-            theme={editorTheme}
-            value={config.value}
-            onChange={(value) => onUpdateValue(config.id, value)}
-            placeholder={
-              config.request === "url"
-                ? t("configItem.urlPlaceholder", { ns: "dataBinding" })
-                : t("configItem.jsonPlaceholder", { ns: "dataBinding" })
-            }
-            width="100%"
-            height={config.request === "data" ? "100px" : "60px"}
-            setOptions={editorConfig}
-            editorProps={getEditorProps()}
-            style={getEditorStyle()}
-          />
+        <Box style={{ position: "relative" }}>
+          <Box
+            mb="0"
+            style={{
+              border: validationError
+                ? "1px solid #fa5252"
+                : "1px solid #e9ecef",
+              borderRadius: "4px",
+              overflow: "hidden",
+              backgroundColor: "#fff",
+            }}
+          >
+            <AceEditor
+              mode={config.request === "data" ? "json" : "text"}
+              theme={editorTheme}
+              value={config.value}
+              onChange={(value) => onUpdateValue(config.id, value)}
+              placeholder={
+                config.request === "url"
+                  ? t("configItem.urlPlaceholder", { ns: "dataBinding" })
+                  : t("configItem.jsonPlaceholder", { ns: "dataBinding" })
+              }
+              width="100%"
+              height={config.request === "data" ? "100px" : "60px"}
+              setOptions={editorConfig}
+              editorProps={getEditorProps()}
+              style={getEditorStyle()}
+            />
+          </Box>
+          {config.request === "url" && (
+            <Tooltip
+              label={t("configItem.fetchData", {
+                ns: "dataBinding",
+                defaultValue: "Fetch Data",
+              })}
+            >
+              <ActionIcon
+                variant="light"
+                color="cyan"
+                onClick={() =>
+                  handleFetchUrl(config.value, setFetchedFields, setIsFetching)
+                }
+                loading={isFetching}
+                style={{ position: "absolute", top: 5, right: 5, zIndex: 1 }}
+              >
+                <Send size={12} />
+              </ActionIcon>
+            </Tooltip>
+          )}
         </Box>
 
         {validationError && (
@@ -238,13 +317,13 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
         )}
 
         {/* 显示可供绑定的字段 */}
-        {config.request === "data" && fields.length > 0 && (
+        {displayFields.length > 0 && (
           <Box>
             <Text size="xs" fw={500} mb="0" mt="xs">
               {t("configItem.availableFields", { ns: "dataBinding" })}
             </Text>
-            <Group gap="xs">
-              {fields.map((field) => (
+            <Group gap="xs" mt={4}>
+              {displayFields.map((field) => (
                 <Tooltip
                   key={field.name}
                   label={`${field.name} (${field.type})`}
@@ -329,12 +408,42 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
           <div
             ref={containerRef}
             style={{
-              height: "calc(100% - 80px)",
+              position: "relative",
+              flex: 1,
               minHeight: "0",
               border: "1px solid #ccc",
             }}
             id="modal-container-editor"
           >
+            {config.request === "url" && (
+              <Tooltip
+                label={t("configItem.fetchData", {
+                  ns: "dataBinding",
+                  defaultValue: "Fetch Data",
+                })}
+              >
+                <ActionIcon
+                  variant="light"
+                  color="cyan"
+                  onClick={() =>
+                    handleFetchUrl(
+                      modalValue,
+                      setModalFetchedFields,
+                      setIsFetchingModal,
+                    )
+                  }
+                  loading={isFetchingModal}
+                  style={{
+                    position: "absolute",
+                    top: 5,
+                    right: 40,
+                    zIndex: 10,
+                  }}
+                >
+                  <Send size={16} />
+                </ActionIcon>
+              </Tooltip>
+            )}
             <AceEditor
               mode={config.request === "data" ? "json" : "text"}
               theme={editorTheme}
@@ -365,6 +474,22 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
               }}
             />
           </div>
+
+          {/* Modal中的可用字段预览 */}
+          {modalFetchedFields.length > 0 && (
+            <Box mt="sm" style={{ flexShrink: 0 }}>
+              <Text size="xs" fw={500}>
+                {t("configItem.availableFields", { ns: "dataBinding" })}
+              </Text>
+              <Group gap="xs" mt={4}>
+                {modalFetchedFields.map((field) => (
+                  <Badge key={field.name} color={field.color} variant="light">
+                    {field.name}
+                  </Badge>
+                ))}
+              </Group>
+            </Box>
+          )}
 
           {/* 按钮组 */}
           <Group justify="flex-end" gap="sm">
