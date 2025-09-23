@@ -284,7 +284,7 @@ public class PageContentBuilderService {
           //            generatedObjects.put((String) elementMap.get("id"), pageNumberElement);
           //          }
           break;
-        case "table":
+        case "plugin-table":
           IPLRenderableObject<?> tableElement =
               buildTableElement(elementMap, contentMap, config, generatedObjects, isGenerated);
           rows.add(tableElement);
@@ -602,7 +602,22 @@ public class PageContentBuilderService {
     }
 
     List<?> columns = (List<?>) elementMap.get("columns");
-    Map<?, ?> bindings = (Map<?, ?>) elementMap.get("bindings");
+    List<?> bindingColumns = (List<?>) elementMap.get("bindingColumns");
+    List<?> bindings = (List<?>) elementMap.get("bindings");
+
+    Map bindingsMap = new LinkedHashMap<>();
+    bindingsMap.put(
+        "table-root", (bindings != null && bindings.size() > 0) ? bindings.get(0) : null);
+    // 转换列配置为Map
+    for (Object column : bindingColumns) {
+      List<?> row = (List<?>) column;
+      if (!(((Map) row.get(1)).containsKey("children")
+          && ((Map) row.get(1)).get("children") != null)) {
+        bindingsMap.put(
+            ((String) row.get(0)).replaceAll("-column-binding", ""),
+                row.get(1));
+      }
+    }
 
     float[] padding = elementBuilderService.getElementPadding(elementMap);
 
@@ -630,7 +645,7 @@ public class PageContentBuilderService {
 
       // 构建表格主体
       List<IPLRenderableObject<?>> tableBody =
-          buildTableBody(columnMap, bindings, config, elementMap, generatedObjects, isGenerated);
+          buildTableBody(columnMap, bindingsMap, config, elementMap, generatedObjects, isGenerated);
       for (IPLRenderableObject<?> renderableObject : tableBody) {
         rowTable.addRow(new PLTableCell(renderableObject));
       }
@@ -923,7 +938,7 @@ public class PageContentBuilderService {
 
       // 更新colspans
       if (binding != null) {
-        String bindPath = String.valueOf(binding.get("bind"));
+        String bindPath = String.valueOf(binding.get("value"));
         Map<String, Object> cellData = getDataValueByBindingExt(data, bindPath);
         if ("colspanText".equals(cellData.get("type"))
             || "colspanList".equals(cellData.get("type"))
@@ -958,7 +973,7 @@ public class PageContentBuilderService {
       throws IOException {
 
     if (binding != null) {
-      String bindPath = String.valueOf(binding.get("bind"));
+      String bindPath = String.valueOf(binding.get("value"));
       Map<String, Object> cellData = getDataValueByBindingExt(data, bindPath);
 
       PLColor bgColor = null;
