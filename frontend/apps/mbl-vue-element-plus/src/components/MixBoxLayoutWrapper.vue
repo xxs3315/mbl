@@ -71,7 +71,7 @@ const mixBoxProps = computed(() => ({
   contents: currentContent.value,
   onContentChange: handleContentUpdate,  // 添加 onContentChange 回调
   theme: currentTheme.value,
-  baseUrl: props.baseUrl || "http://localhost:28080",
+  baseUrl: props.baseUrl || "http://localhost:29080",
   imageUploadPath: props.imageUploadPath || "/api/images/upload",
   pdfGeneratePath: props.imageUploadPath || "/api/pdf/generate",
   plugins: props.plugins,

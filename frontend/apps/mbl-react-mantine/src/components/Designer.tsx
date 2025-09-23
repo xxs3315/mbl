@@ -26,7 +26,7 @@ const Designer: React.FC = () => {
       }}
       theme={currentTheme}
       locale={currentLocale}
-      baseUrl={"http://localhost:28080"}
+      baseUrl={"http://localhost:29080"}
       imageUploadPath={"/api/images/upload"}
       pdfGeneratePath={"/api/pdf/generate"}
       plugins={plugins}
