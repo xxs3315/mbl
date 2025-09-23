@@ -56,7 +56,7 @@ export function configureAxios(baseUrl?: string) {
   // 请求拦截器
   axios.interceptors.request.use(
     (config) => {
-      console.log("Request config:", config);
+      // console.log("Request config:", config);
       // config.headers["Accept"] = "*/*";
       // config.headers["Content-Type"] = "application/json";
       config.baseURL = baseURL;
@@ -102,7 +102,7 @@ export function getAxios({ url, params = {} }: any) {
         params,
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         resolve(res.data);
       })
       .catch((err) => {
@@ -144,7 +144,7 @@ export function postAxios({ url, data }: any) {
       withCredentials: false,
     })
       .then((res) => {
-        console.log("Post response:", res);
+        // console.log("Post response:", res);
         resolve(res.data);
       })
       .catch((err) => {

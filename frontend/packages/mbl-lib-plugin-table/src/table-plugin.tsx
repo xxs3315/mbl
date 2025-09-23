@@ -44,7 +44,7 @@ export const tablePlugin = {
    * 处理拖拽数据
    */
   processDragData: (data: any) => {
-    console.log("[Table Plugin] Processing drag data:", data);
+    // console.log("[Table Plugin] Processing drag data:", data);
     return {
       type: "element",
       cat: "plugin-table",

@@ -267,12 +267,12 @@ const MixBoxLayoutContent = React.memo<{
         newProps: any,
         position: "header" | "body" | "footer",
       ) => {
-        console.log(
-          "[Plugin] Updating plugin props:",
-          itemId,
-          newProps,
-          position,
-        );
+        // console.log(
+        //   "[Plugin] Updating plugin props:",
+        //   itemId,
+        //   newProps,
+        //   position,
+        // );
 
         // 直接使用 store 方法更新，类似于 updateTextItemValue
         updatePluginItemProps(itemId, newProps, position);
@@ -406,9 +406,9 @@ const MixBoxLayoutContent = React.memo<{
       pdfGeneratePath,
     });
 
-    useEffect(() => {
-      console.log("[Preview] isPreviewing: ", isPreviewing);
-    }, [isPreviewing]);
+    // useEffect(() => {
+    //   console.log("[Preview] isPreviewing: ", isPreviewing);
+    // }, [isPreviewing]);
 
     // 使用内容变化监听 hook
     useContentChange(onContentChange);

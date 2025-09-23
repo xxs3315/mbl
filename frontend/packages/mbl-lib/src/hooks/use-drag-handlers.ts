@@ -56,7 +56,7 @@ export function useDragHandlers(
   // 定义工具函数
   const copyItem = React.useCallback(
     (id: string, type: string) => {
-      console.log("copy item", id);
+      // console.log("copy item", id);
       const newMap = cloneDeep(
         new Map(
           type === "header"
@@ -392,10 +392,10 @@ export function useDragHandlers(
 
         // 处理插件项目
         if (dropItem.attrs?.pluginId && enablePluginSystem && plugins) {
-          console.log(
-            "[Plugin] Processing plugin drop:",
-            dropItem.attrs.pluginId,
-          );
+          // console.log(
+          //   "[Plugin] Processing plugin drop:",
+          //   dropItem.attrs.pluginId,
+          // );
 
           // 查找对应的插件
           const pluginWrapper = plugins.find(
@@ -407,7 +407,7 @@ export function useDragHandlers(
             // 调用插件的processDragData方法
             if (plugin.processDragData) {
               const processedData = plugin.processDragData(dropItem);
-              console.log("[Plugin] Processed drag data:", processedData);
+              // console.log("[Plugin] Processed drag data:", processedData);
 
               // 将处理后的数据合并到v对象中
               Object.assign(v, processedData.attrs);
@@ -420,11 +420,11 @@ export function useDragHandlers(
           }
         }
 
-        console.log("new item", newId, v);
+        // console.log("new item", newId, v);
         newMap.set(newId, v);
       } else {
         // 是item, 则视drag的元素改变配置 TODO
-        console.log("drop to element: ", id);
+        // console.log("drop to element: ", id);
       }
 
       // store 变化

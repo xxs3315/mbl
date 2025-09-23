@@ -10,7 +10,7 @@ import {
   Select,
   Divider,
 } from "@mantine/core";
-import { useI18n } from "@xxs3315/mbl-providers";
+import { useCurrentSelectedId, useI18n } from "@xxs3315/mbl-providers";
 
 interface AttrPanelProps {
   props: {
@@ -32,6 +32,7 @@ interface AttrPanelProps {
       pLeft: number;
       bindings: any[];
       columns: any[];
+      bindingColumns: any[];
     };
   };
   onPropsChange?: (newProps: any) => void;
@@ -42,6 +43,9 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
   onPropsChange,
 }) => {
   const { t } = useI18n();
+
+  const { currentSubSelectedId } = useCurrentSelectedId();
+
   const handlePaddingChange = (
     field: "pTop" | "pRight" | "pBottom" | "pLeft",
     value: number,
@@ -261,6 +265,37 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
           <Divider my="xs" />
         </React.Fragment>
       ))}
+
+      {/* 分隔线 */}
+      <Divider my="xs" />
+
+      {/* 列分布编辑 */}
+      <Title order={4} style={{ marginBottom: 0 }}>
+        表格绑定信息
+      </Title>
+
+      {/* 分隔线 */}
+      <Divider my="xs" />
+
+      {/* 表格绑定信息 */}
+      <Text size="sm" fw={500} mb={2} mt={2}>
+        {props.attrs.bindings.map((binding: any) => binding.id).join(", ")}
+      </Text>
+
+      {currentSubSelectedId && currentSubSelectedId !== "" && (
+        <>
+          {/* 分隔线 */}
+          <Divider my="xs" />
+
+          {/* 列分布编辑 */}
+          <Title order={4} style={{ marginBottom: 0 }}>
+            {currentSubSelectedId}
+          </Title>
+
+          {/* 分隔线 */}
+          <Divider my="xs" />
+        </>
+      )}
     </Stack>
   );
 };

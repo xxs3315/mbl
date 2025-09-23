@@ -148,7 +148,7 @@ export function useTaskPolling({
         const activeTasks = getActiveTasks();
         // 如果有进行中的任务且当前没有轮询，则开始轮询
         if (activeTasks.length > 0 && !intervalRef.current) {
-          console.log("检测到新任务，开始轮询");
+          // console.log("检测到新任务，开始轮询");
           startPolling();
         }
       }
@@ -163,7 +163,7 @@ export function useTaskPolling({
         const activeTasks = getActiveTasks();
         // 如果有进行中的任务且当前没有轮询，则开始轮询
         if (activeTasks.length > 0 && !intervalRef.current) {
-          console.log("定期检查发现新任务，开始轮询");
+          // console.log("定期检查发现新任务，开始轮询");
           startPolling();
         }
       }

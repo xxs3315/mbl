@@ -77,7 +77,7 @@ export function usePreview({ baseUrl, pdfGeneratePath }: UsePreviewProps = {}) {
               "queuePosition" in taskData ? taskData.queuePosition : null,
             message: response.message || "任务已创建",
           });
-          console.log("预览任务已创建:", taskData.taskId);
+          // console.log("预览任务已创建:", taskData.taskId);
         }
       }
     } catch (error) {
@@ -125,7 +125,7 @@ export function usePreview({ baseUrl, pdfGeneratePath }: UsePreviewProps = {}) {
               "queuePosition" in taskData ? taskData.queuePosition : null,
             message: response.message || "任务已创建",
           });
-          console.log("批量预览任务已创建:", taskData.taskId);
+          // console.log("批量预览任务已创建:", taskData.taskId);
         }
       }
     } catch (error) {

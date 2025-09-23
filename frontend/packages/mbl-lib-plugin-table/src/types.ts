@@ -21,6 +21,7 @@ export interface TablePluginProps {
     pLeft: number;
     bindings: any[];
     columns: any[];
+    bindingColumns: any[];
   };
 }
 
@@ -140,6 +141,97 @@ export const TABLE_PLUGIN_METADATA = {
           canGrow: false,
           flexValue: 34,
           flexUnit: "%",
+        },
+      ],
+    ],
+    bindingColumns: [
+      [
+        "table-root-column-binding",
+        {
+          id: "table-root-column-binding",
+          title: "",
+          children: ["hlG3wLEQNtxW-column-binding"],
+          cat: "container",
+          direction: "vertical",
+        },
+      ],
+
+      [
+        "hlG3wLEQNtxW-column-binding",
+        {
+          id: "hlG3wLEQNtxW-column-binding",
+          title: "container-hlG3wLEQNtxW-column-binding",
+          children: [
+            "97p5pTRWYJL9-column-binding",
+            "e6ccaf5fd46t-column-binding",
+            "cEaNlFkj8gwV-column-binding",
+          ],
+          cat: "container",
+          direction: "horizontal",
+          wildStar: true,
+          canShrink: false,
+          canGrow: false,
+          flexValue: 100,
+          flexUnit: "px",
+          horizontal: "center",
+          vertical: "middle",
+        },
+      ],
+      [
+        "97p5pTRWYJL9-column-binding",
+        {
+          id: "97p5pTRWYJL9-column-binding",
+          title: "text-97p5pTRWYJL9-column-binding",
+          cat: "text",
+          value: "",
+          horizontal: "center",
+          vertical: "middle",
+          font: "simsun",
+          fontSize: 10,
+          fontColor: "#000000",
+          // wildStar: false,
+          // canShrink: false,
+          // canGrow: false,
+          // flexValue: 16,
+          // flexUnit: "%",
+        },
+      ],
+      [
+        "e6ccaf5fd46t-column-binding",
+        {
+          id: "e6ccaf5fd46t-column-binding",
+          title: "text-e6ccaf5fd46t-column-binding",
+          cat: "text",
+          value: "",
+          horizontal: "center",
+          vertical: "middle",
+          font: "simsun",
+          fontSize: 10,
+          fontColor: "#000000",
+          // wildStar: false,
+          // canShrink: false,
+          // canGrow: false,
+          // flexValue: 50,
+          // flexUnit: "%",
+        },
+      ],
+      [
+        "cEaNlFkj8gwV-column-binding",
+        {
+          id: "cEaNlFkj8gwV-column-binding",
+          title: "text-cEaNlFkj8gwV-column-binding",
+          cat: "text",
+          value: "",
+          horizontal: "center",
+          vertical: "middle",
+          font: "simsun",
+          fontSize: 10,
+          fontColor: "#000000",
+          // wildStar: true,
+          // canShrink: false,
+          // canGrow: false,
+          // flexValue: 34,
+          // flexUnit: "%",
         },
       ],
     ],

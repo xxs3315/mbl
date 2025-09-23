@@ -251,6 +251,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                   position="top"
                 >
                   <DndBox
+                    id={config.id}
                     name={field.name}
                     type={
                       config.shape === "list"
@@ -263,12 +264,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                     shape={config.shape}
                     request={config.request}
                     value={config.value}
-                    attrs={{
-                      bind: field.name,
-                      shape: config.shape,
-                      request: config.request,
-                      value: config.value,
-                    }}
+                    attrs={null}
                   >
                     <Group
                       gap="xs"

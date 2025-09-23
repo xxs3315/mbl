@@ -126,7 +126,7 @@ export function useComponentRenderer(
         default:
           // 检查是否是插件项目
           if (props.pluginId && enablePluginSystem && plugins) {
-            console.log("[Plugin] Rendering plugin component:", props.pluginId);
+            // console.log("[Plugin] Rendering plugin component:", props.pluginId);
 
             // 查找对应的插件
             const pluginWrapper = plugins.find(

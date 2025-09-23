@@ -54,12 +54,12 @@ export const AttributePanelRenderer: React.FC<AttributePanelRendererProps> =
       enablePluginSystem = false,
       onPluginPropsChange,
     }) => {
-      console.log(
-        "AttributePanelRenderer - currentSelectedId:",
-        currentSelectedId,
-        "selectedItemInfo:",
-        selectedItemInfo,
-      );
+      // console.log(
+      //   "AttributePanelRenderer - currentSelectedId:",
+      //   currentSelectedId,
+      //   "selectedItemInfo:",
+      //   selectedItemInfo,
+      // );
 
       // 首先检查是否是特殊页面ID
       if (currentSelectedId in COMPONENT_MAP) {
@@ -83,10 +83,10 @@ export const AttributePanelRenderer: React.FC<AttributePanelRendererProps> =
         plugins &&
         onPluginPropsChange
       ) {
-        console.log(
-          "[Plugin] Rendering plugin attribute panel:",
-          item.pluginId,
-        );
+        // console.log(
+        //   "[Plugin] Rendering plugin attribute panel:",
+        //   item.pluginId,
+        // );
 
         // 查找对应的插件
         const pluginWrapper = plugins.find(
@@ -104,7 +104,7 @@ export const AttributePanelRenderer: React.FC<AttributePanelRendererProps> =
             };
 
             const handlePluginPropsChange = (newProps: any) => {
-              console.log("[Plugin] Plugin props changed:", newProps);
+              // console.log("[Plugin] Plugin props changed:", newProps);
               onPluginPropsChange(
                 item.id,
                 newProps.attrs,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Textarea } from "@mantine/core";
+import { Textarea, Badge, Group } from "@mantine/core";
 import { pt2px } from "@xxs3315/mbl-utils";
 import {
   useCurrentSelectedId,
@@ -14,6 +14,28 @@ import {
   InsertLeftIcon,
   InsertRightIcon,
 } from "./icons";
+// 链接图标组件
+const LinkIcon = ({
+  size = 12,
+  color = "#0ea5e9",
+}: {
+  size?: number;
+  color?: string;
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+  </svg>
+);
 import { BUTTON_STYLE, BUTTONS_CONTAINER_STYLE } from "./styles";
 
 interface TextComponentProps {
@@ -240,6 +262,7 @@ export const TextComponent: React.FC<TextComponentProps> = ({
             ? `0 0 0 1px ${colors?.primary || "#3b82f6"}`
             : "none",
         width: "100%",
+        cursor: props.readOnly ? "pointer" : "text",
       },
     }),
     [
@@ -262,6 +285,10 @@ export const TextComponent: React.FC<TextComponentProps> = ({
     ],
   );
 
+  // 判断是否是绑定字段
+  const isBindingField =
+    props.readOnly && localValue && localValue.trim() !== "";
+
   return (
     <div
       style={{
@@ -271,20 +298,50 @@ export const TextComponent: React.FC<TextComponentProps> = ({
         display: "flex",
       }}
     >
+      {/* 绑定字段图标 */}
+      {isBindingField && (
+        <div
+          style={{
+            position: "absolute",
+            left: "8px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            zIndex: 1,
+            pointerEvents: "none",
+          }}
+        >
+          <LinkIcon size={12} color="#6b7280" />
+        </div>
+      )}
+
+      {/* 文本输入框 */}
       <Textarea
         autosize
         size="xs"
         radius="xs"
         value={localValue}
+        placeholder={props.placeholder}
         readOnly={props.readOnly || false}
         onChange={props.readOnly ? undefined : handleChange}
-        onClick={props.readOnly ? undefined : handleClick}
+        onClick={handleClick}
         onFocus={props.readOnly ? undefined : handleFocus}
         onKeyDown={props.readOnly ? undefined : handleKeyDown}
         tabIndex={props.readOnly ? -1 : undefined}
         onCompositionStart={props.readOnly ? undefined : handleCompositionStart}
         onCompositionEnd={props.readOnly ? undefined : handleCompositionEnd}
-        styles={textareaStyles}
+        styles={{
+          ...textareaStyles,
+          input: {
+            ...textareaStyles.input,
+            // 为绑定字段添加特殊样式
+            ...(isBindingField && {
+              // backgroundColor: "#f9fafb",
+              // border: "1px solid #d1d5db",
+              // color: "#374151",
+              paddingLeft: "24px", // 为图标留出空间
+            }),
+          },
+        }}
       />
       {renderFloatingButtons}
     </div>

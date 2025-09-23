@@ -102,7 +102,7 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
     );
 
     if (activeTasks.length > 0 && !isPolling) {
-      console.log("任务中心检测到进行中的任务，启动轮询", activeTasks.length);
+      // console.log("任务中心检测到进行中的任务，启动轮询", activeTasks.length);
       startPolling();
     }
   }, [tasks, isPolling, startPolling]);
