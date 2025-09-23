@@ -52,9 +52,9 @@ export function CurrentSelectedIdProvider({
         //   },
         // );
         // 只有当值真正改变时才更新状态
-        if (newCurrentSelectedId !== currentSelectedId) {
-          setCurrentSelectedId(newCurrentSelectedId);
-        }
+        // if (newCurrentSelectedId !== currentSelectedId) {
+        setCurrentSelectedId(newCurrentSelectedId);
+        // }
       },
       setCurrentSubSelectedId: (newCurrentSubSelectedId: string) => {
         // console.log(
@@ -66,9 +66,9 @@ export function CurrentSelectedIdProvider({
         //   },
         // );
         // 只有当值真正改变时才更新状态
-        if (newCurrentSubSelectedId !== currentSubSelectedId) {
-          setCurrentSubSelectedId(newCurrentSubSelectedId);
-        }
+        // if (newCurrentSubSelectedId !== currentSubSelectedId) {
+        setCurrentSubSelectedId(newCurrentSubSelectedId);
+        // }
       },
     }),
     [currentSelectedId, currentSubSelectedId],

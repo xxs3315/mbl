@@ -160,11 +160,33 @@ export const TableComponent: React.FC<TableComponentProps> = ({
 
   // 监听全局 currentSelectedId 变化
   React.useEffect(() => {
-    if (currentSelectedId !== tableId) {
+    const isTableSelected = currentSelectedId === tableId;
+    const hasColumnSelected = currentSelectedColumnId !== "";
+
+    console.log(`[Table Selection] 表格 ${tableId} 监听选中状态变化:`);
+    console.log(`[Table Selection] currentSelectedId: ${currentSelectedId}`);
+    console.log(`[Table Selection] tableId: ${tableId}`);
+    console.log(
+      `[Table Selection] currentSelectedColumnId: ${currentSelectedColumnId}`,
+    );
+    console.log(
+      `[Table Selection] 表格选中状态: ${isTableSelected ? "已选中" : "未选中"}`,
+    );
+    console.log(
+      `[Table Selection] 列选中状态: ${hasColumnSelected ? "有列选中" : "无列选中"}`,
+    );
+
+    if (!isTableSelected) {
+      console.log(
+        `[Table Selection] 表格 ${tableId} 未被选中，清空内部选中状态`,
+      );
       setCurrentSelectedColumnId("");
-      setCurrentSubSelectedId("");
+      // 注意：不要清空全局的 currentSubSelectedId，因为其他表格可能正在使用它
+      // setCurrentSubSelectedId("");
+    } else {
+      console.log(`[Table Selection] 表格 ${tableId} 被选中`);
     }
-  }, [currentSelectedId, tableId]);
+  }, [currentSelectedId, tableId, currentSelectedColumnId]);
 
   // 处理文本值变化
   const handleValueChange = React.useCallback(
@@ -193,12 +215,33 @@ export const TableComponent: React.FC<TableComponentProps> = ({
   // 处理列选中
   const handleColumnSelect = React.useCallback(
     (columnId: string) => {
+      const isBindingColumn = columnId.endsWith("-column-binding");
+      const columnType = isBindingColumn ? "绑定列" : "普通列";
+
+      console.log(`[Table Column Selection] 表格 ${tableId} 列选中处理:`);
+      console.log(
+        `[Table Column Selection] 请求选中的列ID: ${columnId} (${columnType})`,
+      );
+      console.log(
+        `[Table Column Selection] 当前选中的列ID: ${currentSelectedColumnId}`,
+      );
+
       if (columnId !== currentSelectedColumnId) {
+        console.log(
+          `[Table Column Selection] 选中新列: ${columnId} (${columnType})`,
+        );
         setCurrentSelectedColumnId(columnId);
         setCurrentSubSelectedId(columnId);
+        console.log(
+          `[Table Column Selection] 已设置 currentSubSelectedId: ${columnId}`,
+        );
+      } else {
+        console.log(
+          `[Table Column Selection] 列 ${columnId} (${columnType}) 已经是选中状态，无需重复设置`,
+        );
       }
     },
-    [currentSelectedColumnId],
+    [currentSelectedColumnId, tableId],
   );
 
   // 处理列操作

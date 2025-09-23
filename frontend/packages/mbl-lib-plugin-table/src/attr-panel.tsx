@@ -64,6 +64,41 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
   const [modalOpen, setModalOpen] = React.useState(false);
   const [viewingBinding, setViewingBinding] = React.useState<any>(null);
 
+  // 添加调试信息：监听 currentSubSelectedId 变化
+  React.useEffect(() => {
+    console.log(
+      `[Attr Panel] currentSubSelectedId 变化: ${currentSubSelectedId}`,
+    );
+    console.log(`[Attr Panel] 表格ID: ${props.id}`);
+    console.log(`[Attr Panel] 列数量: ${props.attrs.columns?.length || 0}`);
+    console.log(
+      `[Attr Panel] 绑定列数量: ${props.attrs.bindingColumns?.length || 0}`,
+    );
+
+    // 检查当前选中的列是否属于这个表格
+    if (currentSubSelectedId) {
+      const isBindingColumn = currentSubSelectedId.endsWith("-column-binding");
+      const columnsMap = new Map(props.attrs.columns || []);
+      const bindingColumnsMap = new Map(props.attrs.bindingColumns || []);
+
+      let belongsToThisTable = false;
+      if (isBindingColumn) {
+        belongsToThisTable = bindingColumnsMap.has(currentSubSelectedId);
+      } else {
+        belongsToThisTable = columnsMap.has(currentSubSelectedId);
+      }
+
+      console.log(
+        `[Attr Panel] 列 ${currentSubSelectedId} 是否属于表格 ${props.id}: ${belongsToThisTable}`,
+      );
+    }
+  }, [
+    currentSubSelectedId,
+    props.id,
+    props.attrs.columns?.length,
+    props.attrs.bindingColumns?.length,
+  ]);
+
   const handleOpenModal = (binding: any) => {
     setViewingBinding(binding);
     setModalOpen(true);
@@ -151,14 +186,53 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
   );
 
   const selectedColumnData = React.useMemo(() => {
-    if (!currentSubSelectedId) return null;
+    const timestamp = Date.now();
+    console.log(`[Attr Panel] selectedColumnData 计算开始 (${timestamp}):`);
+    console.log(`[Attr Panel] currentSubSelectedId: ${currentSubSelectedId}`);
+    console.log(`[Attr Panel] 当前表格ID: ${props.id}`);
+    console.log(`[Attr Panel] columnsMap 大小: ${columnsMap.size}`);
+    console.log(
+      `[Attr Panel] bindingColumnsMap 大小: ${bindingColumnsMap.size}`,
+    );
 
-    if (currentSubSelectedId.endsWith("-column-binding")) {
-      return bindingColumnsMap.get(currentSubSelectedId);
-    } else {
-      return columnsMap.get(currentSubSelectedId);
+    if (!currentSubSelectedId) {
+      console.log(
+        `[Attr Panel] currentSubSelectedId 为空，返回 null (${timestamp})`,
+      );
+      return null;
     }
-  }, [currentSubSelectedId, columnsMap, bindingColumnsMap]);
+
+    // 检查选中的列是否属于当前表格
+    const isBindingColumn = currentSubSelectedId.endsWith("-column-binding");
+    const columnType = isBindingColumn ? "绑定列" : "普通列";
+    console.log(`[Attr Panel] 列类型: ${columnType} (${timestamp})`);
+
+    let columnData = null;
+    if (isBindingColumn) {
+      columnData = bindingColumnsMap.get(currentSubSelectedId);
+      console.log(
+        `[Attr Panel] 从 bindingColumnsMap 获取数据 (${timestamp}):`,
+        columnData,
+      );
+    } else {
+      columnData = columnsMap.get(currentSubSelectedId);
+      console.log(
+        `[Attr Panel] 从 columnsMap 获取数据 (${timestamp}):`,
+        columnData,
+      );
+    }
+
+    // 验证列是否属于当前表格
+    if (!columnData) {
+      console.log(
+        `[Attr Panel] 列 ${currentSubSelectedId} 不属于当前表格 ${props.id}，返回 null (${timestamp})`,
+      );
+      return null;
+    }
+
+    console.log(`[Attr Panel] 成功获取列数据 (${timestamp}):`, columnData);
+    return columnData;
+  }, [currentSubSelectedId, columnsMap, bindingColumnsMap, props.id]);
 
   const tableRoot = React.useMemo(
     () => columnsMap.get("table-root") as any,
