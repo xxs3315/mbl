@@ -57,10 +57,13 @@ const DataBindingPanel: React.FC = () => {
     saveConfigs(updatedConfigs);
   };
 
-  // 更新配置值
-  const handleUpdateConfigValue = (id: string, value: string) => {
+  // 更新配置
+  const handleUpdateConfig = (
+    id: string,
+    updates: Partial<DataBindingConfig>,
+  ) => {
     const updatedConfigs = configs.map((config) =>
-      config.id === id ? { ...config, value } : config,
+      config.id === id ? { ...config, ...updates } : config,
     );
     setConfigs(updatedConfigs);
     saveConfigs(updatedConfigs);
@@ -146,7 +149,7 @@ const DataBindingPanel: React.FC = () => {
                 key={config.id}
                 config={config}
                 editorTheme={editorTheme}
-                onUpdateValue={handleUpdateConfigValue}
+                onUpdateConfig={handleUpdateConfig}
                 onDelete={handleOpenDeleteModal}
                 onFormat={handleFormatConfigJson}
               />

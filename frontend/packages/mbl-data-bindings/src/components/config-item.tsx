@@ -10,8 +10,19 @@ import {
   Tooltip,
   Modal,
   Button,
+  TextInput,
+  Textarea,
 } from "@mantine/core";
-import { Trash, Code, GripVertical, Edit3, Send } from "lucide-react";
+import {
+  Trash,
+  Code,
+  GripVertical,
+  Edit3,
+  Send,
+  Pencil,
+  Check,
+  X,
+} from "lucide-react";
 import AceEditor from "react-ace";
 import { DataBindingConfig } from "../types";
 import { parseJsonStructure } from "../field-parser";
@@ -30,7 +41,7 @@ import { useI18n } from "@xxs3315/mbl-providers";
 interface ConfigItemProps {
   config: DataBindingConfig;
   editorTheme: string;
-  onUpdateValue: (id: string, value: string) => void;
+  onUpdateConfig: (id: string, updates: Partial<DataBindingConfig>) => void;
   onDelete: (id: string) => void;
   onFormat: (id: string) => void;
 }
@@ -38,7 +49,7 @@ interface ConfigItemProps {
 export const ConfigItem: React.FC<ConfigItemProps> = ({
   config,
   editorTheme,
-  onUpdateValue,
+  onUpdateConfig,
   onDelete,
   onFormat,
 }) => {
@@ -47,6 +58,12 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
   const [modalValue, setModalValue] = useState(config.value);
   const editorRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState(config.name);
+  const [editedDescription, setEditedDescription] = useState(
+    config.description,
+  );
 
   const [fetchedFields, setFetchedFields] = useState<
     ReturnType<typeof parseJsonStructure>
@@ -112,7 +129,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
   };
 
   const handleSaveModal = () => {
-    onUpdateValue(config.id, modalValue);
+    onUpdateConfig(config.id, { value: modalValue });
     setModalOpen(false);
     setModalFetchedFields([]);
   };
@@ -121,6 +138,20 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
     setModalValue(config.value);
     setModalOpen(false);
     setModalFetchedFields([]);
+  };
+
+  const handleSaveEdit = () => {
+    onUpdateConfig(config.id, {
+      name: editedName,
+      description: editedDescription,
+    });
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditedName(config.name);
+    setEditedDescription(config.description);
+    setIsEditing(false);
   };
 
   // Modal中的格式化JSON功能
@@ -186,41 +217,91 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
       <Stack gap="0">
         <Group justify="space-between" align="flex-start">
           <Box flex={1}>
-            <Group gap="xs" mb={2}>
-              <Text size="xs" fw={500}>
-                {config.name}
-              </Text>
-              <Badge
-                size="xs"
-                color={config.shape === "list" ? "blue" : "green"}
-                variant="light"
-              >
-                {config.shape === "list"
-                  ? t("configItem.array", { ns: "dataBinding" })
-                  : t("configItem.object", { ns: "dataBinding" })}
-              </Badge>
-              <Badge
-                size="xs"
-                color={config.request === "url" ? "orange" : "purple"}
-                variant="light"
-              >
-                {config.request === "url"
-                  ? t("configItem.remote", { ns: "dataBinding" })
-                  : t("configItem.static", { ns: "dataBinding" })}
-              </Badge>
-            </Group>
-            <Text size="xs" c="dimmed" mb="xs">
-              {config.description}
-            </Text>
+            {isEditing ? (
+              <Stack gap="xs" mb="xs">
+                <TextInput
+                  size="xs"
+                  value={editedName}
+                  onChange={(e) => setEditedName(e.currentTarget.value)}
+                />
+                <Textarea
+                  size="xs"
+                  value={editedDescription}
+                  onChange={(e) => setEditedDescription(e.currentTarget.value)}
+                  autosize
+                  minRows={2}
+                />
+              </Stack>
+            ) : (
+              <>
+                <Group gap="xs" mb={2}>
+                  <Text size="xs" fw={500}>
+                    {config.name}
+                  </Text>
+                  <Badge
+                    size="xs"
+                    color={config.shape === "list" ? "blue" : "green"}
+                    variant="light"
+                  >
+                    {config.shape === "list"
+                      ? t("configItem.array", { ns: "dataBinding" })
+                      : t("configItem.object", { ns: "dataBinding" })}
+                  </Badge>
+                  <Badge
+                    size="xs"
+                    color={config.request === "url" ? "orange" : "purple"}
+                    variant="light"
+                  >
+                    {config.request === "url"
+                      ? t("configItem.remote", { ns: "dataBinding" })
+                      : t("configItem.static", { ns: "dataBinding" })}
+                  </Badge>
+                </Group>
+                <Text size="xs" c="dimmed" mb="xs">
+                  {config.description}
+                </Text>
+              </>
+            )}
           </Box>
-          <ActionIcon
-            size="sm"
-            variant="subtle"
-            color="red"
-            onClick={() => onDelete(config.id)}
-          >
-            <Trash size={12} />
-          </ActionIcon>
+          <Group gap={2}>
+            {isEditing ? (
+              <>
+                <ActionIcon
+                  size="sm"
+                  variant="light"
+                  color="green"
+                  onClick={handleSaveEdit}
+                >
+                  <Check size={12} />
+                </ActionIcon>
+                <ActionIcon
+                  size="sm"
+                  variant="light"
+                  color="gray"
+                  onClick={handleCancelEdit}
+                >
+                  <X size={12} />
+                </ActionIcon>
+              </>
+            ) : (
+              <ActionIcon
+                size="sm"
+                variant="subtle"
+                color="gray"
+                onClick={() => setIsEditing(true)}
+              >
+                <Edit3 size={12} />
+              </ActionIcon>
+            )}
+            <ActionIcon
+              size="sm"
+              variant="subtle"
+              color="red"
+              onClick={() => onDelete(config.id)}
+            >
+              <Trash size={12} />
+            </ActionIcon>
+          </Group>
         </Group>
 
         <Group justify="space-between" align="center" mb="0">
@@ -275,7 +356,7 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
               mode={config.request === "data" ? "json" : "text"}
               theme={editorTheme}
               value={config.value}
-              onChange={(value) => onUpdateValue(config.id, value)}
+              onChange={(value) => onUpdateConfig(config.id, { value })}
               placeholder={
                 config.request === "url"
                   ? t("configItem.urlPlaceholder", { ns: "dataBinding" })
@@ -343,7 +424,10 @@ export const ConfigItem: React.FC<ConfigItemProps> = ({
                     shape={config.shape}
                     request={config.request}
                     value={config.value}
-                    attrs={null}
+                    attrs={{
+                      dataSourceName: config.name,
+                      dataSourceDescription: config.description,
+                    }}
                   >
                     <Group
                       gap="xs"

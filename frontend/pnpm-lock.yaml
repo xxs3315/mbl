@@ -194,18 +194,12 @@ importers:
       '@xxs3315/mbl-dnd':
         specifier: workspace:*
         version: link:../mbl-dnd
-      '@xxs3315/mbl-locales':
-        specifier: workspace:*
-        version: link:../mbl-locales
       '@xxs3315/mbl-providers':
         specifier: workspace:*
         version: link:../mbl-providers
       ace-builds:
         specifier: ^1.43.3
         version: 1.43.3
-      axios:
-        specifier: ^1.10.0
-        version: 1.11.0
       json-schema-generator:
         specifier: ^2.0.6
         version: 2.0.6
@@ -224,9 +218,6 @@ importers:
       react-dom:
         specifier: ~19.1.0
         version: 19.1.0(react@19.1.0)
-      react-i18next:
-        specifier: ^15.7.0
-        version: 15.7.3(i18next@25.5.2(typescript@5.9.2))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.2)
     devDependencies:
       '@types/json-schema-generator':
         specifier: ^2.0.3
@@ -414,24 +405,24 @@ importers:
       '@xxs3315/mbl-dnd':
         specifier: workspace:*
         version: link:../mbl-dnd
-      '@xxs3315/mbl-locales':
-        specifier: workspace:*
-        version: link:../mbl-locales
       '@xxs3315/mbl-providers':
         specifier: workspace:*
         version: link:../mbl-providers
       '@xxs3315/mbl-utils':
         specifier: workspace:*
         version: link:../mbl-utils
+      ace-builds:
+        specifier: ^1.43.3
+        version: 1.43.3
       react:
         specifier: ~19.1.0
         version: 19.1.0
+      react-ace:
+        specifier: ^14.0.1
+        version: 14.0.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-dom:
         specifier: ~19.1.0
         version: 19.1.0(react@19.1.0)
-      react-i18next:
-        specifier: ^15.7.0
-        version: 15.7.3(i18next@25.5.2(typescript@5.9.2))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.2)
     devDependencies:
       '@types/react':
         specifier: ~19.1.0

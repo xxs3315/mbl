@@ -68,3 +68,10 @@ export const MoveRightIcon = () => (
     <path d="m15 18 6-6-6-6" />
   </svg>
 );
+
+export const ViewIcon = () => (
+  <svg {...SVG_PROPS} width="12" height="12">
+    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);

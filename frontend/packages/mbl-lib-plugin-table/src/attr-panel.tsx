@@ -9,8 +9,23 @@ import {
   Checkbox,
   Select,
   Divider,
+  Group,
+  Paper,
+  Badge,
+  Box,
+  Modal,
+  Tooltip,
+  ActionIcon,
+  Button,
 } from "@mantine/core";
 import { useCurrentSelectedId, useI18n } from "@xxs3315/mbl-providers";
+import AceEditor from "react-ace";
+import {
+  getEditorConfig,
+  getEditorStyle,
+  getEditorProps,
+} from "./editor-utils";
+import { ViewIcon } from "./icons";
 
 interface AttrPanelProps {
   props: {
@@ -45,6 +60,18 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
   const { t } = useI18n();
 
   const { currentSubSelectedId } = useCurrentSelectedId();
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [viewingBinding, setViewingBinding] = React.useState<any>(null);
+
+  const handleOpenModal = (binding: any) => {
+    setViewingBinding(binding);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setViewingBinding(null);
+  };
 
   const handlePaddingChange = (
     field: "pTop" | "pRight" | "pBottom" | "pLeft",
@@ -203,8 +230,12 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
                 <Grid.Col span={8}>
                   <Text size="sm" fw={500} mb={2} mt={2}>
                     {column.value && column.value.trim() !== ""
-                      ? `${t("table.columnLabel", { ns: "attributePanel" })}: ${column.value}`
-                      : `${t("table.columnLabel", { ns: "attributePanel" })}: ${index + 1}`}
+                      ? `${t("table.columnLabel", { ns: "attributePanel" })}: ${
+                          column.value
+                        }`
+                      : `${t("table.columnLabel", { ns: "attributePanel" })}: ${
+                          index + 1
+                        }`}
                   </Text>
                 </Grid.Col>
                 <Grid.Col span={4}>
@@ -269,7 +300,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
       {/* 分隔线 */}
       <Divider my="xs" />
 
-      {/* 列分布编辑 */}
+      {/* 表格绑定信息 */}
       <Title order={4} style={{ marginBottom: 0 }}>
         表格绑定信息
       </Title>
@@ -277,10 +308,73 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
       {/* 分隔线 */}
       <Divider my="xs" />
 
-      {/* 表格绑定信息 */}
-      <Text size="sm" fw={500} mb={2} mt={2}>
-        {props.attrs.bindings.map((binding: any) => binding.id).join(", ")}
-      </Text>
+      <Stack gap="0" mt={2} mb={2}>
+        {(props.attrs.bindings || []).map((binding: any) => {
+          const editorConfig = getEditorConfig(binding.request);
+          return (
+            <Paper key={binding.id} p="xs" withBorder>
+              <Stack gap="0">
+                <Group gap="xs">
+                  <Text size="xs" fw={500}>
+                    {binding.name || binding.id}
+                  </Text>
+                  <Badge
+                    size="xs"
+                    color={binding.shape === "list" ? "blue" : "green"}
+                    variant="light"
+                  >
+                    {binding.shape}
+                  </Badge>
+                  <Badge
+                    size="xs"
+                    color={binding.request === "url" ? "orange" : "purple"}
+                    variant="light"
+                  >
+                    {binding.request}
+                  </Badge>
+                </Group>
+                <Text size="xs" c="dimmed">
+                  {binding.description}
+                </Text>
+                <Group justify="space-between" align="center" mt="xs">
+                  <Text size="xs" fw={500}>
+                    {binding.request === "url" ? "URL Address" : "JSON Data"}
+                  </Text>
+                  <Tooltip label="View in large window">
+                    <ActionIcon
+                      size="sm"
+                      variant="subtle"
+                      color="blue"
+                      onClick={() => handleOpenModal(binding)}
+                    >
+                      <ViewIcon />
+                    </ActionIcon>
+                  </Tooltip>
+                </Group>
+                <Box
+                  style={{
+                    border: "1px solid #e9ecef",
+                    borderRadius: "4px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <AceEditor
+                    mode={binding.request === "data" ? "json" : "text"}
+                    theme={"github"}
+                    value={binding.value}
+                    readOnly={true}
+                    width="100%"
+                    height={binding.request === "data" ? "100px" : "60px"}
+                    setOptions={{ ...editorConfig, readOnly: true }}
+                    editorProps={getEditorProps()}
+                    style={getEditorStyle()}
+                  />
+                </Box>
+              </Stack>
+            </Paper>
+          );
+        })}
+      </Stack>
 
       {currentSubSelectedId && currentSubSelectedId !== "" && (
         <>
@@ -296,6 +390,46 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
           <Divider my="xs" />
         </>
       )}
+
+      <Modal
+        opened={modalOpen}
+        onClose={handleCloseModal}
+        title={viewingBinding?.name || "View Content"}
+        size="xl"
+        centered
+        styles={{
+          content: {
+            height: "80vh",
+          },
+          body: {
+            height: "calc(80vh - 60px)",
+            display: "flex",
+            flexDirection: "column",
+          },
+        }}
+      >
+        <Stack gap="md" style={{ height: "100%" }}>
+          <div style={{ flex: 1, minHeight: 0, border: "1px solid #ccc" }}>
+            <AceEditor
+              mode={viewingBinding?.request === "data" ? "json" : "text"}
+              theme="github"
+              value={viewingBinding?.value || ""}
+              readOnly={true}
+              width="100%"
+              height="100%"
+              setOptions={{
+                ...getEditorConfig(viewingBinding?.request || "data"),
+                readOnly: true,
+              }}
+              editorProps={getEditorProps()}
+              style={getEditorStyle()}
+            />
+          </div>
+          <Group justify="flex-end">
+            <Button onClick={handleCloseModal}>Close</Button>
+          </Group>
+        </Stack>
+      </Modal>
     </Stack>
   );
 };

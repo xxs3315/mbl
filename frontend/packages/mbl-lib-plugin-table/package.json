@@ -34,7 +34,9 @@
     "@xxs3315/mbl-core": "workspace:*",
     "@xxs3315/mbl-dnd": "workspace:*",
     "@xxs3315/mbl-providers": "workspace:*",
-    "@xxs3315/mbl-utils": "workspace:*"
+    "@xxs3315/mbl-utils": "workspace:*",
+    "ace-builds": "^1.43.3",
+    "react-ace": "^14.0.1"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",

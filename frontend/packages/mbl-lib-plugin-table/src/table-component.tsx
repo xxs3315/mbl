@@ -513,43 +513,46 @@ export const TableComponent: React.FC<TableComponentProps> = ({
     (dropItem: any, targetColumnId?: string) => {
       if (!onPropsChange || !dropItem || !targetColumnId) return;
 
-      console.log("dropItem", dropItem);
-
-      // 从 dropItem 中获取字段信息
-      const { bind, request, shape, value } = dropItem;
+      // 从 dropItem 中获取字段信息和 attrs
+      const {
+        bind,
+        request,
+        shape,
+        value,
+        id: configId,
+        attrs: dropAttrs,
+      } = dropItem;
       const fieldName = bind || "";
+      const { dataSourceName, dataSourceDescription } = dropAttrs || {};
 
-      // 获取 config 的 id（这里需要从 dropItem 中获取，可能是 name 字段或其他标识）
-      const configId = dropItem.id || "";
-
-      // 创建新的 binding 对象
+      // 创建/更新 binding 对象
       const newBinding = {
         id: configId,
+        name: dataSourceName,
+        description: dataSourceDescription,
         request: request || "",
         shape: shape || "",
         value: value || "",
       };
 
-      // 更新 bindings 数组
-      const currentBindings = attrs.bindings || [];
-      const newBindings = [...currentBindings];
+      // 更新 bindings 数组 (数据源列表)
+      // const currentBindings = attrs.bindings || [];
+      // const newBindings = [...currentBindings];
+      // const existingIndex = newBindings.findIndex(
+      //   (binding: any) => binding.id === configId,
+      // );
+      //
+      // if (existingIndex >= 0) {
+      //   // 更新现有数据源
+      //   newBindings[existingIndex] = newBinding;
+      // } else {
+      //   // 添加新数据源
+      //   newBindings.push(newBinding);
+      // }
+      // table 只能有一个绑定数据源
+      const newBindings = [newBinding];
 
-      const existingIndex = newBindings.findIndex(
-        (binding: any) => binding.id === dropItem.id,
-      );
-
-      console.log("existingIndex", existingIndex);
-      if (existingIndex >= 0) {
-        // 更新现有绑定
-        newBindings[existingIndex] = newBinding;
-      } else {
-        // 添加新绑定
-        newBindings.push(newBinding);
-      }
-
-      console.log("newBindings", newBindings);
-
-      // 如果指定了目标列，则更新特定的绑定列
+      // 更新目标列的绑定字段
       const targetBindingColumnId = `${targetColumnId}-column-binding`;
       const newBindingColumns = (bindingColumns || []).map(([id, data]) => {
         if (id === targetBindingColumnId) {
