@@ -145,7 +145,7 @@ cd api
 ## 📖 User Guide
 
 ### Creating Page Layouts
-1. Drag elements from the left component panel to the canvas
+1. Drag elements from the top component panel to the canvas
 2. Use the right property panel to configure element styles
 3. Set element dimensions, alignment, fonts, and other properties
 
