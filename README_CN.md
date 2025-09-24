@@ -211,17 +211,13 @@ MBL 采用模块化架构，具有以下关键特点：
 - **功能插件**: 提供特定功能（如数据绑定、主题等）
 - **工具插件**: 提供开发工具和辅助功能
 
-### 创建新组件插件
-1. 在 `frontend/packages/` 创建插件目录
-2. 实现组件接口和渲染逻辑
-3. 在 `frontend/packages/mbl-lib/src/component-registry.ts` 注册组件
-4. 配置插件的元数据和依赖
-
-### 创建功能插件
-1. 在 `frontend/packages/` 创建插件目录
-2. 实现插件接口和核心功能
-3. 在应用中进行集成和配置
-4. 提供插件配置面板（可选）
+### 创建插件
+1. 在 `frontend/packages/` 创建插件目录（如 `mbl-lib-plugin-yourname`）
+2. 按照插件结构实现插件接口和核心功能
+3. 从包的 `index.ts` 文件导出插件
+4. 在应用程序的 `Designer.tsx` 组件中导入并注册插件
+5. 在 `package.json` 中配置插件元数据和依赖
+6. 提供插件配置面板（可选）
 
 ### 插件开发示例
 
@@ -350,6 +346,29 @@ export type { TablePluginProps } from "./types";
     "@xxs3315/mbl-providers": "workspace:*"
   }
 }
+```
+
+#### 5. 在应用中注册插件 (Designer.tsx)
+```typescript
+import { tablePlugin } from "@xxs3315/mbl-lib-plugin-table";
+
+const Designer: React.FC = () => {
+  // 定义插件列表
+  const plugins = [
+    {
+      metadata: tablePlugin.metadata,
+      plugin: tablePlugin,
+    },
+  ];
+
+  return (
+    <MixBoxLayout
+      // ... 其他属性
+      plugins={plugins}
+      enablePluginSystem={true}
+    />
+  );
+};
 ```
 
 ### 后端 API 开发

@@ -211,17 +211,13 @@ MBL adopts a modular architecture with the following key characteristics:
 - **Feature Plugins**: Provide specific functionality (data binding, themes, etc.)
 - **Tool Plugins**: Provide development tools and utilities
 
-### Creating New Component Plugins
-1. Create a plugin directory in `frontend/packages/`
-2. Implement component interfaces and rendering logic
-3. Register components in `frontend/packages/mbl-lib/src/component-registry.ts`
-4. Configure plugin metadata and dependencies
-
-### Creating Feature Plugins
-1. Create a plugin directory in `frontend/packages/`
-2. Implement plugin interfaces and core functionality
-3. Integrate and configure in applications
-4. Provide plugin configuration panels (optional)
+### Creating Plugins
+1. Create a plugin directory in `frontend/packages/` (e.g., `mbl-lib-plugin-yourname`)
+2. Implement plugin interfaces and core functionality following the plugin structure
+3. Export the plugin from the package's `index.ts` file
+4. Import and register the plugin in your application's `Designer.tsx` component
+5. Configure plugin metadata and dependencies in `package.json`
+6. Provide plugin configuration panels (optional)
 
 ### Plugin Development Example
 
@@ -350,6 +346,29 @@ export type { TablePluginProps } from "./types";
     "@xxs3315/mbl-providers": "workspace:*"
   }
 }
+```
+
+#### 5. Plugin Registration in Application (Designer.tsx)
+```typescript
+import { tablePlugin } from "@xxs3315/mbl-lib-plugin-table";
+
+const Designer: React.FC = () => {
+  // Define plugin list
+  const plugins = [
+    {
+      metadata: tablePlugin.metadata,
+      plugin: tablePlugin,
+    },
+  ];
+
+  return (
+    <MixBoxLayout
+      // ... other props
+      plugins={plugins}
+      enablePluginSystem={true}
+    />
+  );
+};
 ```
 
 ### Backend API Development
