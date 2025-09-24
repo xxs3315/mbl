@@ -79,6 +79,12 @@ if (fs.existsSync(distEsmSourceDir)) {
 
 // 删除 mbl-utils 目录（这些不应该在插件包中）
 removeDirectory(path.join(__dirname, "..", "dist", "mbl-dnd"));
+removeDirectory(path.join(__dirname, "..", "dist", "mbl-locales"));
+removeDirectory(path.join(__dirname, "..", "dist", "mbl-providers"));
+removeDirectory(path.join(__dirname, "..", "dist", "mbl-themes"));
 removeDirectory(path.join(__dirname, "..", "dist-esm", "mbl-dnd"));
+removeDirectory(path.join(__dirname, "..", "dist-esm", "mbl-locales"));
+removeDirectory(path.join(__dirname, "..", "dist-esm", "mbl-providers"));
+removeDirectory(path.join(__dirname, "..", "dist-esm", "mbl-themes"));
 
 console.log("Build output structure fixed!");
