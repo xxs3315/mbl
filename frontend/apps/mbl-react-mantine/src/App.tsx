@@ -66,20 +66,25 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        <NavLink component={Link} to="/" label="首页" active={isActive("/")} />
         <NavLink
           component={Link}
-          to="/designer"
+          to="/"
           label="设计器"
-          active={isActive("/designer")}
+          active={isActive("/")}
+        />
+        <NavLink
+          component={Link}
+          to="/about"
+          label="关于"
+          active={isActive("/about")}
         />
       </AppShell.Navbar>
       <AppShell.Main
         style={{ display: "flex", height: "100vh", background: "#f2f3f5" }}
       >
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/designer" element={<Designer />} />
+          <Route path="/" element={<Designer />} />
+          <Route path="/about" element={<Homepage />} />
         </Routes>
       </AppShell.Main>
     </AppShell>
