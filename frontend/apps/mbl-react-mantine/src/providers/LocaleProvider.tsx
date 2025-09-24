@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
-
-type SupportedLocale = "zh-CN" | "en-US";
+import {
+  detectBrowserLocale,
+  type SupportedLocale,
+} from "../utils/locale-detector";
 
 interface LocaleContextType {
   currentLocale: SupportedLocale;
@@ -23,12 +25,17 @@ interface LocaleProviderProps {
 
 export const LocaleProvider: React.FC<LocaleProviderProps> = ({ children }) => {
   const [currentLocale, setCurrentLocale] = useState<SupportedLocale>(() => {
-    // 从 localStorage 读取保存的语言环境，默认为 zh-CN
+    // 从 localStorage 读取保存的语言环境
     const savedLocale = localStorage.getItem("app-locale") as SupportedLocale;
     const validLocales: SupportedLocale[] = ["zh-CN", "en-US"];
-    return savedLocale && validLocales.includes(savedLocale)
-      ? savedLocale
-      : "zh-CN";
+
+    // 如果有保存的语言设置，使用保存的设置
+    if (savedLocale && validLocales.includes(savedLocale)) {
+      return savedLocale;
+    }
+
+    // 否则自动检测浏览器语言
+    return detectBrowserLocale();
   });
 
   const setLocale = (locale: SupportedLocale) => {

@@ -15,6 +15,11 @@ import { MixBoxLayout } from "@xxs3315/mbl-lib";
 import { contents } from "@xxs3315/mbl-lib-example-data";
 import { tablePlugin } from "@xxs3315/mbl-lib-plugin-table";
 
+import { useLocale } from '../composables/useLocale'
+
+// 使用语言 composable
+const { currentLocale } = useLocale()
+
 // Props定义
 interface Props {
   id?: string;
@@ -27,6 +32,7 @@ interface Props {
   imageUploadPath?: string;
   imageDownloadPath?: string;
   pdfGeneratePath?: string;
+  locale?: 'zh-CN' | 'en-US';
   plugins?: Array<{ metadata: any; plugin: any }>;
   enablePluginSystem?: boolean;
 }
@@ -42,6 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
   imageUploadPath: undefined,
   imageDownloadPath: undefined,
   pdfGeneratePath: undefined,
+  locale: 'zh-CN',
   plugins: () => [{
     metadata: tablePlugin.metadata,
     plugin: tablePlugin,
@@ -74,6 +81,7 @@ const mixBoxProps = computed(() => ({
   baseUrl: props.baseUrl || "http://localhost:29080",
   imageUploadPath: props.imageUploadPath || "/api/images/upload",
   pdfGeneratePath: props.imageUploadPath || "/api/pdf/generate",
+  locale: currentLocale.value,
   plugins: props.plugins,
   enablePluginSystem: props.enablePluginSystem
 }));

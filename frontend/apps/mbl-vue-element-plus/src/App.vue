@@ -6,6 +6,7 @@ import MixBoxLayoutWrapper from './components/MixBoxLayoutWrapper.vue'
 import AppHeader from './components/AppHeader.vue'
 import AppSidebar from './components/AppSidebar.vue'
 import ThemeProvider from './providers/ThemeProvider.vue'
+import LocaleProvider from './providers/LocaleProvider.vue'
 
 import { contents } from "@xxs3315/mbl-lib-example-data";
 import "@xxs3315/mbl-lib/index.css";
@@ -112,8 +113,9 @@ const closeMobileSidebar = () => {
 </script>
 
 <template>
-  <ThemeProvider ref="themeProviderRef">
-    <ElContainer class="app-container" direction="vertical">
+  <LocaleProvider>
+    <ThemeProvider ref="themeProviderRef">
+      <ElContainer class="app-container" direction="vertical">
       <!-- 头部区域 -->
       <AppHeader 
         :collapsed="sidebarCollapsed" 
@@ -166,7 +168,8 @@ const closeMobileSidebar = () => {
         </ElMain>
       </ElContainer>
     </ElContainer>
-  </ThemeProvider>
+    </ThemeProvider>
+  </LocaleProvider>
 </template>
 
 <style scoped>

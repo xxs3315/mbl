@@ -24,6 +24,7 @@
     </div>
     
     <div class="header-right">
+      <LanguageSwitcher />
       <ThemeSwitcher />
       
       <el-dropdown trigger="click">
@@ -58,6 +59,7 @@ import {
   SwitchButton
 } from '@element-plus/icons-vue'
 import ThemeSwitcher from './ThemeSwitcher.vue'
+import LanguageSwitcher from './LanguageSwitcher.vue'
 import vueLogo from '../assets/vue.svg'
 
 // Props
