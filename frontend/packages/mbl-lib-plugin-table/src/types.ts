@@ -19,7 +19,7 @@ export interface TablePluginProps {
     pRight: number;
     pBottom: number;
     pLeft: number;
-    bindings: any[];
+    bindings: Record<string, any>;
     columns: any[];
     bindingColumns: any[];
   };
@@ -56,7 +56,7 @@ export const TABLE_PLUGIN_METADATA = {
     pRight: 0,
     pBottom: 0,
     pLeft: 0,
-    bindings: [],
+    bindings: {},
     columns: [
       [
         "table-root",

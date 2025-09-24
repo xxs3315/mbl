@@ -40,7 +40,7 @@ interface TableComponentProps {
     pRight: number;
     pBottom: number;
     pLeft: number;
-    bindings: any[];
+    bindings: Record<string, any>;
     columns: any[];
     bindingColumns: any[];
   };
@@ -362,7 +362,19 @@ export const TableComponent: React.FC<TableComponentProps> = ({
                 return [id, data];
               });
           }
-          break;
+
+          // 更新 bindings，去掉对应的 key 记录
+          const currentBindings = attrs.bindings || {};
+          const { [columnId]: deletedBinding, ...newBindings } =
+            currentBindings;
+
+          onPropsChange({
+            ...attrs,
+            columns: newColumns,
+            bindingColumns: newBindingColumns,
+            bindings: newBindings,
+          });
+          return;
         }
 
         case "insertLeft":
@@ -578,22 +590,16 @@ export const TableComponent: React.FC<TableComponentProps> = ({
         value: value || "",
       };
 
-      // 更新 bindings 数组 (数据源列表)
-      // const currentBindings = attrs.bindings || [];
-      // const newBindings = [...currentBindings];
-      // const existingIndex = newBindings.findIndex(
-      //   (binding: any) => binding.id === configId,
-      // );
-      //
-      // if (existingIndex >= 0) {
-      //   // 更新现有数据源
-      //   newBindings[existingIndex] = newBinding;
-      // } else {
-      //   // 添加新数据源
-      //   newBindings.push(newBinding);
-      // }
-      // table 只能有一个绑定数据源
-      const newBindings = [newBinding];
+      // 获取当前的 bindings 对象
+      const currentBindings = attrs.bindings || {};
+
+      // 1. 记录 drop 时的绑定信息到 table-root(key) 上
+      const newBindings = {
+        ...currentBindings,
+        "table-root": newBinding,
+        // 2. 记录当前列 id（key）, fieldName（value），如 key 已存在则覆盖，没有则新增
+        [targetColumnId]: { value: fieldName },
+      };
 
       // 更新目标列的绑定字段
       const targetBindingColumnId = `${targetColumnId}-column-binding`;

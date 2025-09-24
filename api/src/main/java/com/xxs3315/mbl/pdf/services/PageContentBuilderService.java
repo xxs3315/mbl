@@ -603,19 +603,37 @@ public class PageContentBuilderService {
 
     List<?> columns = (List<?>) elementMap.get("columns");
     List<?> bindingColumns = (List<?>) elementMap.get("bindingColumns");
-    List<?> bindings = (List<?>) elementMap.get("bindings");
+    Map<?, ?> bindings = (Map<?, ?>) elementMap.get("bindings");
 
-    Map bindingsMap = new LinkedHashMap<>();
-    bindingsMap.put(
-        "table-root", (bindings != null && bindings.size() > 0) ? bindings.get(0) : null);
-    // 转换列配置为Map
-    for (Object column : bindingColumns) {
-      List<?> row = (List<?>) column;
-      if (!(((Map) row.get(1)).containsKey("children")
-          && ((Map) row.get(1)).get("children") != null)) {
-        bindingsMap.put(
-            ((String) row.get(0)).replaceAll("-column-binding", ""),
-                row.get(1));
+    // 将 bindingColumns 中的属性复制到 bindings 中
+    if (bindings != null) {
+      for (Object entry : bindings.entrySet()) {
+        Map.Entry<?, ?> bindingEntry = (Map.Entry<?, ?>) entry;
+        String key = (String) bindingEntry.getKey();
+
+        // 跳过 table-root，只处理列绑定
+        if (!"table-root".equals(key)) {
+          String bindingColumnKey = key + "-column-binding";
+
+          // 在 bindingColumns 中查找对应的列
+          for (Object column : bindingColumns) {
+            List<?> row = (List<?>) column;
+            String columnKey = (String) row.get(0);
+
+            if (bindingColumnKey.equals(columnKey)) {
+              Map<String, Object> columnData = (Map<String, Object>) row.get(1);
+              Map<String, Object> bindingData = (Map<String, Object>) bindingEntry.getValue();
+
+              // 复制属性（除了 value）
+              for (Map.Entry<String, Object> attr : columnData.entrySet()) {
+                if (!"value".equals(attr.getKey())) {
+                  bindingData.put(attr.getKey(), attr.getValue());
+                }
+              }
+              break;
+            }
+          }
+        }
       }
     }
 
@@ -645,7 +663,7 @@ public class PageContentBuilderService {
 
       // 构建表格主体
       List<IPLRenderableObject<?>> tableBody =
-          buildTableBody(columnMap, bindingsMap, config, elementMap, generatedObjects, isGenerated);
+          buildTableBody(columnMap, bindings, config, elementMap, generatedObjects, isGenerated);
       for (IPLRenderableObject<?> renderableObject : tableBody) {
         rowTable.addRow(new PLTableCell(renderableObject));
       }

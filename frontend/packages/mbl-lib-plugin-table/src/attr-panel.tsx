@@ -46,7 +46,7 @@ interface AttrPanelProps {
       pRight: number;
       pBottom: number;
       pLeft: number;
-      bindings: any[];
+      bindings: Record<string, any>;
       columns: any[];
       bindingColumns: any[];
     };
@@ -416,43 +416,60 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
       <Divider my="xs" />
 
       <Stack gap="0" mt={2} mb={2}>
-        {(props.attrs.bindings || []).map((binding: any) => {
-          const editorConfig = getEditorConfig(binding.request);
+        {(() => {
+          const bindings = props.attrs.bindings || {};
+          const tableRootBinding = bindings["table-root"];
+
+          if (!tableRootBinding) {
+            return (
+              <Paper p="xs">
+                <Text size="xs" c="dimmed">
+                  暂无绑定数据源
+                </Text>
+              </Paper>
+            );
+          }
+
+          const editorConfig = getEditorConfig(tableRootBinding.request);
           return (
-            <Paper key={binding.id} p="xs" withBorder>
+            <Paper key={tableRootBinding.id} p="xs" withBorder>
               <Stack gap="0">
                 <Group gap="xs">
                   <Text size="xs" fw={500}>
-                    {binding.name || binding.id}
+                    {tableRootBinding.name || tableRootBinding.id}
                   </Text>
                   <Badge
                     size="xs"
-                    color={binding.shape === "list" ? "blue" : "green"}
+                    color={tableRootBinding.shape === "list" ? "blue" : "green"}
                     variant="light"
                   >
-                    {binding.shape}
+                    {tableRootBinding.shape}
                   </Badge>
                   <Badge
                     size="xs"
-                    color={binding.request === "url" ? "orange" : "purple"}
+                    color={
+                      tableRootBinding.request === "url" ? "orange" : "purple"
+                    }
                     variant="light"
                   >
-                    {binding.request}
+                    {tableRootBinding.request}
                   </Badge>
                 </Group>
                 <Text size="xs" c="dimmed">
-                  {binding.description}
+                  {tableRootBinding.description}
                 </Text>
                 <Group justify="space-between" align="center" mt="xs">
                   <Text size="xs" fw={500}>
-                    {binding.request === "url" ? "URL Address" : "JSON Data"}
+                    {tableRootBinding.request === "url"
+                      ? "URL Address"
+                      : "JSON Data"}
                   </Text>
                   <Tooltip label="View in large window">
                     <ActionIcon
                       size="sm"
                       variant="subtle"
                       color="blue"
-                      onClick={() => handleOpenModal(binding)}
+                      onClick={() => handleOpenModal(tableRootBinding)}
                     >
                       <ViewIcon />
                     </ActionIcon>
@@ -466,12 +483,14 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
                   }}
                 >
                   <AceEditor
-                    mode={binding.request === "data" ? "json" : "text"}
+                    mode={tableRootBinding.request === "data" ? "json" : "text"}
                     theme={"github"}
-                    value={binding.value}
+                    value={tableRootBinding.value}
                     readOnly={true}
                     width="100%"
-                    height={binding.request === "data" ? "100px" : "60px"}
+                    height={
+                      tableRootBinding.request === "data" ? "100px" : "60px"
+                    }
                     setOptions={{ ...editorConfig, readOnly: true }}
                     editorProps={getEditorProps()}
                     style={getEditorStyle()}
@@ -480,7 +499,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
               </Stack>
             </Paper>
           );
-        })}
+        })()}
       </Stack>
 
       {selectedColumnData && (
