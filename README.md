@@ -55,7 +55,6 @@ mbl/
 - **Spring Data JPA** - Data access layer
 - **H2 Database** - Embedded database
 - **PostgreSQL** - Production database
-- **PDFBox** - PDF generation library
 
 ## 📋 Requirements
 
