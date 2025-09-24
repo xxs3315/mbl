@@ -14,6 +14,7 @@ import com.helger.pdflayout.element.table.PLTableCell;
 import com.helger.pdflayout.element.text.PLText;
 import com.helger.pdflayout.element.vbox.PLVBox;
 import com.helger.pdflayout.spec.*;
+import com.xxs3315.mbl.pdf.properties.PdfMakerProperties;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -45,6 +46,8 @@ public class PageContentBuilderService {
   @Autowired private StyleService styleService;
 
   @Autowired private FontService fontService;
+
+  @Autowired private PdfMakerProperties pdfMakerProperties;
 
   /** 构建页面头部 */
   public PLVBox buildPageHeader(
@@ -888,9 +891,8 @@ public class PageContentBuilderService {
     List<Map> dataList = gson.fromJson(strictValue, listType);
 
     int dataCount = 1;
-    int dataLimit = 50;
+    int dataLimit = pdfMakerProperties.getTableMaxRecords();
     for (Map data : dataList) {
-      // demo环境下，只展示前50条数据
       if (dataCount > dataLimit) {
         break;
       }
@@ -914,9 +916,8 @@ public class PageContentBuilderService {
 
     List<Map> dataList = getJsonList(url);
     int dataCount = 1;
-    int dataLimit = 50;
+    int dataLimit = pdfMakerProperties.getTableMaxRecords();
     for (Map data : dataList) {
-      // demo环境下，只展示前50条数据
       if (dataCount > dataLimit) {
         break;
       }
