@@ -102,7 +102,20 @@ cd frontend
 pnpm install
 ```
 
-### 3. 启动前端开发服务器
+### 3. 构建前端包
+```bash
+# 构建所有包和插件
+pnpm run build
+
+# 或构建特定包
+cd packages/mbl-lib
+pnpm run build
+
+cd packages/mbl-lib-plugin-table
+pnpm run build
+```
+
+### 4. 启动前端开发服务器
 ```bash
 # React 19 + Mantine 示例（推荐用于插件开发）
 cd apps/mbl-react-mantine
@@ -113,15 +126,21 @@ cd apps/mbl-vue-element-plus
 pnpm dev
 ```
 
-### 4. 启动后端服务
+### 5. 启动后端服务
 ```bash
 cd api
-./mvnw spring-boot:run
+
+# 使用 H2 数据库启动（默认，用于开发）
+./mvnw spring-boot:run -Dspring-boot.run.profiles=h2
+
+# 或使用 PostgreSQL 启动（用于生产）
+./mvnw spring-boot:run -Dspring-boot.run.profiles=postgresql
 ```
 
-### 5. 访问应用
+### 6. 访问应用
 - 前端: http://localhost:5173
-- 后端 API: http://localhost:8080
+- 后端 API: http://localhost:29080
+- H2 控制台（使用 H2 配置时）: http://localhost:29080/h2-console
 
 ## 📖 使用指南
 
@@ -364,15 +383,6 @@ pnpm build
 ```bash
 cd api
 ./mvnw clean package
-```
-
-### Docker 部署
-```bash
-# 构建镜像
-docker build -t mbl-app .
-
-# 运行容器
-docker run -p 8080:8080 mbl-app
 ```
 
 ## 🤝 贡献指南

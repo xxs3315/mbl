@@ -102,7 +102,20 @@ cd frontend
 pnpm install
 ```
 
-### 3. Start Frontend Development Server
+### 3. Build Frontend Packages
+```bash
+# Build all packages and plugins
+pnpm run build
+
+# Or build specific packages
+cd packages/mbl-lib
+pnpm run build
+
+cd packages/mbl-lib-plugin-table
+pnpm run build
+```
+
+### 4. Start Frontend Development Server
 ```bash
 # React 19 + Mantine example (recommended for plugin development)
 cd apps/mbl-react-mantine
@@ -113,15 +126,21 @@ cd apps/mbl-vue-element-plus
 pnpm dev
 ```
 
-### 4. Start Backend Service
+### 5. Start Backend Service
 ```bash
 cd api
-./mvnw spring-boot:run
+
+# Start with H2 database (default, for development)
+./mvnw spring-boot:run -Dspring-boot.run.profiles=h2
+
+# Or start with PostgreSQL (for production)
+./mvnw spring-boot:run -Dspring-boot.run.profiles=postgresql
 ```
 
-### 5. Access the Application
+### 6. Access the Application
 - Frontend: http://localhost:5173
-- Backend API: http://localhost:8080
+- Backend API: http://localhost:29080
+- H2 Console (when using H2 profile): http://localhost:29080/h2-console
 
 ## 📖 User Guide
 
@@ -364,15 +383,6 @@ pnpm build
 ```bash
 cd api
 ./mvnw clean package
-```
-
-### Docker Deployment
-```bash
-# Build image
-docker build -t mbl-app .
-
-# Run container
-docker run -p 8080:8080 mbl-app
 ```
 
 ## 🤝 Contributing
