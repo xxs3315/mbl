@@ -113,7 +113,7 @@
         <!-- 主要功能 -->
         <el-row :gutter="20" class="features-section">
           <el-col :span="24" :md="12">
-            <el-card class="features-card" shadow="never">
+            <el-card class="features-card" shadow="never" style="margin-bottom: 0">
               <template #header>
                 <div class="card-header">
                   <h3>核心功能</h3>
@@ -149,7 +149,7 @@
           </el-col>
 
           <el-col :span="24" :md="12">
-            <el-card class="features-card" shadow="never">
+            <el-card class="features-card" shadow="never" style="margin-bottom: 0">
               <template #header>
                 <div class="card-header">
                   <h3>高级特性</h3>
@@ -290,7 +290,7 @@ const viewSource = () => {
 }
 
 .features-section {
-  margin-bottom: 0;
+  margin-bottom: 20px;
 }
 
 .feature-card {
