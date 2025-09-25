@@ -14,6 +14,7 @@ export default tsEslint.config(
       "**/build",
       "apps/nextjs/.next",
       "**/styled-system",
+      "**/*.d.ts",
     ],
   },
 
