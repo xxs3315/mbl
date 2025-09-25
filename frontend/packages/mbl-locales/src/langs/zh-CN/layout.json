@@ -13,7 +13,11 @@
       "dataBinding": "数据绑定"
     },
     "pageSelector": {
-      "title": "页面列表"
+      "title": "页面列表",
+      "deleteConfirm": {
+        "title": "确认删除页面",
+        "message": "确定要删除选择的页面吗？"
+      }
     },
     "rightSidebar": {
       "attributeEdit": "属性编辑",

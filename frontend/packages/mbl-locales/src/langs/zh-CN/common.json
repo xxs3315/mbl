@@ -29,5 +29,7 @@
   "currentPage": "当前页面",
   "pageHeader": "Page Header",
   "pageBody": "Page Body",
-  "pageFooter": "Page Footer"
+  "pageFooter": "Page Footer",
+  "cancel": "取消",
+  "delete": "删除"
 }

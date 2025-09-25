@@ -29,5 +29,7 @@
   "currentPage": "Current Page",
   "pageHeader": "Page Header",
   "pageBody": "Page Body",
-  "pageFooter": "Page Footer"
+  "pageFooter": "Page Footer",
+  "cancel": "Cancel",
+  "delete": "Delete"
 }

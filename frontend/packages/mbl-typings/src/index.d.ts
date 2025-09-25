@@ -189,4 +189,7 @@ export interface Store extends Omit<ContentData, "pages" | "currentPageIndex"> {
     marginType: "mLeftFooter" | "mRightFooter" | "mTopFooter" | "mBottomFooter",
     value: number,
   ) => void;
+  addPage: (afterIndex: number, pageData: StorePageData) => void;
+  addPageAfterCurrent: () => void;
+  deletePage: (pageIndex: number) => void;
 }

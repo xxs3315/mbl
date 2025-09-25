@@ -1,8 +1,9 @@
 import React from "react";
 import { css } from "../../styled-system/css";
-import { ActionIcon, Tabs } from "@mantine/core";
+import { ActionIcon, Tabs, Modal, Button, Group, Text } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
 import { useThemeColorsContext, useI18n } from "@xxs3315/mbl-providers";
+import { useContentsStoreContext } from "../../store/store";
 
 interface PageSelectorProps {
   showPageSelector: boolean;
@@ -24,6 +25,28 @@ export const PageSelector = React.memo<PageSelectorProps>(
   }) => {
     const { t } = useI18n();
     const colors = useThemeColorsContext();
+    const addPageAfterCurrent = useContentsStoreContext(
+      (s) => s.addPageAfterCurrent,
+    );
+    const deletePage = useContentsStoreContext((s) => s.deletePage);
+
+    // 确认删除对话框状态
+    const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
+
+    // 处理删除确认
+    const handleDeleteConfirm = () => {
+      deletePage(currentPageIndex);
+      setDeleteModalOpen(false);
+    };
+
+    // 处理删除按钮点击
+    const handleDeleteClick = () => {
+      // 如果只有一个页面，不能删除
+      if (pages.length <= 1) {
+        return;
+      }
+      setDeleteModalOpen(true);
+    };
 
     return (
       <div
@@ -146,6 +169,7 @@ export const PageSelector = React.memo<PageSelectorProps>(
               <ActionIcon
                 variant="subtle"
                 aria-label="add-page"
+                onClick={addPageAfterCurrent}
                 className={css({
                   color: "gray.700",
                   _hover: {
@@ -174,10 +198,13 @@ export const PageSelector = React.memo<PageSelectorProps>(
               <ActionIcon
                 variant="subtle"
                 aria-label="delete-page"
+                onClick={handleDeleteClick}
+                disabled={pages.length <= 1}
                 className={css({
-                  color: "gray.700",
+                  color: pages.length <= 1 ? "gray.400" : "gray.700",
                   _hover: {
-                    backgroundColor: "gray.100",
+                    backgroundColor:
+                      pages.length <= 1 ? "transparent" : "gray.100",
                   },
                 })}
               >
@@ -291,7 +318,7 @@ export const PageSelector = React.memo<PageSelectorProps>(
                       marginBottom: "4px",
                     })}
                   >
-                    {page.name || `${t("page", { ns: "common" })} ${index + 1}`}
+                    {page.name || `${t("page", { ns: "common" })}`}
                   </div>
                   <div
                     className={css({
@@ -313,6 +340,30 @@ export const PageSelector = React.memo<PageSelectorProps>(
             </div>
           </MacScrollbar>
         </div>
+
+        {/* 删除确认对话框 */}
+        <Modal
+          opened={deleteModalOpen}
+          onClose={() => setDeleteModalOpen(false)}
+          title={t("sidebars.pageSelector.deleteConfirm.title", {
+            ns: "layout",
+          })}
+          centered
+        >
+          <Text size="sm" mb="md">
+            {t("sidebars.pageSelector.deleteConfirm.message", {
+              ns: "layout",
+            })}
+          </Text>
+          <Group justify="flex-end">
+            <Button variant="subtle" onClick={() => setDeleteModalOpen(false)}>
+              {t("cancel", { ns: "common" })}
+            </Button>
+            <Button color="red" onClick={handleDeleteConfirm}>
+              {t("delete", { ns: "common" })}
+            </Button>
+          </Group>
+        </Modal>
       </div>
     );
   },

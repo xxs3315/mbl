@@ -81,6 +81,20 @@ export const createContentsStore = (
       ],
     ]);
 
+  // 创建新页面的辅助函数
+  const createNewPage = (): StorePageData => {
+    const defaultPage = defaultContents.pages[0];
+    const newId = Date.now().toString(); // 生成唯一ID
+
+    return {
+      ...defaultPage,
+      id: newId,
+      pageHeaderContent: getDefaultPageHeaderContent(),
+      pageBodyContent: getDefaultPageBodyContent(),
+      pageFooterContent: getDefaultPageFooterContent(),
+    };
+  };
+
   const store = createStore<Store>()(
     persist(
       zustandPatchUndo(
@@ -330,6 +344,64 @@ export const createContentsStore = (
               set((state) => {
                 if (state.pages[pageIndex]) {
                   state.pages[pageIndex][marginType] = value;
+                }
+              });
+            },
+            addPage: (afterIndex: number, pageData: StorePageData) => {
+              set((state) => {
+                // 在指定索引后插入新页面
+                const insertIndex = afterIndex + 1;
+                state.pages.splice(insertIndex, 0, pageData);
+
+                // 如果当前页面索引大于等于插入位置，需要调整当前页面索引
+                if (state.currentPageIndex >= insertIndex) {
+                  state.currentPageIndex = state.currentPageIndex + 1;
+                }
+              });
+            },
+            addPageAfterCurrent: () => {
+              set((state) => {
+                const newPage = createNewPage();
+                const insertIndex = state.currentPageIndex + 1;
+                state.pages.splice(insertIndex, 0, newPage);
+                // 切换到新创建的页面
+                state.currentPageIndex = insertIndex;
+                // 更新当前页面内容
+                state.currentPageHeaderContent = newPage.pageHeaderContent;
+                state.currentPageBodyContent = newPage.pageBodyContent;
+                state.currentPageFooterContent = newPage.pageFooterContent;
+              });
+            },
+            deletePage: (pageIndex: number) => {
+              set((state) => {
+                // 确保至少保留一个页面
+                if (state.pages.length <= 1) {
+                  return; // 不能删除最后一个页面
+                }
+
+                // 删除指定页面
+                state.pages.splice(pageIndex, 1);
+
+                // 调整当前页面索引
+                if (state.currentPageIndex >= pageIndex) {
+                  // 如果删除的页面在当前页面之前或就是当前页面
+                  if (state.currentPageIndex >= state.pages.length) {
+                    // 如果当前页面索引超出范围，切换到最后一个页面
+                    state.currentPageIndex = state.pages.length - 1;
+                  } else if (state.currentPageIndex === pageIndex) {
+                    // 如果删除的就是当前页面，保持当前索引（因为后面的页面会前移）
+                    // 不需要调整，因为页面已经前移了
+                  }
+                }
+
+                // 更新当前页面内容
+                const currentPage = state.pages[state.currentPageIndex];
+                if (currentPage) {
+                  state.currentPageHeaderContent =
+                    currentPage.pageHeaderContent;
+                  state.currentPageBodyContent = currentPage.pageBodyContent;
+                  state.currentPageFooterContent =
+                    currentPage.pageFooterContent;
                 }
               });
             },

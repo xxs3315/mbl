@@ -13,7 +13,11 @@
       "dataBinding": "Data Binding"
     },
     "pageSelector": {
-      "title": "Page List"
+      "title": "Page List",
+      "deleteConfirm": {
+        "title": "Confirm Delete Page",
+        "message": "Are you sure you want to delete selected page? "
+      }
     },
     "rightSidebar": {
       "attributeEdit": "Attribute Edit",
