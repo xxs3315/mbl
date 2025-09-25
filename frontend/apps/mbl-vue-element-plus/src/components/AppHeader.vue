@@ -11,41 +11,42 @@
       <div class="logo-section">
         <img src="/vite.svg" class="logo" alt="Vite logo" />
         <img :src="vueLogo" class="logo vue" alt="Vue logo" />
-        <span class="app-title">MixBoxLayout Vue</span>
+        <img :src="elementPlusLogo" class="logo element-plus" alt="Element Plus logo" />
+        <span class="app-title">Vite + Vue + Element Plus + MBL Demo App</span>
       </div>
     </div>
     
-    <div class="header-center">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>首页</el-breadcrumb-item>
-        <el-breadcrumb-item>设计器</el-breadcrumb-item>
-        <el-breadcrumb-item>当前项目</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
+<!--    <div class="header-center">-->
+<!--      <el-breadcrumb separator="/">-->
+<!--        <el-breadcrumb-item>首页</el-breadcrumb-item>-->
+<!--        <el-breadcrumb-item>设计器</el-breadcrumb-item>-->
+<!--        <el-breadcrumb-item>当前项目</el-breadcrumb-item>-->
+<!--      </el-breadcrumb>-->
+<!--    </div>-->
     
     <div class="header-right">
       <LanguageSwitcher />
       <ThemeSwitcher />
       
-      <el-dropdown trigger="click">
-        <el-button :icon="User" circle />
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item>
-              <el-icon class="dropdown-icon"><User /></el-icon>
-              个人中心
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <el-icon class="dropdown-icon"><Setting /></el-icon>
-              系统设置
-            </el-dropdown-item>
-            <el-dropdown-item divided>
-              <el-icon class="dropdown-icon"><SwitchButton /></el-icon>
-              退出登录
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+<!--      <el-dropdown trigger="click">-->
+<!--        <el-button :icon="User" circle />-->
+<!--        <template #dropdown>-->
+<!--          <el-dropdown-menu>-->
+<!--            <el-dropdown-item>-->
+<!--              <el-icon class="dropdown-icon"><User /></el-icon>-->
+<!--              个人中心-->
+<!--            </el-dropdown-item>-->
+<!--            <el-dropdown-item>-->
+<!--              <el-icon class="dropdown-icon"><Setting /></el-icon>-->
+<!--              系统设置-->
+<!--            </el-dropdown-item>-->
+<!--            <el-dropdown-item divided>-->
+<!--              <el-icon class="dropdown-icon"><SwitchButton /></el-icon>-->
+<!--              退出登录-->
+<!--            </el-dropdown-item>-->
+<!--          </el-dropdown-menu>-->
+<!--        </template>-->
+<!--      </el-dropdown>-->
     </div>
   </div>
 </template>
@@ -61,6 +62,7 @@ import {
 import ThemeSwitcher from './ThemeSwitcher.vue'
 import LanguageSwitcher from './LanguageSwitcher.vue'
 import vueLogo from '../assets/vue.svg'
+import elementPlusLogo from '../assets/element-plus-logo.svg'
 
 // Props
 interface Props {
@@ -119,9 +121,16 @@ const toggleSidebar = () => {
   transition: filter 300ms;
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.logo.element-plus {
+  height: 24px;
+  width: 128px;
+  transition: filter 300ms;
 }
+
+.logo.element-plus:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
+}
+
 
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);

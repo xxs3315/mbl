@@ -14,7 +14,10 @@
               class="theme-color" 
               :style="{ backgroundColor: config.primaryColor }"
             />
-            <span>{{ config.name }}</span>
+            <div 
+              class="theme-bar"
+              :style="{ backgroundColor: config.primaryColor }"
+            />
           </div>
         </el-dropdown-item>
       </el-dropdown-menu>
@@ -46,13 +49,20 @@ const handleThemeChange = (theme: ThemeVariant) => {
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 148px
 }
 
 .theme-color {
-  width: 16px;
+  width: 20px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid #e4e7ed;
+}
+
+.theme-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  border: 1px solid #e4e7ed;
 }
 
 .is-active .theme-color {

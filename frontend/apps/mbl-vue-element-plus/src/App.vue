@@ -1,27 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { ElContainer, ElAside, ElMain } from 'element-plus'
-import HelloWorld from './components/HelloWorld.vue'
-import MixBoxLayoutWrapper from './components/MixBoxLayoutWrapper.vue'
+import { useRoute } from 'vue-router'
 import AppHeader from './components/AppHeader.vue'
 import AppSidebar from './components/AppSidebar.vue'
 import ThemeProvider from './providers/ThemeProvider.vue'
 import LocaleProvider from './providers/LocaleProvider.vue'
 
-import { contents } from "@xxs3315/mbl-lib-example-data";
-import "@xxs3315/mbl-lib/index.css";
+// 路由
+const route = useRoute()
 
 // 响应式数据
-const mixBoxRef = ref<InstanceType<typeof MixBoxLayoutWrapper>>();
 const sidebarCollapsed = ref(false);
 const isMobile = ref(false);
 const mobileSidebarVisible = ref(false);
-
-// 主题状态 - 直接使用颜色主题
-const currentTheme = ref<'blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal'>('blue');
-
-// ThemeProvider 引用
-const themeProviderRef = ref<InstanceType<typeof ThemeProvider>>();
 
 // 动态高度计算
 const windowHeight = ref(window.innerHeight);
@@ -42,18 +34,9 @@ const handleResize = () => {
   }
 };
 
-// 监听 ThemeProvider 的主题变化
-watch(() => themeProviderRef.value?.currentTheme, (newTheme) => {
-  console.log('App.vue 监听到 ThemeProvider 主题变化:', newTheme);
-  if (newTheme) {
-    currentTheme.value = newTheme;
-    console.log('主题已同步到 MixBoxLayout:', newTheme);
-  }
-}, { immediate: true });
-
 // 组件挂载后的处理
 onMounted(() => {
-  console.log('Vue应用已挂载，MixBoxLayout组件已准备就绪');
+  console.log('Vue应用已挂载');
   window.addEventListener('resize', handleResize);
   // 初始化时检测屏幕尺寸
   handleResize();
@@ -64,35 +47,14 @@ onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 });
 
-// 处理主题变化
-const handleThemeChange = (theme: 'blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal') => {
-  currentTheme.value = theme;
-  console.log('主题已切换为:', theme);
-};
-
-// 处理内容更新
-const handleContentUpdate = (content: any) => {
-  console.log('内容已更新:', content);
-};
-
 // 全局控制方法
-const toggleGlobalTheme = () => {
-  if (mixBoxRef.value) {
-    mixBoxRef.value.toggleTheme();
-  }
-};
-
 const resetGlobalContent = () => {
-  if (mixBoxRef.value) {
-    mixBoxRef.value.resetContent();
-  }
-};
+  console.log('重置内容')
+}
 
 const exportGlobalContent = () => {
-  if (mixBoxRef.value) {
-    mixBoxRef.value.exportContent();
-  }
-};
+  console.log('导出内容')
+}
 
 // 切换侧边栏
 const toggleSidebar = () => {
@@ -110,64 +72,60 @@ const closeMobileSidebar = () => {
   mobileSidebarVisible.value = false;
 };
 
+// 侧边栏在所有页面都显示
+const showSidebar = computed(() => {
+  return true
+});
+
 </script>
 
 <template>
   <LocaleProvider>
-    <ThemeProvider ref="themeProviderRef">
+    <ThemeProvider>
       <ElContainer class="app-container" direction="vertical">
-      <!-- 头部区域 -->
-      <AppHeader 
-        :collapsed="sidebarCollapsed" 
-        :is-mobile="isMobile"
-        :mobile-sidebar-visible="mobileSidebarVisible"
-        @toggle-sidebar="toggleSidebar" 
-      />
-      
-      <ElContainer>
-        <!-- 移动端遮罩层 -->
-        <div 
-          v-if="isMobile && mobileSidebarVisible" 
-          class="mobile-overlay"
-          @click="closeMobileSidebar"
-        ></div>
+        <!-- 头部区域 -->
+        <AppHeader 
+          :collapsed="sidebarCollapsed" 
+          :is-mobile="isMobile"
+          :mobile-sidebar-visible="mobileSidebarVisible"
+          @toggle-sidebar="toggleSidebar" 
+        />
         
-        <!-- 侧边栏 -->
-        <ElAside 
-          :width="isMobile ? '280px' : (sidebarCollapsed ? '64px' : '280px')"
-          class="app-aside"
-          :class="{ 
-            'mobile-visible': isMobile && mobileSidebarVisible,
-            'mobile-hidden': isMobile && !mobileSidebarVisible
-          }"
-        >
-          <AppSidebar 
-            :collapsed="isMobile ? false : sidebarCollapsed"
-            :is-mobile="isMobile"
-            @reset="resetGlobalContent"
-            @export="exportGlobalContent"
-            @close-mobile="closeMobileSidebar"
-          />
-        </ElAside>
-        
-        <!-- 主要内容区域 -->
-        <ElMain class="app-main" :style="{ height: mainContentHeight }">
-          <div class="main-content" :style="{ height: mainContentHeight }">
-            <!-- MixBoxLayout组件容器 -->
-            <MixBoxLayoutWrapper 
-              ref="mixBoxRef"
-              id="vue-mixbox-layout"
-              title="MixBoxLayout 组件 (通过 veaury 集成)"
-              :initial-content="contents"
-              :theme="currentTheme"
-              height="100%"
-              @theme-change="handleThemeChange"
-              @content-update="handleContentUpdate"
+        <ElContainer>
+          <!-- 移动端遮罩层 -->
+          <div 
+            v-if="isMobile && mobileSidebarVisible" 
+            class="mobile-overlay"
+            @click="closeMobileSidebar"
+          ></div>
+          
+          <!-- 侧边栏 - 在所有页面都显示 -->
+          <ElAside 
+            :width="isMobile ? '280px' : (sidebarCollapsed ? '64px' : '280px')"
+            class="app-aside"
+            :class="{ 
+              'mobile-visible': isMobile && mobileSidebarVisible,
+              'mobile-hidden': isMobile && !mobileSidebarVisible
+            }"
+          >
+            <AppSidebar 
+              :collapsed="isMobile ? false : sidebarCollapsed"
+              :is-mobile="isMobile"
+              @reset="resetGlobalContent"
+              @export="exportGlobalContent"
+              @close-mobile="closeMobileSidebar"
             />
-          </div>
-        </ElMain>
+          </ElAside>
+          
+          <!-- 主要内容区域 -->
+          <ElMain class="app-main" :style="{ height: mainContentHeight }">
+            <div class="main-content" :style="{ height: mainContentHeight }">
+              <!-- 路由视图 -->
+              <router-view />
+            </div>
+          </ElMain>
+        </ElContainer>
       </ElContainer>
-    </ElContainer>
     </ThemeProvider>
   </LocaleProvider>
 </template>

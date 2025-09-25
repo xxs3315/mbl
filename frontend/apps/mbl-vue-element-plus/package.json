@@ -18,7 +18,8 @@
     "react": "~19.1.0",
     "react-dom": "~19.1.0",
     "veaury": "^2.6.3",
-    "vue": "^3.5.18"
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",

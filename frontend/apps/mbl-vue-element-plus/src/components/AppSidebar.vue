@@ -1,18 +1,5 @@
 <template>
-  <div class="app-sidebar" :class="{ collapsed, 'mobile-sidebar': isMobile }">
-    <div class="sidebar-header" v-if="!collapsed || isMobile">
-      <h3>导航菜单</h3>
-      <!-- 移动端关闭按钮 -->
-      <el-button 
-        v-if="isMobile"
-        :icon="Close"
-        @click="handleCloseMobile"
-        circle
-        size="small"
-        class="mobile-close-btn"
-      />
-    </div>
-    
+  <div class="app-sidebar" :class="{ collapsed, 'mobile-sidebar': isMobile }" :style="{padding: collapsed ? 0 : '16px'}">
     <el-menu
       :default-active="activeMenu"
       class="sidebar-menu"
@@ -21,63 +8,23 @@
     >
       <el-menu-item index="designer">
         <el-icon class="menu-icon"><Edit /></el-icon>
-        <template #title v-if="!collapsed || isMobile">设计器</template>
+        <template #title v-if="!collapsed || isMobile">MBL Designer</template>
       </el-menu-item>
       
-      <el-menu-item index="templates">
+      <el-menu-item index="about">
         <el-icon class="menu-icon"><Document /></el-icon>
-        <template #title v-if="!collapsed || isMobile">模板库</template>
+        <template #title v-if="!collapsed || isMobile">About</template>
       </el-menu-item>
-      
-      <el-menu-item index="components">
-        <el-icon class="menu-icon"><Grid /></el-icon>
-        <template #title v-if="!collapsed || isMobile">组件库</template>
-      </el-menu-item>
-      
-      <el-menu-item index="assets">
-        <el-icon class="menu-icon"><Picture /></el-icon>
-        <template #title v-if="!collapsed || isMobile">资源管理</template>
-      </el-menu-item>
-      
-      <el-sub-menu index="settings" v-if="!collapsed || isMobile">
-        <template #title>
-          <el-icon class="menu-icon"><Setting /></el-icon>
-          <span>设置</span>
-        </template>
-        <el-menu-item index="settings-theme">
-          <el-icon class="menu-icon"><Orange /></el-icon>
-          <span>主题设置</span>
-        </el-menu-item>
-        <el-menu-item index="settings-export">
-          <el-icon class="menu-icon"><Download /></el-icon>
-          <span>导出设置</span>
-        </el-menu-item>
-      </el-sub-menu>
     </el-menu>
     
     <div class="sidebar-footer" v-if="!collapsed || isMobile">
-      <el-button 
-        type="primary" 
-        :icon="Refresh"
-        @click="handleReset"
-        size="small"
-      >
-        重置内容
-      </el-button>
-      <el-button 
-        type="success" 
-        :icon="Download"
-        @click="handleExport"
-        size="small"
-      >
-        导出内容
-      </el-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { 
   Edit,
   Document,
@@ -108,30 +55,29 @@ const emit = defineEmits<{
   'close-mobile': []
 }>()
 
+// 路由
+const route = useRoute()
+const router = useRouter()
+
+// 菜单路由映射
+const menuRoutes: Record<string, string> = {
+  'designer': '/',
+  'about': '/about',
+}
+
 // 当前激活的菜单
-const activeMenu = ref('designer')
+const activeMenu = computed(() => {
+  const currentRoute = route.meta?.menuKey as string
+  return currentRoute || 'designer'
+})
 
 // 菜单选择处理
 const handleMenuSelect = (index: string) => {
-  activeMenu.value = index
-  console.log('选择菜单:', index)
-}
-
-// 重置内容
-const handleReset = () => {
-  console.log('重置内容')
-  emit('reset')
-}
-
-// 导出内容
-const handleExport = () => {
-  console.log('导出内容')
-  emit('export')
-}
-
-// 关闭移动端侧边栏
-const handleCloseMobile = () => {
-  emit('close-mobile')
+  const targetRoute = menuRoutes[index]
+  if (targetRoute) {
+    router.push(targetRoute)
+  }
+  console.log('选择菜单:', index, '跳转到:', targetRoute)
 }
 </script>
 
