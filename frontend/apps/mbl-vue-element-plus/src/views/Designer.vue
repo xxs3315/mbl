@@ -5,7 +5,7 @@
       id="vue-mixbox-layout"
       title="MixBoxLayout 设计器"
       :initial-content="contents"
-      :theme="currentTheme"
+      :theme="currentTheme.value"
       height="100%"
       @theme-change="handleThemeChange"
       @content-update="handleContentUpdate"
