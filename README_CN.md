@@ -417,9 +417,9 @@ cd api
 
 ## 📞 联系方式
 
-- 项目维护者: [Your Name]
-- 邮箱: [your.email@example.com]
-- 项目链接: [https://github.com/yourusername/mbl](https://github.com/yourusername/mbl)
+- 项目维护者: xxs3315
+- 邮箱: vm-mixbox-app@foxmail.com
+- 项目链接: [https://github.com/xxs3315/mbl](https://github.com/xxs3315/mbl)
 
 ## 🙏 致谢
 

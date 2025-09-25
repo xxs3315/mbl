@@ -417,9 +417,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-- Project Maintainer: [Your Name]
-- Email: [your.email@example.com]
-- Project Link: [https://github.com/yourusername/mbl](https://github.com/yourusername/mbl)
+- Project Maintainer: xxs3315
+- Email: vm-mixbox-app@foxmail.com
+- Project Link: [https://github.com/xxs3315/mbl](https://github.com/xxs3315/mbl)
 
 ## 🙏 Acknowledgments
 
