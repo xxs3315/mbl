@@ -17,7 +17,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Designer from "./components/Designer";
-import Homepage from "./components/Homepage";
+import AboutPage from "./components/AboutPage";
 
 interface AppProps {
   baseUrl?: string;
@@ -51,7 +51,7 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
               hiddenFrom="sm"
               size="sm"
             />
-            Header
+            React + Mantine + MBL Demo App
           </Group>
           <Group>
             <LanguageSwitcher
@@ -69,13 +69,13 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
         <NavLink
           component={Link}
           to="/"
-          label="设计器"
+          label="MBL Designer"
           active={isActive("/")}
         />
         <NavLink
           component={Link}
           to="/about"
-          label="关于"
+          label="About"
           active={isActive("/about")}
         />
       </AppShell.Navbar>
@@ -84,7 +84,7 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
       >
         <Routes>
           <Route path="/" element={<Designer />} />
-          <Route path="/about" element={<Homepage />} />
+          <Route path="/about" element={<AboutPage />} />
         </Routes>
       </AppShell.Main>
     </AppShell>

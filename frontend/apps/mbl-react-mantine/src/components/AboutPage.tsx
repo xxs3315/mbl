@@ -1,15 +1,15 @@
 import React from "react";
 import { Text } from "@mantine/core";
 
-const TaskCenter: React.FC = () => {
+const AboutPage: React.FC = () => {
   return (
     <div>
       <Text size="xl" fw={700}>
-        首页
+        关于
       </Text>
-      <Text>这里是首页</Text>
+      <Text>这里是关于</Text>
     </div>
   );
 };
 
-export default TaskCenter;
+export default AboutPage;

@@ -47,7 +47,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Label>选择语言</Menu.Label>
+        <Menu.Label>Select language</Menu.Label>
         {Object.entries(localeLabels).map(([localeKey, localeLabel]) => (
           <Menu.Item
             key={localeKey}

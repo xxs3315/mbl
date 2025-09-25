@@ -1,5 +1,5 @@
 import React from "react";
-import { ActionIcon, Menu, Text } from "@mantine/core";
+import { ActionIcon, Menu } from "@mantine/core";
 import { IconPalette } from "@tabler/icons-react";
 import { themeVariants, type ThemeVariant } from "../theme";
 
@@ -7,15 +7,6 @@ interface ThemeSwitcherProps {
   currentTheme: ThemeVariant;
   onThemeChange: (theme: ThemeVariant) => void;
 }
-
-const themeLabels: Record<ThemeVariant, string> = {
-  blue: "蓝色",
-  green: "绿色",
-  purple: "紫色",
-  orange: "橙色",
-  red: "红色",
-  teal: "青色",
-};
 
 export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   currentTheme,
@@ -35,7 +26,7 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Label>选择主题</Menu.Label>
+        <Menu.Label>Select color</Menu.Label>
         {Object.entries(themeVariants).map(([themeKey, themeConfig]) => (
           <Menu.Item
             key={themeKey}
@@ -47,21 +38,24 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
                   height: 16,
                   borderRadius: "50%",
                   backgroundColor: `var(--mantine-color-${themeConfig.primaryColor}-6)`,
-                  border:
-                    currentTheme === themeKey
-                      ? "2px solid var(--mantine-color-gray-3)"
-                      : "none",
                 }}
               />
             }
             style={{
               backgroundColor:
                 currentTheme === themeKey
-                  ? "var(--mantine-color-blue-0)"
+                  ? "var(--mantine-color-blue-1)"
                   : "transparent",
             }}
           >
-            <Text size="sm">{themeLabels[themeKey as ThemeVariant]}</Text>
+            <div
+              style={{
+                width: "100%",
+                height: 8,
+                borderRadius: 4,
+                backgroundColor: `var(--mantine-color-${themeConfig.primaryColor}-6)`,
+              }}
+            />
           </Menu.Item>
         ))}
       </Menu.Dropdown>
