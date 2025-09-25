@@ -72,6 +72,7 @@ const MixBoxLayoutContent = React.memo<{
     enablePluginSystem = false,
   }) => {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
+    const mainContentRef = React.useRef<HTMLDivElement | null>(null);
 
     // 使用 DPI 计算器 hook
     useDpiCalculator();
@@ -90,7 +91,9 @@ const MixBoxLayoutContent = React.memo<{
       showRightSidebar,
       setShowRightSidebar,
       isMobileMode,
-    } = useResponsiveLayout(containerRef);
+      hasHorizontalScroll,
+      checkHorizontalScroll,
+    } = useResponsiveLayout(containerRef, mainContentRef);
 
     // 优化全局事件处理，减少事件冒泡
     React.useEffect(() => {
@@ -560,6 +563,7 @@ const MixBoxLayoutContent = React.memo<{
 
             {/* 中间主要内容区域 */}
             <MacScrollbar
+              ref={mainContentRef}
               id="main-container"
               className={css({
                 flex: "1",
