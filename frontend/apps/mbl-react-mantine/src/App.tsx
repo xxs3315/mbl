@@ -18,6 +18,8 @@ import {
 } from "react-router-dom";
 import Designer from "./components/Designer";
 import AboutPage from "./components/AboutPage";
+import reactLogo from "./assets/react.svg";
+import mantineLogo from "./assets/mantine.svg";
 
 interface AppProps {
   baseUrl?: string;
@@ -51,7 +53,18 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
               hiddenFrom="sm"
               size="sm"
             />
-            React + Mantine + MBL Demo App
+            <div className="logo-section">
+              <img src="/vite.svg" className="logo" alt="Vite logo" />
+              <img src={reactLogo} className="logo react" alt="React logo" />
+              <img
+                src={mantineLogo}
+                className="logo mantine"
+                alt="Mantine logo"
+              />
+              <span className="app-title">
+                Vite + React + Mantine + MBL Demo App
+              </span>
+            </div>
           </Group>
           <Group>
             <LanguageSwitcher
