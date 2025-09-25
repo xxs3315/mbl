@@ -1,6 +1,6 @@
 {
   "name": "@xxs3315/mbl-dnd",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Drag and Drop components for MBL",
   "exports": {
     ".": {
