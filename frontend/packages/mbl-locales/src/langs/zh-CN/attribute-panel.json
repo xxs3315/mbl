@@ -31,7 +31,8 @@
     "jsonData": "JSON数据",
     "viewInLargeWindow": "在大窗口中查看",
     "viewContent": "查看内容",
-    "close": "关闭"
+    "close": "关闭",
+    "dragColumnBindingHere": "拖拽列绑定到这里..."
   },
   "hbox": {
     "title": "水平容器属性",

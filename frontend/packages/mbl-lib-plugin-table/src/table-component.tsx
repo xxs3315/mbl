@@ -4,6 +4,7 @@ import {
   useCurrentSelectedId,
   useDpi,
   useThemeColorsContext,
+  useI18n, // 添加国际化 hook
 } from "@xxs3315/mbl-providers";
 import { PageItem } from "@xxs3315/mbl-typings";
 import { TextComponent } from "./text-component";
@@ -144,6 +145,7 @@ export const TableComponent: React.FC<TableComponentProps> = ({
   const { currentSelectedId, setCurrentSubSelectedId } = useCurrentSelectedId();
   const { dpi } = useDpi();
   const colors = useThemeColorsContext();
+  const { t } = useI18n(); // 添加国际化支持
 
   const { background, columns, bindingColumns, pTop, pRight, pBottom, pLeft } =
     attrs;
@@ -710,7 +712,9 @@ export const TableComponent: React.FC<TableComponentProps> = ({
                           value:
                             (bindingColumnsMap.get(bindingColumnId) as any)
                               ?.value || "",
-                          placeholder: "拖拽列绑定到这里...",
+                          placeholder: t("table.dragColumnBindingHere", {
+                            ns: "attributePanel",
+                          }),
                           readOnly: true,
                         }}
                         onValueChange={() => {}}

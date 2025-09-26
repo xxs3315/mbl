@@ -31,7 +31,8 @@
     "jsonData": "JSON Data",
     "viewInLargeWindow": "View in Large Window",
     "viewContent": "View Content",
-    "close": "Close"
+    "close": "Close",
+    "dragColumnBindingHere": "Drag column binding here..."
   },
   "hbox": {
     "title": "Horizontal Container Properties",
