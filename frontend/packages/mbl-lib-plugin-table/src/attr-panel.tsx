@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import {
   Textarea,
   NumberInput,
@@ -63,6 +63,33 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
   const { currentSubSelectedId } = useCurrentSelectedId();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [viewingBinding, setViewingBinding] = React.useState<any>(null);
+
+  const editorRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // 添加 useEffect 来监听容器尺寸变化
+  useEffect(() => {
+    if (!modalOpen || !containerRef.current || !editorRef.current) {
+      return;
+    }
+
+    const resizeEditor = () => {
+      if (editorRef.current) {
+        editorRef.current.resize();
+      }
+    };
+
+    const observer = new ResizeObserver(() => {
+      setTimeout(resizeEditor, 50);
+    });
+
+    observer.observe(containerRef.current);
+    setTimeout(resizeEditor, 100);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [modalOpen]);
 
   // 添加调试信息：监听 currentSubSelectedId 变化
   React.useEffect(() => {
@@ -541,7 +568,10 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
         }}
       >
         <Stack gap="md" style={{ height: "100%" }}>
-          <div style={{ flex: 1, minHeight: 0, border: "1px solid #ccc" }}>
+          <div
+            style={{ flex: 1, minHeight: 0, border: "1px solid #ccc" }}
+            ref={containerRef}
+          >
             <AceEditor
               mode={viewingBinding?.request === "data" ? "json" : "text"}
               theme="github"
@@ -549,12 +579,22 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
               readOnly={true}
               width="100%"
               height="100%"
+              editorProps={{ $blockScrolling: true }}
               setOptions={{
-                ...getEditorConfig(viewingBinding?.request || "data"),
-                readOnly: true,
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                enableSnippets: true,
+                showLineNumbers: true,
+                tabSize: 2,
+                useWorker: false,
               }}
-              editorProps={getEditorProps()}
-              style={getEditorStyle()}
+              style={{ width: "100%", height: "100%" }}
+              onLoad={(editor) => {
+                editorRef.current = editor;
+                setTimeout(() => {
+                  editor.resize();
+                }, 100);
+              }}
             />
           </div>
           <Group justify="flex-end">
