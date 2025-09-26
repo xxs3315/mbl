@@ -24,7 +24,14 @@
     "columnLabel": "列",
     "size": "大小",
     "unit": "单位",
-    "selectValue": "选择值"
+    "selectValue": "选择值",
+    "bindingInfo": "绑定信息",
+    "noBindingDataSource": "暂无绑定数据源",
+    "urlAddress": "URL地址",
+    "jsonData": "JSON数据",
+    "viewInLargeWindow": "在大窗口中查看",
+    "viewContent": "查看内容",
+    "close": "关闭"
   },
   "hbox": {
     "title": "水平容器属性",

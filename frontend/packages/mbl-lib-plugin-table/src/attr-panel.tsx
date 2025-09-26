@@ -410,7 +410,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
       <Divider my="xs" />
 
       <Title order={4} style={{ marginBottom: 0 }}>
-        表格绑定信息
+        {t("table.bindingInfo", { ns: "attributePanel" })}
       </Title>
 
       <Divider my="xs" />
@@ -424,7 +424,7 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
             return (
               <Paper p="xs">
                 <Text size="xs" c="dimmed">
-                  暂无绑定数据源
+                  {t("table.noBindingDataSource", { ns: "attributePanel" })}
                 </Text>
               </Paper>
             );
@@ -461,10 +461,14 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
                 <Group justify="space-between" align="center" mt="xs">
                   <Text size="xs" fw={500}>
                     {tableRootBinding.request === "url"
-                      ? "URL Address"
-                      : "JSON Data"}
+                      ? t("table.urlAddress", { ns: "attributePanel" })
+                      : t("table.jsonData", { ns: "attributePanel" })}
                   </Text>
-                  <Tooltip label="View in large window">
+                  <Tooltip
+                    label={t("table.viewInLargeWindow", {
+                      ns: "attributePanel",
+                    })}
+                  >
                     <ActionIcon
                       size="sm"
                       variant="subtle"
@@ -519,7 +523,10 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
       <Modal
         opened={modalOpen}
         onClose={handleCloseModal}
-        title={viewingBinding?.name || "View Content"}
+        title={
+          viewingBinding?.name ||
+          t("table.viewContent", { ns: "attributePanel" })
+        }
         size="xl"
         centered
         styles={{
@@ -551,7 +558,9 @@ export const AttrPanel: React.FC<AttrPanelProps> = ({
             />
           </div>
           <Group justify="flex-end">
-            <Button onClick={handleCloseModal}>Close</Button>
+            <Button onClick={handleCloseModal}>
+              {t("table.close", { ns: "attributePanel" })}
+            </Button>
           </Group>
         </Stack>
       </Modal>

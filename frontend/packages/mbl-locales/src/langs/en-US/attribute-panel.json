@@ -24,7 +24,14 @@
     "columnLabel": "Column",
     "size": "Size",
     "unit": "Unit",
-    "selectValue": "Select Value"
+    "selectValue": "Select Value",
+    "bindingInfo": "Binding Information",
+    "noBindingDataSource": "No Binding Data Source",
+    "urlAddress": "URL Address",
+    "jsonData": "JSON Data",
+    "viewInLargeWindow": "View in Large Window",
+    "viewContent": "View Content",
+    "close": "Close"
   },
   "hbox": {
     "title": "Horizontal Container Properties",
