@@ -20,6 +20,7 @@ import {
   useCurrentSelectedId,
   useThemeColorsContext,
   TableIdProvider,
+  TaskProvider,
 } from "@xxs3315/mbl-providers";
 import { MacScrollbar } from "mac-scrollbar";
 import "mac-scrollbar/dist/mac-scrollbar.css";
@@ -649,23 +650,25 @@ export const MixBoxLayout = React.memo<{
           <TableIdProvider tableId={id}>
             <ContentsStoreContext.Provider value={store}>
               <DpiProvider>
-                <ThemeProvider>
-                  <CurrentSelectedIdProvider>
-                    <DndProvider backend={HTML5Backend}>
-                      <MixBoxLayoutContent
-                        onContentChange={onContentChange}
-                        baseUrl={baseUrl}
-                        imageUploadPath={imageUploadPath}
-                        imageDownloadPath={imageDownloadPath}
-                        pdfGeneratePath={pdfGeneratePath}
-                        pdfDownloadPath={pdfDownloadPath}
-                        taskStatusPath={taskStatusPath}
-                        plugins={plugins}
-                        enablePluginSystem={enablePluginSystem}
-                      />
-                    </DndProvider>
-                  </CurrentSelectedIdProvider>
-                </ThemeProvider>
+                <TaskProvider>
+                  <ThemeProvider>
+                    <CurrentSelectedIdProvider>
+                      <DndProvider backend={HTML5Backend}>
+                        <MixBoxLayoutContent
+                          onContentChange={onContentChange}
+                          baseUrl={baseUrl}
+                          imageUploadPath={imageUploadPath}
+                          imageDownloadPath={imageDownloadPath}
+                          pdfGeneratePath={pdfGeneratePath}
+                          pdfDownloadPath={pdfDownloadPath}
+                          taskStatusPath={taskStatusPath}
+                          plugins={plugins}
+                          enablePluginSystem={enablePluginSystem}
+                        />
+                      </DndProvider>
+                    </CurrentSelectedIdProvider>
+                  </ThemeProvider>
+                </TaskProvider>
               </DpiProvider>
             </ContentsStoreContext.Provider>
           </TableIdProvider>

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { css } from "../../styled-system/css";
-import { ActionIcon, Tabs } from "@mantine/core";
+import { ActionIcon, Indicator, Tabs } from "@mantine/core";
 import { MacScrollbar } from "mac-scrollbar";
 import { AttributePanelRenderer } from "../../comps/attribute-panel/components/attribute-panel-renderer";
 import { TaskCenter } from "../../comps/task-center/task-center";
-import { useI18n } from "@xxs3315/mbl-providers";
+import { useI18n, useTask } from "@xxs3315/mbl-providers";
 
 interface RightSidebarProps {
   showRightSidebar: boolean;
@@ -48,6 +48,15 @@ export const RightSidebar = React.memo<RightSidebarProps>(
   }) => {
     const { t } = useI18n();
     const [activeTab, setActiveTab] = useState<string>("operation-panel");
+    const { task: currentTask, setTask } = useTask();
+
+    // 当用户与任务中心内容交互时，清除任务提示
+    const handleTaskInteraction = () => {
+      if (currentTask > 0) {
+        setTask(0);
+      }
+    };
+
     return (
       <div
         className={css({
@@ -126,19 +135,29 @@ export const RightSidebar = React.memo<RightSidebarProps>(
                     ns: "layout",
                   })}
                 </Tabs.Tab>
-                <Tabs.Tab
-                  value="task-center"
-                  className={css({
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    color: "gray.800",
-                    padding: "8px 16px",
-                  })}
+                <Indicator
+                  inline
+                  processing
+                  color="red"
+                  size={10}
+                  offset={7}
+                  disabled={currentTask === 0}
                 >
-                  {t("sidebars.rightSidebar.taskCenter", {
-                    ns: "layout",
-                  })}
-                </Tabs.Tab>
+                  <Tabs.Tab
+                    value="task-center"
+                    className={css({
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                      color: "gray.800",
+                      padding: "8px 16px",
+                    })}
+                    onClick={handleTaskInteraction}
+                  >
+                    {t("sidebars.rightSidebar.taskCenter", {
+                      ns: "layout",
+                    })}
+                  </Tabs.Tab>
+                </Indicator>
               </Tabs.List>
             </Tabs>
             {/* 关闭按钮 - 仅在桌面端显示 */}
@@ -212,6 +231,7 @@ export const RightSidebar = React.memo<RightSidebarProps>(
                   baseUrl={baseUrl}
                   taskStatusPath={taskStatusPath}
                   pdfDownloadPath={pdfDownloadPath}
+                  onInteraction={handleTaskInteraction}
                 />
               </MacScrollbar>
             )}

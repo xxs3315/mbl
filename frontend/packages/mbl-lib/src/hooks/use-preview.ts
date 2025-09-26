@@ -4,6 +4,7 @@ import { ContentsStoreContext } from "../store/store";
 import { ContentData } from "@xxs3315/mbl-typings";
 import { TaskResponse, TaskType } from "../types/task";
 import { useTaskStorage } from "./use-task-storage";
+import { useTask } from "@xxs3315/mbl-providers";
 
 interface UsePreviewProps {
   baseUrl?: string;
@@ -17,6 +18,8 @@ export function usePreview({ baseUrl, pdfGeneratePath }: UsePreviewProps = {}) {
 
   // 使用任务存储 hook
   const { saveTask } = useTaskStorage();
+
+  const { setTask: setCurrentTask } = useTask();
 
   const updatedContents = () => {
     if (!store) {
@@ -78,6 +81,8 @@ export function usePreview({ baseUrl, pdfGeneratePath }: UsePreviewProps = {}) {
             message: response.message || "任务已创建",
           });
           // console.log("预览任务已创建:", taskData.taskId);
+          // 通知任务中心，有新任务产生了
+          setCurrentTask(1);
         }
       }
     } catch (error) {
@@ -126,6 +131,8 @@ export function usePreview({ baseUrl, pdfGeneratePath }: UsePreviewProps = {}) {
             message: response.message || "任务已创建",
           });
           // console.log("批量预览任务已创建:", taskData.taskId);
+          // 通知任务中心，有新任务产生了
+          setCurrentTask(1);
         }
       }
     } catch (error) {

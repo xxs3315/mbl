@@ -22,6 +22,13 @@ export {
 } from "./providers/dpi-provider";
 
 export {
+  TaskProvider,
+  useTask,
+  type TaskProviderProps,
+  type TaskProviderState,
+} from "./providers/task-provider";
+
+export {
   I18nProvider,
   useI18n,
   type I18nContextType,
@@ -39,6 +46,7 @@ export {
 import { CurrentSelectedIdProvider } from "./providers/current-selected-id-provider";
 import { ThemeProvider } from "./providers/theme-provider";
 import { DpiProvider } from "./providers/dpi-provider";
+import { TaskProvider } from "./providers/task-provider";
 import { I18nProvider } from "./providers/i18n-provider";
 import { TableIdProvider } from "./providers/table-id-provider";
 
@@ -46,6 +54,7 @@ export default {
   CurrentSelectedIdProvider,
   ThemeProvider,
   DpiProvider,
+  TaskProvider,
   I18nProvider,
   TableIdProvider,
 };

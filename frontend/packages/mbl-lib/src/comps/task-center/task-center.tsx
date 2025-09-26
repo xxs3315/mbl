@@ -34,12 +34,14 @@ interface TaskCenterProps {
   baseUrl?: string;
   taskStatusPath?: string; // 任务状态查询接口路径
   pdfDownloadPath?: string; // PDF下载接口路径
+  onInteraction?: () => void; // 新增：用于通知父组件用户发生交互
 }
 
 export const TaskCenter: React.FC<TaskCenterProps> = ({
   baseUrl,
   taskStatusPath = "/api/queue/status",
   pdfDownloadPath = "/api/pdf/download",
+  onInteraction,
 }) => {
   const { t } = useI18n();
   const [tasks, setTasks] = useState<StoredTask[]>([]);
@@ -293,6 +295,7 @@ export const TaskCenter: React.FC<TaskCenterProps> = ({
 
   return (
     <div
+      onClick={onInteraction} // 新增：当点击该区域时，触发交互回调
       className={css({
         height: "100%",
         display: "flex",
