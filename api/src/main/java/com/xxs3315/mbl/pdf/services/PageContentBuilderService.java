@@ -1007,7 +1007,7 @@ public class PageContentBuilderService {
         PLBox imageBox =
             buildTableBodyImageElement(
                 cellData,
-                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "normal");
+                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "compact");
         PLTableCell cell =
             new PLTableCell(imageBox)
                 .setVertAlign(EVertAlignment.MIDDLE)
@@ -1020,7 +1020,7 @@ public class PageContentBuilderService {
         PLBox imageBox =
             buildTableBodyImageElement(
                 cellData,
-                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "normal");
+                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "compact");
         int colspan = (int) cellData.get("colspan");
         if (colspans + colspan >= context.getColumns().size()) {
           colspan = context.getColumns().size() - colspans;
@@ -1044,7 +1044,7 @@ public class PageContentBuilderService {
                 config.getDefaultFontColor(),
                 config.getDefaultBackground(),
                 config.getDefaultFontSize(),
-                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "normal");
+                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "compact");
         int colspan = (int) cellData.get("colspan");
         if (colspans + colspan >= context.getColumns().size()) {
           colspan = context.getColumns().size() - colspans;
@@ -1068,7 +1068,7 @@ public class PageContentBuilderService {
                 config.getDefaultFontColor(),
                 config.getDefaultBackground(),
                 config.getDefaultFontSize(),
-                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "normal");
+                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "compact");
         int colspan = (int) cellData.get("colspan");
         if (colspans + colspan >= context.getColumns().size()) {
           colspan = context.getColumns().size() - colspans;
@@ -1092,7 +1092,7 @@ public class PageContentBuilderService {
                 config.getDefaultFontColor(),
                 config.getDefaultBackground(),
                 config.getDefaultFontSize(),
-                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "normal");
+                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "compact");
         PLTableCell cell =
             new PLTableCell(innerTableBox)
                 .setVertAlign(EVertAlignment.MIDDLE)
@@ -1112,7 +1112,7 @@ public class PageContentBuilderService {
                 config.getDefaultFontColor(),
                 config.getDefaultBackground(),
                 config.getDefaultFontSize(),
-                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "normal");
+                elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "compact");
         PLTableCell cell =
             new PLTableCell(textBox)
                 .setVertAlign(EVertAlignment.MIDDLE)
@@ -1133,7 +1133,7 @@ public class PageContentBuilderService {
               config.getDefaultFontColor(),
               config.getDefaultBackground(),
               config.getDefaultFontSize(),
-              elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "normal");
+              elementMap.containsKey("gap") ? String.valueOf(elementMap.get("gap")) : "compact");
 
       return new PLTableCell(textBox)
           .setVertAlign(EVertAlignment.MIDDLE)
