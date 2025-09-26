@@ -22,6 +22,8 @@ export type PageItem = {
   cat?: string;
   value?: string;
 
+  pluginId?: string;
+
   horizontal?: "left" | "center" | "right";
   vertical?: "top" | "middle" | "bottom";
 
@@ -60,6 +62,7 @@ export type PageItem = {
   /** table **/
   columns?: any[];
   bindings?: any;
+  bindingColumns?: any;
   gap?: "compact" | "normal" | "loose";
 };
 

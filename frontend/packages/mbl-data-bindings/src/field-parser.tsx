@@ -82,6 +82,13 @@ export const extractFieldsRecursively = (
 
     // 如果是对象类型，递归解析其子字段
     if (valueType === "object" && value !== null) {
+      const { icon, color } = getFieldIcon(key, valueType);
+      fields.push({
+        name: fullPath,
+        type: valueType,
+        icon,
+        color,
+      });
       fields.push(...extractFieldsRecursively(value, fullPath));
     } else {
       // 只添加非object类型的字段
