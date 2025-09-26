@@ -14,10 +14,33 @@ import {
   Rows3,
   SeparatorHorizontal,
   FileDigit,
+  Blocks,
 } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 
 // 根据 cat 属性获取对应的图标
-const getIconByCat = (cat?: string, direction?: string) => {
+const getIconByCat = (cat?: string, direction?: string, icon?: string) => {
+  if (icon) {
+    // 将字符串转换为首字母大写的驼峰命名
+    const formattedName = icon.charAt(0).toUpperCase() + icon.slice(1);
+
+    // 查找图标组件，使用 keyof typeof 约束类型
+    const IconComponent =
+      LucideIcons[formattedName as keyof typeof LucideIcons];
+
+    // 检查是否为有效的 React 组件
+    if (IconComponent !== null) {
+      // 类型断言为有效的 React 组件
+      const ValidIconComponent = IconComponent as React.ComponentType<{
+        size?: number;
+      }>;
+
+      return <ValidIconComponent size={16} />;
+    } else {
+      console.warn(`Icon "${icon}" not found or is not a valid component`);
+      return <Blocks size={16} />;
+    }
+  }
   switch (cat) {
     case "container":
       return direction === "horizontal" ? (
@@ -55,6 +78,7 @@ export interface BoxProps {
   shape?: "list" | "object";
   bind?: string;
   direction?: string;
+  icon?: string;
 }
 
 export const Box: FC<BoxProps> = memo(function Box({
@@ -70,6 +94,7 @@ export const Box: FC<BoxProps> = memo(function Box({
   shape,
   bind,
   direction,
+  icon,
 }) {
   const [{ opacity }, drag] = useDrag(
     () => ({
@@ -93,7 +118,7 @@ export const Box: FC<BoxProps> = memo(function Box({
     [id, name, type, cat, attrs, request, value, shape, bind, direction],
   );
 
-  const icon = getIconByCat(cat, direction || attrs?.direction);
+  const getIcon = getIconByCat(cat, direction || attrs?.direction, icon);
 
   if (children) {
     // 如果有 children，保持原有的 div 形式（用于 ToolPanel 中的标签显示）
@@ -117,7 +142,7 @@ export const Box: FC<BoxProps> = memo(function Box({
           cursor: "move",
         }}
       >
-        {icon}
+        {getIcon}
       </ActionIcon>
     </Tooltip>
   );

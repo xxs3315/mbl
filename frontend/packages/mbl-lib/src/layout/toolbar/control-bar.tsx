@@ -207,6 +207,7 @@ export const ControlBar = React.memo<ControlBarProps>(
                           attrs={toolbarConfig.attrs}
                           isDropped={false}
                           direction={toolbarConfig.direction}
+                          icon={metadata.icon}
                         />
                       </div>
                     );
