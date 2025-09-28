@@ -38,7 +38,7 @@ export function useInteractionButtons(
             top: "0",
             left: "0",
             zIndex: "10",
-            display: "block",
+            display: itemId === currentSelectedId ? "block" : "none",
           })}
         >
           <div
