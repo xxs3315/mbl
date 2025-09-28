@@ -1,0 +1,11 @@
+FROM amazoncorretto:17-alpine-jdk
+
+WORKDIR ./
+
+COPY api/api-0.0.1-SNAPSHOT.jar .
+
+EXPOSE 29080
+
+ENV JAVA_TOOL_OPTIONS "-Xms512m -Xmx768m -XX:MetaspaceSize=256M -XX:MaxMetaspaceSize=512M"
+
+CMD ["java", "-jar", "api-0.0.1-SNAPSHOT.jar", "--spring.profiles.active=postgresql"]

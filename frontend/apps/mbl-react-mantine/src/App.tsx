@@ -104,11 +104,15 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
   );
 };
 
-const App: React.FC<AppProps> = ({ baseUrl = "http://localhost:29080" }) => {
+const App: React.FC<AppProps> = ({ baseUrl }) => {
+  // 如果没有传入baseUrl，则根据环境变量设置
+  const resolvedBaseUrl =
+    baseUrl || import.meta.env.VITE_API_BASE_URL || "http://localhost:29080";
+
   return (
     <Router>
       <LocaleProvider>
-        <AppContent baseUrl={baseUrl} />
+        <AppContent baseUrl={resolvedBaseUrl} />
       </LocaleProvider>
     </Router>
   );

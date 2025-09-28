@@ -11,12 +11,16 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
 @Service
 public class PdfMakerService {
+
+  private static final Logger logger = LoggerFactory.getLogger(PdfMakerService.class);
 
   @Autowired private PdfMakerProperties pdfMakerProperties;
 
@@ -36,6 +40,8 @@ public class PdfMakerService {
   public PageLayoutPDF create(
       String filename, Map<String, Object> propsMap, Map<String, Object> configMap)
       throws IOException, PDFCreationException {
+    logger.info("开始创建PDF文档: {}", filename);
+    
     // 创建存储所有生成对象的Map
     Map<String, IPLRenderableObject<?>> generatedObjects = new LinkedHashMap<>();
 
@@ -69,7 +75,10 @@ public class PdfMakerService {
     }
 
     String outputPath = pdfMakerProperties.getOutputDir() + filename + ".pdf";
+    logger.info("准备渲染PDF到路径: {}", outputPath);
     PageLayoutPDF pdf = realPageLayout.renderTo(new File(outputPath));
+    
+    logger.info("PDF文档创建完成: {}", filename);
 
     return pdf;
   }
@@ -112,18 +121,19 @@ public class PdfMakerService {
       boolean isGenerated)
       throws IOException, PDFCreationException {
     StopWatch watch = new StopWatch();
+    logger.info("开始创建PDF页面集: {}, isGenerated={}", filename, isGenerated);
 
     // 解析页面配置
     watch.start("解析页面配置");
     PageConfigService.PageConfig config = pageConfigService.parsePageConfig(propsMap);
     watch.stop();
-    System.out.println(watch.prettyPrint());
+    logger.debug("页面配置解析完成: {}", watch.prettyPrint());
 
     // 创建页面设置
     watch.start("创建页面设置");
     PLPageSet pageSet = pageConfigService.createPageSet(config);
     watch.stop();
-    System.out.println(watch.prettyPrint());
+    logger.debug("页面设置创建完成: {}", watch.prettyPrint());
 
     // 构建页面头部
     watch.start("构建页面头部");
@@ -136,7 +146,7 @@ public class PdfMakerService {
       pageSet.setDifferentFirstPageHeader(true);
     }
     watch.stop();
-    System.out.println(watch.prettyPrint());
+    logger.debug("页面头部构建完成: {}", watch.prettyPrint());
 
     // 构建页面底部
     watch.start("构建页面底部");
@@ -149,7 +159,7 @@ public class PdfMakerService {
       pageSet.setDifferentFirstPageFooter(true);
     }
     watch.stop();
-    System.out.println(watch.prettyPrint());
+    logger.debug("页面底部构建完成: {}", watch.prettyPrint());
 
     // 构建页面主体
     watch.start("构建页面主体");
@@ -161,56 +171,13 @@ public class PdfMakerService {
       pageSet.addElement(element);
     }
     watch.stop();
-    System.out.println(watch.prettyPrint());
+    logger.debug("页面主体构建完成: {}", watch.prettyPrint());
 
     // 渲染PDF
     watch.start("渲染PDF");
+    logger.info("PDF页面集创建完成: {}", filename);
 
     return pageSet;
-
-    //    PageLayoutPDF pageLayout = new PageLayoutPDF();
-    //    pageLayout.addPageSet(pageSet);
-
-    //     pageLayout.prepareAllPageSets();
-
-    // 在prepare之后，我们可以得到表格中每一列的真实渲染width以及表格的width，这里就可以来计算表格body每一行的cell排列了，只需要用最简单的行，规避了单元格边框没有完整vertical画完整的问题
-
-    // === 统计表格及其所有列的 getRenderWidth() ===
-    // 结构: Map<tableKey, Map<colKey, width>>
-    // tableKey: "table-xxx"，colKey: "table-xxx"（表本身）或 "xxx-yyy"（列）
-    //    Map<String, Map<String, Float>> tableWidths = new LinkedHashMap<>();
-    //    for (String key : generatedObjects.keySet()) {
-    //      if (key.startsWith("table-") && !key.substring(6).contains("-")) {
-    //        // 这是 table 本身
-    //        String tableKey = key;
-    //        Map<String, Float> widthMap = new LinkedHashMap<>();
-    //        IPLRenderableObject<?> tableObj = generatedObjects.get(tableKey);
-    //        if (tableObj != null) {
-    //          try {
-    //            widthMap.put(tableKey, (float) tableObj.getRenderWidth());
-    //          } catch (Exception e) {
-    //            widthMap.put(tableKey, -1f);
-    //          }
-    //        }
-    //        // 查找所有属于该 table 的列（key为xxx-yyy）
-    //        String tableId = tableKey.substring("table-".length());
-    //        for (String colKey : generatedObjects.keySet()) {
-    //          if (!colKey.startsWith("table-") && colKey.startsWith(tableId + "-")) {
-    //            IPLRenderableObject<?> colObj = generatedObjects.get(colKey);
-    //            if (colObj != null) {
-    //              try {
-    //                widthMap.put(colKey, (float) colObj.getRenderWidth());
-    //              } catch (Exception e) {
-    //                widthMap.put(colKey, -1f);
-    //              }
-    //            }
-    //          }
-    //        }
-    //        tableWidths.put(tableKey, widthMap);
-    //      }
-    //    }
-    // tableWidths 即为每个表及其所有列的宽度统计
-
   }
 
   /**
@@ -222,6 +189,8 @@ public class PdfMakerService {
    */
   public PageLayoutPDF create(String filename, List<Map> propsMaps, Map<String, Object> configMap)
       throws IOException, PDFCreationException {
+    logger.info("开始批量创建PDF文档: {}, 文档数量: {}", filename, propsMaps.size());
+    
     // 创建存储所有生成对象的Map
     Map<String, IPLRenderableObject<?>> generatedObjects = new LinkedHashMap<>();
     PageLayoutPDF pageLayout = new PageLayoutPDF();
@@ -258,7 +227,10 @@ public class PdfMakerService {
       }
     }
     String outputPath = pdfMakerProperties.getOutputDir() + filename + ".pdf";
+    logger.info("准备渲染批量PDF到路径: {}", outputPath);
     PageLayoutPDF pdf = realPageLayout.renderTo(new File(outputPath));
+    
+    logger.info("批量PDF文档创建完成: {}", filename);
 
     return pdf;
   }
