@@ -42,8 +42,8 @@ onMounted(() => {
 
 // 处理主题变化
 const handleThemeChange = (theme: ThemeVariant) => {
-  themeContext.setTheme(theme)
-  console.log('主题已切换为:', theme)
+  themeContext.setTheme(theme);
+  console.log('主题已切换为:', theme);
 }
 
 // 处理内容更新
@@ -54,21 +54,23 @@ const handleContentUpdate = (content: any) => {
 // 暴露方法给父组件使用
 defineExpose({
   toggleTheme: () => {
-    if (mixBoxRef.value) {
-      mixBoxRef.value.toggleTheme()
-    }
+    // 直接调用主题上下文的切换方法
+    const themes: ('blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal')[] = ['blue', 'green', 'purple', 'orange', 'red', 'teal'];
+    const currentIndex = themes.indexOf(currentTheme.value);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    themeContext.setTheme(themes[nextIndex]);
   },
   resetContent: () => {
     if (mixBoxRef.value) {
-      mixBoxRef.value.resetContent()
+      mixBoxRef.value.resetContent();
     }
   },
   exportContent: () => {
     if (mixBoxRef.value) {
-      mixBoxRef.value.exportContent()
+      mixBoxRef.value.exportContent();
     }
   }
-})
+});
 </script>
 
 <style scoped>

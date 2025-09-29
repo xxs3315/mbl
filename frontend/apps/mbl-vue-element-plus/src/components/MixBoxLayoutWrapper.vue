@@ -9,16 +9,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, inject } from 'vue'
 import { applyReactInVue } from 'veaury'
 import { MixBoxLayout } from "@xxs3315/mbl-lib";
 import { contents } from "@xxs3315/mbl-lib-example-data";
 import { tablePlugin } from "@xxs3315/mbl-lib-plugin-table";
 
 import { useLocale } from '../composables/useLocale'
+import type { ThemeVariant } from '../theme'
 
 // 使用语言 composable
 const { currentLocale } = useLocale()
+
+// 注入主题上下文，仿照 locale 的处理方式
+const themeContext = inject<{
+  currentTheme: { value: ThemeVariant };
+  setTheme: (theme: ThemeVariant) => void;
+}>('theme');
 
 // Props定义
 interface Props {
@@ -69,7 +76,6 @@ const VueMixBoxLayout = applyReactInVue(MixBoxLayout, {
 });
 
 // 响应式状态
-const currentTheme = ref(props.theme);
 const currentContent = ref(props.initialContent);
 
 // 计算属性
@@ -77,10 +83,10 @@ const mixBoxProps = computed(() => ({
   id: props.id,
   contents: currentContent.value,
   onContentChange: handleContentUpdate,  // 添加 onContentChange 回调
-  theme: currentTheme.value,
+  theme: themeContext?.currentTheme.value || props.theme,  // 优先使用全局主题，否则使用 props.theme
   baseUrl: props.baseUrl || "http://localhost:29080",
   imageUploadPath: props.imageUploadPath || "/api/images/upload",
-  pdfGeneratePath: props.imageUploadPath || "/api/pdf/generate",
+  pdfGeneratePath: props.pdfGeneratePath || "/api/pdf/generate",
   locale: currentLocale.value,
   plugins: props.plugins,
   enablePluginSystem: props.enablePluginSystem
@@ -88,12 +94,19 @@ const mixBoxProps = computed(() => ({
 
 // 方法
 const toggleTheme = () => {
-  // 循环切换颜色主题
-  const themes: ('blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal')[] = ['blue', 'green', 'purple', 'orange', 'red', 'teal'];
-  const currentIndex = themes.indexOf(currentTheme.value);
-  const nextIndex = (currentIndex + 1) % themes.length;
-  currentTheme.value = themes[nextIndex];
-  emit('theme-change', currentTheme.value);
+  if (themeContext) {
+    // 如果有全局主题上下文，使用全局切换方法
+    const themes: ThemeVariant[] = ['blue', 'green', 'purple', 'orange', 'red', 'teal'];
+    const currentIndex = themes.indexOf(themeContext.currentTheme.value);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    themeContext.setTheme(themes[nextIndex]);
+  } else {
+    // 否则使用本地切换逻辑
+    const themes: ('blue' | 'green' | 'purple' | 'orange' | 'red' | 'teal')[] = ['blue', 'green', 'purple', 'orange', 'red', 'teal'];
+    const currentIndex = themes.indexOf(props.theme);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    emit('theme-change', themes[nextIndex]);
+  }
 };
 
 const resetContent = () => {
@@ -121,11 +134,6 @@ const handleContentUpdate = (newContent: any) => {
 };
 
 // 监听props变化
-watch(() => props.theme, (newTheme) => {
-  console.log('MixBoxLayoutWrapper 接收到主题变化:', newTheme);
-  currentTheme.value = newTheme;
-});
-
 watch(() => props.initialContent, (newContent) => {
   currentContent.value = newContent;
 });
@@ -140,7 +148,6 @@ defineExpose({
   toggleTheme,
   resetContent,
   exportContent,
-  currentTheme,
   currentContent
 });
 </script>
