@@ -7,6 +7,7 @@
       :initial-content="contents"
       :theme="currentTheme.value"
       height="100%"
+      :base-url="appBaseUrl"
       @theme-change="handleThemeChange"
       @content-update="handleContentUpdate"
     />
@@ -19,6 +20,9 @@ import MixBoxLayoutWrapper from '../components/MixBoxLayoutWrapper.vue'
 import { contents } from "@xxs3315/mbl-lib-example-data"
 import "@xxs3315/mbl-lib/index.css"
 import type { ThemeVariant } from '../theme'
+
+const appBaseUrl = import.meta.env.VITE_APP_BASE_URL;
+console.log("appBaseUrl", appBaseUrl);
 
 // 注入主题上下文
 const themeContext = inject('theme') as {

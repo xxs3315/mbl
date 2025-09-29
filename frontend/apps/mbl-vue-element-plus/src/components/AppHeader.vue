@@ -9,7 +9,7 @@
         class="sidebar-toggle"
       />
       <div class="logo-section">
-        <img src="/vite.svg" class="logo" alt="Vite logo" />
+        <img :src="viteLogo" class="logo" alt="Vite logo" />
         <img :src="vueLogo" class="logo vue" alt="Vue logo" />
         <img :src="elementPlusLogo" class="logo element-plus" alt="Element Plus logo" />
         <span class="app-title">Vite + Vue + Element Plus + MBL Demo App</span>
@@ -61,6 +61,7 @@ import {
 } from '@element-plus/icons-vue'
 import ThemeSwitcher from './ThemeSwitcher.vue'
 import LanguageSwitcher from './LanguageSwitcher.vue'
+import viteLogo from '../assets/vite.svg'
 import vueLogo from '../assets/vue.svg'
 import elementPlusLogo from '../assets/element-plus-logo.svg'
 

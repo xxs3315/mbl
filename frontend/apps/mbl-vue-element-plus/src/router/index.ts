@@ -5,10 +5,13 @@ import type {
   NavigationGuardNext,
 } from "vue-router";
 
+const routerBasePath = import.meta.env.VITE_CONFIG_BASE_URL;
+console.log("routerBasePath", routerBasePath);
+
 // 路由配置
 const routes: RouteRecordRaw[] = [
   {
-    path: "/",
+    path: `${routerBasePath}`,
     name: "Designer",
     component: () => import("../views/Designer.vue"),
     meta: {
@@ -17,7 +20,7 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/about",
+    path: `${routerBasePath}about`,
     name: "About",
     component: () => import("../views/About.vue"),
     meta: {
@@ -26,9 +29,9 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/:pathMatch(.*)*",
+    path: `${routerBasePath}:pathMatch(.*)*`,
     name: "NotFound",
-    redirect: "/",
+    redirect: `${routerBasePath}`,
   },
 ];
 

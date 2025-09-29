@@ -18,6 +18,7 @@ import {
 } from "react-router-dom";
 import Designer from "./components/Designer";
 import AboutPage from "./components/AboutPage";
+import viteLogo from "./assets/vite.svg";
 import reactLogo from "./assets/react.svg";
 import mantineLogo from "./assets/mantine.svg";
 
@@ -59,7 +60,7 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
               size="sm"
             />
             <div className="logo-section">
-              <img src="./vite.svg" className="logo" alt="Vite logo" />
+              <img src={viteLogo} className="logo" alt="Vite logo" />
               <img src={reactLogo} className="logo react" alt="React logo" />
               <img
                 src={mantineLogo}
