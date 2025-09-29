@@ -4,6 +4,11 @@ MBL is a PDF generation system based on React and Spring Boot, supporting visual
 
 > **Language**: [English](README.md) | [中文](README_CN.md)
 
+## 🍩 Demo Apps
+
+- [**React App Demo**](https://vmagrid.cn/mbl)
+- [**Vue App Demo**](https://vmagrid.cn/mbl-vue)
+
 ## 🚀 Features
 
 - **Visual Designer**: React-based drag-and-drop page layout design

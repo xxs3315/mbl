@@ -4,6 +4,11 @@ MBL 是一个基于 React 和 Spring Boot 的 PDF 生成系统，支持可视化
 
 > **语言**: [English](README.md) | [中文](README_CN.md)
 
+## 🍩 应用示例
+
+- [**React App Demo**](https://vmagrid.cn/mbl)
+- [**Vue App Demo**](https://vmagrid.cn/mbl-vue)
+
 ## 🚀 功能特性
 
 - **可视化设计器**: 基于 React 的拖拽式页面布局设计
