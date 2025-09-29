@@ -7,12 +7,10 @@ import { LocaleProvider } from "./providers/LocaleProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <LocaleProvider>
-      <ThemeProvider>
-        <LocaleProvider>
-          <App />
-        </LocaleProvider>
-      </ThemeProvider>
-    </LocaleProvider>
+    <ThemeProvider>
+      <LocaleProvider>
+        <App />
+      </LocaleProvider>
+    </ThemeProvider>
   </React.StrictMode>,
 );

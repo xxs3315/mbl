@@ -6,7 +6,17 @@ import { useTheme } from "../providers/ThemeProvider";
 import { tablePlugin } from "@xxs3315/mbl-lib-plugin-table";
 import { useLocale } from "../providers/LocaleProvider";
 
-const Designer: React.FC = () => {
+interface DesignerProps {
+  baseUrl?: string;
+  imageUploadPath?: string;
+  pdfGeneratePath?: string;
+}
+
+const Designer: React.FC<DesignerProps> = ({
+  baseUrl = "http://localhost:29080",
+  imageUploadPath = "/api/images/upload",
+  pdfGeneratePath = "/api/pdf/generate",
+}) => {
   // 定义插件列表
   const plugins = [
     {
@@ -26,9 +36,9 @@ const Designer: React.FC = () => {
       }}
       theme={currentTheme}
       locale={currentLocale}
-      baseUrl={"http://localhost:29080"}
-      imageUploadPath={"/api/images/upload"}
-      pdfGeneratePath={"/api/pdf/generate"}
+      baseUrl={baseUrl}
+      imageUploadPath={imageUploadPath}
+      pdfGeneratePath={pdfGeneratePath}
       plugins={plugins}
       enablePluginSystem={true}
     />

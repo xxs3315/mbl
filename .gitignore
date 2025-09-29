@@ -35,4 +35,6 @@ build/
 /data/h2db.trace.db
 /data/images/**.*
 /data/pdfs/**.*
-/logs/mbl/*.log
+**/logs/mbl/*.log
+/docker/.prod.env
+/docker/mbl.docker-compose.prod.yml

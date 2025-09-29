@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
     container_name: mbl-api-database
     environment:
-      POSTGRES_PASSWORD: test
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       TZ: Asia/Shanghai
     ports:
       - "5432:5432"
@@ -47,8 +47,8 @@ services:
     ports:
       - "15432:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: test@foxmail.com
-      PGADMIN_DEFAULT_PASSWORD: test
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     networks:
       - api-network
 
@@ -80,6 +80,8 @@ services:
       LOG_DIR: ${LOG_DIR}
     volumes: # 日志
       - .logs/mbl:/var/log/mbl
+      - .mbl/images:/home/ubuntu/mbl/images
+      - .mbl/pdfs:/home/ubuntu/mbl/pdfs
     networks:
       - api-network
   

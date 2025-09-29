@@ -25,6 +25,11 @@ interface AppProps {
   baseUrl?: string;
 }
 
+const routerBasePath = import.meta.env.VITE_CONFIG_BASE_URL;
+console.log("routerBasePath", routerBasePath);
+const appBaseUrl = import.meta.env.VITE_APP_BASE_URL;
+console.log("appBaseUrl", appBaseUrl);
+
 const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
   const [opened, { toggle }] = useDisclosure();
   const { currentTheme, setTheme } = useTheme();
@@ -54,7 +59,7 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
               size="sm"
             />
             <div className="logo-section">
-              <img src="/vite.svg" className="logo" alt="Vite logo" />
+              <img src="./vite.svg" className="logo" alt="Vite logo" />
               <img src={reactLogo} className="logo react" alt="React logo" />
               <img
                 src={mantineLogo}
@@ -81,23 +86,26 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
       <AppShell.Navbar p="md">
         <NavLink
           component={Link}
-          to="/"
+          to={routerBasePath}
           label="MBL Designer"
-          active={isActive("/")}
+          active={isActive(`${routerBasePath}`)}
         />
         <NavLink
           component={Link}
-          to="/about"
+          to={`${routerBasePath}/about`}
           label="About"
-          active={isActive("/about")}
+          active={isActive(`${routerBasePath}/about`)}
         />
       </AppShell.Navbar>
       <AppShell.Main
         style={{ display: "flex", height: "100vh", background: "#f2f3f5" }}
       >
         <Routes>
-          <Route path="/" element={<Designer />} />
-          <Route path="/about" element={<AboutPage />} />
+          <Route
+            path={routerBasePath}
+            element={<Designer baseUrl={baseUrl} />}
+          />
+          <Route path={`${routerBasePath}/about`} element={<AboutPage />} />
         </Routes>
       </AppShell.Main>
     </AppShell>
@@ -106,14 +114,15 @@ const AppContent: React.FC<{ baseUrl: string }> = ({ baseUrl }) => {
 
 const App: React.FC<AppProps> = ({ baseUrl }) => {
   // 如果没有传入baseUrl，则根据环境变量设置
-  const resolvedBaseUrl =
-    baseUrl || import.meta.env.VITE_API_BASE_URL || "http://localhost:29080";
+  const resolvedBaseUrl = baseUrl || appBaseUrl || "http://localhost:29080";
+
+  console.log("baseUrl", baseUrl);
+  console.log("appBaseUrl", appBaseUrl);
+  console.log("resolvedBaseUrl", resolvedBaseUrl);
 
   return (
     <Router>
-      <LocaleProvider>
-        <AppContent baseUrl={resolvedBaseUrl} />
-      </LocaleProvider>
+      <AppContent baseUrl={resolvedBaseUrl} />
     </Router>
   );
 };
